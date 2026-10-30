@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <!-- Dégradé Vert Émeraude / Turquoise FinTech (Branche 1) -->
+    <linearGradient id="tontiTealGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#319795" />
+      <stop offset="50%" stop-color="#38B2AC" />
+      <stop offset="100%" stop-color="#4FD1C5" />
+    </linearGradient>
+
+    <!-- Dégradé Or Solaire / Ambre (Branche 2) -->
+    <linearGradient id="tontiGoldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#DD6B20" />
+      <stop offset="50%" stop-color="#ED8936" />
+      <stop offset="100%" stop-color="#F6AD55" />
+    </linearGradient>
+
+    <!-- Dégradé Cyan Émeraude Lumineux (Branche 3) -->
+    <linearGradient id="tontiCyanGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#2B6CB0" />
+      <stop offset="50%" stop-color="#319795" />
+      <stop offset="100%" stop-color="#4FD1C5" />
+    </linearGradient>
+
+    <!-- Dégradé Texte TontiNais -->
+    <linearGradient id="tontiTextGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#4FD1C5" />
+      <stop offset="100%" stop-color="#2DD4BF" />
+    </linearGradient>
+
+    <!-- Définition géométrique d'un segment à flèche rotative (Unité élémentaire 1/3) -->
+    <path
+      id="arrowSegment"
+      d="M 106.8 155.3 
+         A 180 180 0 0 1 395.9 142.7 
+         L 414.6 140.8 
+         L 379.3 201.1 
+         L 326.9 200.6 
+         A 90 90 0 0 0 179.7 208.3 
+         L 158.9 162.2 
+         Z"
+    />
+
+    <!-- Filtre ombre portée subtile -->
+    <filter id="subtleGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="10" flood-color="#319795" flood-opacity="0.3" />
+    </filter>
+  </defs>
+
+  <!-- Groupe du Symbole Rotatif à 3 Branches (Alignement géométrique parfait à 120°) -->
+  <g transform="translate(0, -32)" filter="url(#subtleGlow)">
+    <!-- Branche Supérieure (Émeraude / Turquoise) -->
+    <use href="#arrowSegment" fill="url(#tontiTealGrad)" />
+
+    <!-- Branche Droite / Inférieure (Or Solaire) -->
+    <use href="#arrowSegment" fill="url(#tontiGoldGrad)" transform="rotate(120 256 256)" />
+
+    <!-- Branche Gauche / Inférieure (Cyan / Émeraude) -->
+    <use href="#arrowSegment" fill="url(#tontiCyanGrad)" transform="rotate(240 256 256)" />
+  </g>
+
+  <!-- Typographie Officielle avec Empattements (Serif) -->
+  <text
+    x="256"
+    y="442"
+    text-anchor="middle"
+    font-family="'Playfair Display', 'Cormorant Garamond', Georgia, serif"
+    font-weight="700"
+    font-size="64"
+    letter-spacing="-0.5px"
+  >
+    <tspan fill="#F8FAFC">Tonti</tspan><tspan fill="url(#tontiTextGrad)">Nais</tspan>
+  </text>
+</svg>

@@ -283,3 +283,18 @@ a:hover {
 .animate-slide-in {
   animation: slideInRight 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
+
+/* Ergonomie Mobile & Dégagement Barre Inférieure */
+.app-main {
+  flex: 1;
+  padding-bottom: 74px; /* Dégagement automatique sur smartphone */
+}
+
+@media (min-width: 768px) {
+  .app-main {
+    padding-bottom: 0;
+  }
+  .mobile-bottom-nav {
+    display: none !important;
+  }
+}

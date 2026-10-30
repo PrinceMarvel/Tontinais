@@ -3,6 +3,7 @@ import { Routes, Route, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { LogIn, UserPlus, LayoutDashboard } from 'lucide-react';
 import Navbar from './components/Navbar';
+import BottomNav from './components/BottomNav';
 import ProtectedRoute from './components/ProtectedRoute';
 import Logo from './components/Logo';
 import { ToastProvider } from './context/ToastContext';
@@ -65,7 +66,7 @@ export default function App() {
     <ToastProvider>
       <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
         <Navbar />
-        <main style={{ flex: 1 }}>
+        <main className="app-main">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
@@ -120,6 +121,8 @@ export default function App() {
             />
           </Routes>
         </main>
+        {/* Navigation Inférieure Mobile (Affichée sur smartphone < 768px) */}
+        <BottomNav />
       </div>
     </ToastProvider>
   );

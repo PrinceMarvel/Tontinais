@@ -10,6 +10,7 @@ export default defineConfig({
     },
   },
   server: {
+    host: true, // Expose le serveur sur toutes les interfaces réseau (0.0.0.0) pour l'accès mobile (iPhone/Android)
     port: 5173,
     proxy: {
       '/api': {

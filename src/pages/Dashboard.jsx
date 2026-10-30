@@ -1,6 +1,6 @@
 /**
  * @file Dashboard.jsx
- * @description Tableau de bord principal présentant les tontines actives et indicateurs financiers clés harmonisés.
+ * @description Tableau de bord principal présentant les tontines actives et indicateurs financiers avec Skeleton Loaders.
  * @module pages/Dashboard
  */
 
@@ -18,6 +18,7 @@ import {
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import api from '../services/api';
+import { SkeletonCard, SkeletonKPI } from '../components/common/Skeleton';
 
 export default function Dashboard() {
   const { t } = useTranslation();
@@ -50,7 +51,7 @@ export default function Dashboard() {
 
   return (
     <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '32px 20px' }}>
-      {/* En-tête de bienvenue avec dégradé subtil */}
+      {/* En-tête de bienvenue */}
       <div className="glass-card animate-fade-in" style={{ padding: '28px 24px', marginBottom: '28px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
           <div>
@@ -77,37 +78,47 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* Cartes KPI Financières Harmonisées */}
+      {/* Cartes KPI Financières avec Squelettes animés au chargement */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '16px', marginBottom: '32px' }}>
-        <div className="glass-card" style={{ padding: '22px', display: 'flex', alignItems: 'center', gap: '16px' }}>
-          <div style={{ width: '52px', height: '52px', borderRadius: 'var(--radius-sm)', background: 'rgba(49, 151, 149, 0.16)', display: 'grid', placeItems: 'center', color: 'var(--color-secondary-light)', border: '1px solid rgba(79, 209, 197, 0.25)' }}>
-            <Users size={26} />
-          </div>
-          <div>
-            <div style={{ fontSize: '0.85rem', color: 'var(--color-text-secondary)', fontWeight: '500' }}>{t('dashboard.kpiActiveGroups')}</div>
-            <div style={{ fontSize: '1.6rem', fontWeight: '800', color: 'var(--color-text-primary)' }}>{activeGroupsCount}</div>
-          </div>
-        </div>
+        {loading ? (
+          <>
+            <SkeletonKPI />
+            <SkeletonKPI />
+            <SkeletonKPI />
+          </>
+        ) : (
+          <>
+            <div className="glass-card" style={{ padding: '22px', display: 'flex', alignItems: 'center', gap: '16px' }}>
+              <div style={{ width: '52px', height: '52px', borderRadius: 'var(--radius-sm)', background: 'rgba(49, 151, 149, 0.16)', display: 'grid', placeItems: 'center', color: 'var(--color-secondary-light)', border: '1px solid rgba(79, 209, 197, 0.25)' }}>
+                <Users size={26} />
+              </div>
+              <div>
+                <div style={{ fontSize: '0.85rem', color: 'var(--color-text-secondary)', fontWeight: '500' }}>{t('dashboard.kpiActiveGroups')}</div>
+                <div style={{ fontSize: '1.6rem', fontWeight: '800', color: 'var(--color-text-primary)' }}>{activeGroupsCount}</div>
+              </div>
+            </div>
 
-        <div className="glass-card" style={{ padding: '22px', display: 'flex', alignItems: 'center', gap: '16px' }}>
-          <div style={{ width: '52px', height: '52px', borderRadius: 'var(--radius-sm)', background: 'rgba(237, 137, 54, 0.16)', display: 'grid', placeItems: 'center', color: 'var(--color-accent)', border: '1px solid rgba(237, 137, 54, 0.25)' }}>
-            <Wallet size={26} />
-          </div>
-          <div>
-            <div style={{ fontSize: '0.85rem', color: 'var(--color-text-secondary)', fontWeight: '500' }}>{t('dashboard.kpiTotalSavings')}</div>
-            <div style={{ fontSize: '1.6rem', fontWeight: '800', color: 'var(--color-secondary-light)' }}>{totalCotisations.toLocaleString()} XAF</div>
-          </div>
-        </div>
+            <div className="glass-card" style={{ padding: '22px', display: 'flex', alignItems: 'center', gap: '16px' }}>
+              <div style={{ width: '52px', height: '52px', borderRadius: 'var(--radius-sm)', background: 'rgba(237, 137, 54, 0.16)', display: 'grid', placeItems: 'center', color: 'var(--color-accent)', border: '1px solid rgba(237, 137, 54, 0.25)' }}>
+                <Wallet size={26} />
+              </div>
+              <div>
+                <div style={{ fontSize: '0.85rem', color: 'var(--color-text-secondary)', fontWeight: '500' }}>{t('dashboard.kpiTotalSavings')}</div>
+                <div style={{ fontSize: '1.6rem', fontWeight: '800', color: 'var(--color-secondary-light)' }}>{totalCotisations.toLocaleString()} XAF</div>
+              </div>
+            </div>
 
-        <div className="glass-card" style={{ padding: '22px', display: 'flex', alignItems: 'center', gap: '16px' }}>
-          <div style={{ width: '52px', height: '52px', borderRadius: 'var(--radius-sm)', background: 'rgba(59, 130, 246, 0.16)', display: 'grid', placeItems: 'center', color: 'var(--color-info)', border: '1px solid rgba(59, 130, 246, 0.25)' }}>
-            <Calendar size={26} />
-          </div>
-          <div>
-            <div style={{ fontSize: '0.85rem', color: 'var(--color-text-secondary)', fontWeight: '500' }}>{t('dashboard.kpiNextRound')}</div>
-            <div style={{ fontSize: '1.6rem', fontWeight: '800', color: 'var(--color-text-primary)' }}>{activeGroupsCount > 0 ? t('dashboard.statusActive') : '-'}</div>
-          </div>
-        </div>
+            <div className="glass-card" style={{ padding: '22px', display: 'flex', alignItems: 'center', gap: '16px' }}>
+              <div style={{ width: '52px', height: '52px', borderRadius: 'var(--radius-sm)', background: 'rgba(59, 130, 246, 0.16)', display: 'grid', placeItems: 'center', color: 'var(--color-info)', border: '1px solid rgba(59, 130, 246, 0.25)' }}>
+                <Calendar size={26} />
+              </div>
+              <div>
+                <div style={{ fontSize: '0.85rem', color: 'var(--color-text-secondary)', fontWeight: '500' }}>{t('dashboard.kpiNextRound')}</div>
+                <div style={{ fontSize: '1.6rem', fontWeight: '800', color: 'var(--color-text-primary)' }}>{activeGroupsCount > 0 ? t('dashboard.statusActive') : '-'}</div>
+              </div>
+            </div>
+          </>
+        )}
       </div>
 
       {/* Titre de section */}
@@ -123,7 +134,11 @@ export default function Dashboard() {
       )}
 
       {loading ? (
-        <div style={{ padding: '40px', textAlign: 'center', color: 'var(--color-text-secondary)' }}>{t('common.loading')}</div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '20px' }}>
+          <SkeletonCard />
+          <SkeletonCard />
+          <SkeletonCard />
+        </div>
       ) : groups.length === 0 ? (
         <div className="glass-card" style={{ padding: '48px 24px', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px' }}>
           <div style={{ width: '60px', height: '60px', borderRadius: '50%', background: 'rgba(49, 151, 149, 0.12)', display: 'grid', placeItems: 'center', color: 'var(--color-secondary-light)', marginBottom: '8px' }}>

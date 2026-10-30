@@ -5,6 +5,7 @@ import { LogIn, UserPlus, LayoutDashboard } from 'lucide-react';
 import Navbar from './components/Navbar';
 import ProtectedRoute from './components/ProtectedRoute';
 import Logo from './components/Logo';
+import { ToastProvider } from './context/ToastContext';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
@@ -61,63 +62,65 @@ function Home() {
 
 export default function App() {
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-      <Navbar />
-      <main style={{ flex: 1 }}>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route
-            path="/dashboard"
-            element={
-              <ProtectedRoute>
-                <Dashboard />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/groups/create"
-            element={
-              <ProtectedRoute allowedRoles={['CHEF_DE_TONTINE', 'SUPER_ADMIN']}>
-                <CreateGroup />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/groups/join"
-            element={
-              <ProtectedRoute>
-                <JoinGroup />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/groups/:id"
-            element={
-              <ProtectedRoute>
-                <GroupDetails />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/admin"
-            element={
-              <ProtectedRoute allowedRoles={['SUPER_ADMIN']}>
-                <AdminDashboard />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/profile"
-            element={
-              <ProtectedRoute>
-                <Profile />
-              </ProtectedRoute>
-            }
-          />
-        </Routes>
-      </main>
-    </div>
+    <ToastProvider>
+      <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+        <Navbar />
+        <main style={{ flex: 1 }}>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route
+              path="/dashboard"
+              element={
+                <ProtectedRoute>
+                  <Dashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/groups/create"
+              element={
+                <ProtectedRoute allowedRoles={['CHEF_DE_TONTINE', 'SUPER_ADMIN']}>
+                  <CreateGroup />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/groups/join"
+              element={
+                <ProtectedRoute>
+                  <JoinGroup />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/groups/:id"
+              element={
+                <ProtectedRoute>
+                  <GroupDetails />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin"
+              element={
+                <ProtectedRoute allowedRoles={['SUPER_ADMIN']}>
+                  <AdminDashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/profile"
+              element={
+                <ProtectedRoute>
+                  <Profile />
+                </ProtectedRoute>
+              }
+            />
+          </Routes>
+        </main>
+      </div>
+    </ToastProvider>
   );
 }

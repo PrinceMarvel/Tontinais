@@ -1,6 +1,6 @@
 /**
  * @file Dashboard.jsx
- * @description Tableau de bord principal présentant les tontines actives et indicateurs financiers clés.
+ * @description Tableau de bord principal présentant les tontines actives et indicateurs financiers clés harmonisés.
  * @module pages/Dashboard
  */
 
@@ -50,7 +50,7 @@ export default function Dashboard() {
 
   return (
     <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '32px 20px' }}>
-      {/* En-tête de bienvenue */}
+      {/* En-tête de bienvenue avec dégradé subtil */}
       <div className="glass-card animate-fade-in" style={{ padding: '28px 24px', marginBottom: '28px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
           <div>
@@ -77,40 +77,40 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* Cartes KPI */}
+      {/* Cartes KPI Financières Harmonisées */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '16px', marginBottom: '32px' }}>
-        <div className="glass-card" style={{ padding: '20px', display: 'flex', alignItems: 'center', gap: '16px' }}>
-          <div style={{ width: '48px', height: '48px', borderRadius: 'var(--radius-sm)', background: 'rgba(49, 151, 149, 0.15)', display: 'grid', placeItems: 'center', color: 'var(--color-secondary-light)' }}>
-            <Users size={24} />
+        <div className="glass-card" style={{ padding: '22px', display: 'flex', alignItems: 'center', gap: '16px' }}>
+          <div style={{ width: '52px', height: '52px', borderRadius: 'var(--radius-sm)', background: 'rgba(49, 151, 149, 0.16)', display: 'grid', placeItems: 'center', color: 'var(--color-secondary-light)', border: '1px solid rgba(79, 209, 197, 0.25)' }}>
+            <Users size={26} />
           </div>
           <div>
-            <div style={{ fontSize: '0.85rem', color: 'var(--color-text-secondary)' }}>{t('dashboard.kpiActiveGroups')}</div>
-            <div style={{ fontSize: '1.5rem', fontWeight: '700', color: 'var(--color-text-primary)' }}>{activeGroupsCount}</div>
+            <div style={{ fontSize: '0.85rem', color: 'var(--color-text-secondary)', fontWeight: '500' }}>{t('dashboard.kpiActiveGroups')}</div>
+            <div style={{ fontSize: '1.6rem', fontWeight: '800', color: 'var(--color-text-primary)' }}>{activeGroupsCount}</div>
           </div>
         </div>
 
-        <div className="glass-card" style={{ padding: '20px', display: 'flex', alignItems: 'center', gap: '16px' }}>
-          <div style={{ width: '48px', height: '48px', borderRadius: 'var(--radius-sm)', background: 'rgba(237, 137, 54, 0.15)', display: 'grid', placeItems: 'center', color: 'var(--color-accent)' }}>
-            <Wallet size={24} />
+        <div className="glass-card" style={{ padding: '22px', display: 'flex', alignItems: 'center', gap: '16px' }}>
+          <div style={{ width: '52px', height: '52px', borderRadius: 'var(--radius-sm)', background: 'rgba(237, 137, 54, 0.16)', display: 'grid', placeItems: 'center', color: 'var(--color-accent)', border: '1px solid rgba(237, 137, 54, 0.25)' }}>
+            <Wallet size={26} />
           </div>
           <div>
-            <div style={{ fontSize: '0.85rem', color: 'var(--color-text-secondary)' }}>{t('dashboard.kpiTotalSavings')}</div>
-            <div style={{ fontSize: '1.5rem', fontWeight: '700', color: 'var(--color-text-primary)' }}>{totalCotisations.toLocaleString()} XAF</div>
+            <div style={{ fontSize: '0.85rem', color: 'var(--color-text-secondary)', fontWeight: '500' }}>{t('dashboard.kpiTotalSavings')}</div>
+            <div style={{ fontSize: '1.6rem', fontWeight: '800', color: 'var(--color-secondary-light)' }}>{totalCotisations.toLocaleString()} XAF</div>
           </div>
         </div>
 
-        <div className="glass-card" style={{ padding: '20px', display: 'flex', alignItems: 'center', gap: '16px' }}>
-          <div style={{ width: '48px', height: '48px', borderRadius: 'var(--radius-sm)', background: 'rgba(59, 130, 246, 0.15)', display: 'grid', placeItems: 'center', color: 'var(--color-info)' }}>
-            <Calendar size={24} />
+        <div className="glass-card" style={{ padding: '22px', display: 'flex', alignItems: 'center', gap: '16px' }}>
+          <div style={{ width: '52px', height: '52px', borderRadius: 'var(--radius-sm)', background: 'rgba(59, 130, 246, 0.16)', display: 'grid', placeItems: 'center', color: 'var(--color-info)', border: '1px solid rgba(59, 130, 246, 0.25)' }}>
+            <Calendar size={26} />
           </div>
           <div>
-            <div style={{ fontSize: '0.85rem', color: 'var(--color-text-secondary)' }}>{t('dashboard.kpiNextRound')}</div>
-            <div style={{ fontSize: '1.5rem', fontWeight: '700', color: 'var(--color-text-primary)' }}>{activeGroupsCount > 0 ? t('dashboard.statusActive') : '-'}</div>
+            <div style={{ fontSize: '0.85rem', color: 'var(--color-text-secondary)', fontWeight: '500' }}>{t('dashboard.kpiNextRound')}</div>
+            <div style={{ fontSize: '1.6rem', fontWeight: '800', color: 'var(--color-text-primary)' }}>{activeGroupsCount > 0 ? t('dashboard.statusActive') : '-'}</div>
           </div>
         </div>
       </div>
 
-      {/* Liste des tontines */}
+      {/* Titre de section */}
       <h2 style={{ fontSize: '1.3rem', color: 'var(--color-text-primary)', marginBottom: '16px' }}>
         {t('dashboard.myGroupsTitle')}
       </h2>
@@ -126,7 +126,7 @@ export default function Dashboard() {
         <div style={{ padding: '40px', textAlign: 'center', color: 'var(--color-text-secondary)' }}>{t('common.loading')}</div>
       ) : groups.length === 0 ? (
         <div className="glass-card" style={{ padding: '48px 24px', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px' }}>
-          <div style={{ width: '60px', height: '60px', borderRadius: '50%', background: 'rgba(49, 151, 149, 0.1)', display: 'grid', placeItems: 'center', color: 'var(--color-secondary-light)', marginBottom: '8px' }}>
+          <div style={{ width: '60px', height: '60px', borderRadius: '50%', background: 'rgba(49, 151, 149, 0.12)', display: 'grid', placeItems: 'center', color: 'var(--color-secondary-light)', marginBottom: '8px' }}>
             <Users size={32} />
           </div>
           <h3 style={{ fontSize: '1.2rem', color: 'var(--color-text-primary)' }}>{t('dashboard.noGroupsTitle')}</h3>
@@ -160,10 +160,10 @@ export default function Dashboard() {
                   <p style={{ color: 'var(--color-text-secondary)', fontSize: '0.85rem', lineHeight: '1.4', marginBottom: '16px' }}>
                     {group.description || t('home.heroSubtitle')}
                   </p>
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', padding: '12px', borderRadius: 'var(--radius-sm)', backgroundColor: 'var(--color-bg-surface)' }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', padding: '12px', borderRadius: 'var(--radius-sm)', backgroundColor: 'var(--color-bg-surface)', border: '1px solid var(--color-border)' }}>
                     <div>
                       <div style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>{t('common.amount')}</div>
-                      <div style={{ fontSize: '0.95rem', fontWeight: '700', color: 'var(--color-secondary-light)' }}>
+                      <div style={{ fontSize: '1rem', fontWeight: '800', color: 'var(--color-secondary-light)' }}>
                         {group.montantCotisation?.toLocaleString()} {group.devise}
                       </div>
                     </div>
@@ -176,7 +176,7 @@ export default function Dashboard() {
 
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <span style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)' }}>
-                    Code : <strong>{group.codeInvitation}</strong>
+                    Code : <strong style={{ color: 'var(--color-text-primary)' }}>{group.codeInvitation}</strong>
                   </span>
                   <Link to={`/groups/${group._id}`} className="btn btn-outline" style={{ padding: '6px 12px', fontSize: '0.8rem' }}>
                     <span>{t('dashboard.viewDetails')}</span>

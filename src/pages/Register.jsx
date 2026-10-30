@@ -1,33 +1,16 @@
 /**
  * @file Register.jsx
- * @description Page d'inscription pour la plateforme TontiNaïs.
+ * @description Page d'inscription intégrant le Design System unifié et le logo officiel TontiNaïs.
  * @module pages/Register
  */
 
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { UserPlus, AlertCircle, ShieldCheck } from 'lucide-react';
+import { UserPlus, AlertCircle } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import LanguageSelector from '../components/LanguageSelector';
-
-const inputStyle = {
-  width: '100%',
-  padding: '12px 14px',
-  borderRadius: 'var(--radius-sm)',
-  backgroundColor: 'var(--color-bg-surface)',
-  border: '1px solid var(--color-border)',
-  color: 'var(--color-text-primary)',
-  fontSize: '0.9rem'
-};
-
-const labelStyle = {
-  display: 'block',
-  fontSize: '0.85rem',
-  marginBottom: '6px',
-  color: 'var(--color-text-secondary)',
-  fontWeight: '500'
-};
+import Logo from '../components/Logo';
 
 export default function Register() {
   const { t } = useTranslation();
@@ -94,13 +77,9 @@ export default function Register() {
   return (
     <div style={{ minHeight: '100vh', display: 'grid', placeItems: 'center', padding: '32px 16px' }}>
       <div className="glass-card animate-fade-in" style={{ width: '100%', maxWidth: '520px', padding: '36px 28px' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <ShieldCheck size={24} color="var(--color-secondary-light)" />
-            <span style={{ fontFamily: 'var(--font-family-headings)', fontSize: '1.25rem', fontWeight: '800', color: 'var(--color-text-primary)' }}>
-              Tonti<span style={{ color: 'var(--color-secondary-light)' }}>Naïs</span>
-            </span>
-          </div>
+        {/* En-tête de carte avec Logo Officiel et Sélecteur de Langue */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+          <Logo size={36} showText={true} />
           <LanguageSelector />
         </div>
 
@@ -134,39 +113,39 @@ export default function Register() {
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
             <div>
-              <label htmlFor="prenom" style={labelStyle}>{t('auth.firstNameLabel')}</label>
-              <input id="prenom" name="prenom" type="text" value={formData.prenom} onChange={handleChange} placeholder={t('auth.firstNamePlaceholder')} style={inputStyle} required />
+              <label htmlFor="prenom" className="label">{t('auth.firstNameLabel')}</label>
+              <input id="prenom" name="prenom" type="text" className="input" value={formData.prenom} onChange={handleChange} placeholder={t('auth.firstNamePlaceholder')} required />
             </div>
             <div>
-              <label htmlFor="nom" style={labelStyle}>{t('auth.lastNameLabel')}</label>
-              <input id="nom" name="nom" type="text" value={formData.nom} onChange={handleChange} placeholder={t('auth.lastNamePlaceholder')} style={inputStyle} required />
+              <label htmlFor="nom" className="label">{t('auth.lastNameLabel')}</label>
+              <input id="nom" name="nom" type="text" className="input" value={formData.nom} onChange={handleChange} placeholder={t('auth.lastNamePlaceholder')} required />
             </div>
           </div>
 
           <div>
-            <label htmlFor="email" style={labelStyle}>{t('auth.emailLabel')}</label>
-            <input id="email" name="email" type="email" value={formData.email} onChange={handleChange} placeholder={t('auth.emailPlaceholder')} style={inputStyle} required />
+            <label htmlFor="email" className="label">{t('auth.emailLabel')}</label>
+            <input id="email" name="email" type="email" className="input" value={formData.email} onChange={handleChange} placeholder={t('auth.emailPlaceholder')} required />
           </div>
 
           <div>
-            <label htmlFor="telephone" style={labelStyle}>{t('auth.phoneLabel')}</label>
-            <input id="telephone" name="telephone" type="tel" value={formData.telephone} onChange={handleChange} placeholder={t('auth.phonePlaceholder')} style={inputStyle} required />
+            <label htmlFor="telephone" className="label">{t('auth.phoneLabel')}</label>
+            <input id="telephone" name="telephone" type="tel" className="input" value={formData.telephone} onChange={handleChange} placeholder={t('auth.phonePlaceholder')} required />
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
             <div>
-              <label htmlFor="motDePasse" style={labelStyle}>{t('auth.passwordLabel')}</label>
-              <input id="motDePasse" name="motDePasse" type="password" value={formData.motDePasse} onChange={handleChange} placeholder="8+ caractères" style={inputStyle} required />
+              <label htmlFor="motDePasse" className="label">{t('auth.passwordLabel')}</label>
+              <input id="motDePasse" name="motDePasse" type="password" className="input" value={formData.motDePasse} onChange={handleChange} placeholder="8+ caractères" required />
             </div>
             <div>
-              <label htmlFor="confirmMotDePasse" style={labelStyle}>{t('auth.confirmPasswordLabel')}</label>
-              <input id="confirmMotDePasse" name="confirmMotDePasse" type="password" value={formData.confirmMotDePasse} onChange={handleChange} placeholder="Confirmer" style={inputStyle} required />
+              <label htmlFor="confirmMotDePasse" className="label">{t('auth.confirmPasswordLabel')}</label>
+              <input id="confirmMotDePasse" name="confirmMotDePasse" type="password" className="input" value={formData.confirmMotDePasse} onChange={handleChange} placeholder="Confirmer" required />
             </div>
           </div>
 
           <div>
-            <label htmlFor="role" style={labelStyle}>{t('auth.roleLabel')}</label>
-            <select id="role" name="role" value={formData.role} onChange={handleChange} style={inputStyle}>
+            <label htmlFor="role" className="label">{t('auth.roleLabel')}</label>
+            <select id="role" name="role" className="input" value={formData.role} onChange={handleChange}>
               <option value="MEMBRE">{t('auth.roleMember')}</option>
               <option value="CHEF_DE_TONTINE">{t('auth.roleLeader')}</option>
             </select>

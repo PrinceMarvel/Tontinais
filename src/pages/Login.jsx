@@ -1,6 +1,6 @@
 /**
  * @file Login.jsx
- * @description Page de connexion sécurisée pour la plateforme TontiNaïs.
+ * @description Page de connexion sécurisée avec intégration du Design System et logo officiel.
  * @module pages/Login
  */
 
@@ -10,6 +10,7 @@ import { useTranslation } from 'react-i18next';
 import { Mail, Lock, LogIn, AlertCircle } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import LanguageSelector from '../components/LanguageSelector';
+import Logo from '../components/Logo';
 
 export default function Login() {
   const { t } = useTranslation();
@@ -61,26 +62,16 @@ export default function Login() {
           padding: '36px 28px'
         }}
       >
+        {/* En-tête de carte avec Logo Officiel et Sélecteur de Langue */}
         <div
           style={{
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            marginBottom: '24px'
+            marginBottom: '28px'
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span
-              style={{
-                fontFamily: 'var(--font-family-headings)',
-                fontSize: '1.25rem',
-                fontWeight: '800',
-                color: 'var(--color-secondary-light)'
-              }}
-            >
-              {t('common.appName')}
-            </span>
-          </div>
+          <Logo size={36} showText={true} />
           <LanguageSelector />
         </div>
 
@@ -125,16 +116,7 @@ export default function Login() {
 
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
           <div>
-            <label
-              htmlFor="email"
-              style={{
-                display: 'block',
-                fontSize: '0.85rem',
-                fontWeight: '600',
-                color: 'var(--color-text-secondary)',
-                marginBottom: '6px'
-              }}
-            >
+            <label htmlFor="email" className="label">
               {t('auth.emailLabel')}
             </label>
             <div style={{ position: 'relative' }}>
@@ -151,36 +133,18 @@ export default function Login() {
               <input
                 id="email"
                 type="email"
+                className="input"
+                style={{ paddingLeft: '40px' }}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder={t('auth.emailPlaceholder')}
                 required
-                style={{
-                  width: '100%',
-                  padding: '12px 12px 12px 40px',
-                  borderRadius: 'var(--radius-sm)',
-                  backgroundColor: 'var(--color-bg-surface)',
-                  border: '1px solid var(--color-border)',
-                  color: 'var(--color-text-primary)',
-                  fontSize: '0.95rem',
-                  outline: 'none',
-                  transition: 'var(--transition-fast)'
-                }}
               />
             </div>
           </div>
 
           <div>
-            <label
-              htmlFor="motDePasse"
-              style={{
-                display: 'block',
-                fontSize: '0.85rem',
-                fontWeight: '600',
-                color: 'var(--color-text-secondary)',
-                marginBottom: '6px'
-              }}
-            >
+            <label htmlFor="motDePasse" className="label">
               {t('auth.passwordLabel')}
             </label>
             <div style={{ position: 'relative' }}>
@@ -197,21 +161,12 @@ export default function Login() {
               <input
                 id="motDePasse"
                 type="password"
+                className="input"
+                style={{ paddingLeft: '40px' }}
                 value={motDePasse}
                 onChange={(e) => setMotDePasse(e.target.value)}
                 placeholder={t('auth.passwordPlaceholder')}
                 required
-                style={{
-                  width: '100%',
-                  padding: '12px 12px 12px 40px',
-                  borderRadius: 'var(--radius-sm)',
-                  backgroundColor: 'var(--color-bg-surface)',
-                  border: '1px solid var(--color-border)',
-                  color: 'var(--color-text-primary)',
-                  fontSize: '0.95rem',
-                  outline: 'none',
-                  transition: 'var(--transition-fast)'
-                }}
               />
             </div>
           </div>
@@ -246,8 +201,7 @@ export default function Login() {
             to="/register"
             style={{
               color: 'var(--color-secondary-light)',
-              fontWeight: '600',
-              textDecoration: 'none'
+              fontWeight: '600'
             }}
           >
             {t('auth.submitRegister')}

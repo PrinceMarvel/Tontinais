@@ -1,0 +1,230 @@
+/**
+ * @file CreateGroup.css
+ * @description Styles du Wizard de création de tontine : Stepper guidé et cartes sombres sélectionnables.
+ */
+
+/* Stepper de progression */
+.wizard-stepper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 32px;
+  position: relative;
+}
+
+.wizard-stepper::before {
+  content: '';
+  position: absolute;
+  top: 20px;
+  left: 30px;
+  right: 30px;
+  height: 2px;
+  background: var(--color-border);
+  z-index: 1;
+}
+
+.wizard-progress-bar {
+  position: absolute;
+  top: 20px;
+  left: 30px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--color-secondary), var(--color-secondary-light));
+  z-index: 2;
+  transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.wizard-step-node {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+
+.wizard-step-circle {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: var(--color-bg-surface);
+  border: 2px solid var(--color-border);
+  display: grid;
+  place-Items: center;
+  color: var(--color-text-muted);
+  font-weight: 700;
+  font-size: 0.95rem;
+  transition: var(--transition-fast);
+}
+
+.wizard-step-node.active .wizard-step-circle {
+  background: linear-gradient(135deg, var(--color-secondary), var(--color-primary));
+  border-color: var(--color-secondary-light);
+  color: #ffffff;
+  box-shadow: 0 0 16px rgba(79, 209, 197, 0.4);
+}
+
+.wizard-step-node.completed .wizard-step-circle {
+  background: var(--color-secondary);
+  border-color: var(--color-secondary-light);
+  color: #ffffff;
+}
+
+.wizard-step-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  transition: var(--transition-fast);
+  white-space: nowrap;
+}
+
+.wizard-step-node.active .wizard-step-label {
+  color: var(--color-secondary-light);
+}
+
+.wizard-step-node.completed .wizard-step-label {
+  color: var(--color-text-primary);
+}
+
+/* Cartes sombres sélectionnables (Zéro select blanc) */
+.select-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 14px;
+}
+
+.select-card {
+  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-align: left;
+  transition: var(--transition-fast);
+  color: var(--color-text-primary);
+  user-select: none;
+}
+
+.select-card:hover {
+  border-color: var(--color-border-hover);
+  background: rgba(30, 41, 59, 0.8);
+  transform: translateY(-2px);
+}
+
+.select-card.active {
+  border-color: var(--color-secondary-light);
+  background: linear-gradient(135deg, rgba(49, 151, 149, 0.18) 0%, rgba(26, 54, 93, 0.35) 100%);
+  box-shadow: 0 0 18px rgba(79, 209, 197, 0.25);
+}
+
+.select-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.select-card-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.05);
+  display: grid;
+  place-items: center;
+  color: var(--color-secondary-light);
+}
+
+.select-card.active .select-card-icon {
+  background: var(--color-secondary);
+  color: #ffffff;
+}
+
+.select-card-radio {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid var(--color-border);
+  display: grid;
+  place-items: center;
+  transition: var(--transition-fast);
+}
+
+.select-card.active .select-card-radio {
+  border-color: var(--color-secondary-light);
+}
+
+.select-card-radio-inner {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-secondary-light);
+}
+
+.select-card-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.select-card-desc {
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+  line-height: 1.35;
+}
+
+/* Compteur de membres interactif */
+.member-stepper-control {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(15, 23, 42, 0.75);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 6px 12px;
+  width: fit-content;
+}
+
+.stepper-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-surface);
+  color: var(--color-text-primary);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.stepper-btn:hover:not(:disabled) {
+  border-color: var(--color-secondary-light);
+  color: var(--color-secondary-light);
+}
+
+.stepper-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+@media (max-width: 640px) {
+  .wizard-stepper::before,
+  .wizard-progress-bar {
+    left: 20px;
+    right: 20px;
+  }
+  .wizard-step-circle {
+    width: 36px;
+    height: 36px;
+    font-size: 0.85rem;
+  }
+  .wizard-step-label {
+    font-size: 0.72rem;
+  }
+}
+

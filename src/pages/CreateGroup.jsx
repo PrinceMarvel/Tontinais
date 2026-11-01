@@ -1,16 +1,28 @@
 /**
  * @file CreateGroup.jsx
- * @description Page de création d'un nouveau groupe de tontine collaborative avec simulation financière en temps réel.
+ * @description Page de création d'un groupe de tontine collaborative avec architecture modulaire et simulation financière.
  * @module pages/CreateGroup
  */
 
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { PlusCircle, AlertCircle } from 'lucide-react';
+import {
+  PlusCircle,
+  AlertCircle,
+  Sparkles,
+  Coins,
+  Users,
+  Calendar,
+  Clock,
+  ArrowLeft
+} from 'lucide-react';
 import api from '../services/api';
 import GroupCreatedCard from '../components/GroupCreatedCard';
 import GroupSimulationCard from '../components/groups/GroupSimulationCard';
+
+const QUICK_AMOUNTS = [5000, 10000, 25000, 50000, 100000];
+const QUICK_MEMBERS = [5, 10, 15, 20];
 
 export default function CreateGroup() {
   const { t } = useTranslation();
@@ -35,10 +47,18 @@ export default function CreateGroup() {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: name === 'montantCotisation' || name === 'nombreMaxMembres' || name === 'dureeGraceJours'
+      [name]: ['montantCotisation', 'nombreMaxMembres', 'dureeGraceJours'].includes(name)
         ? Number(value)
         : value
     }));
+  };
+
+  const handleQuickAmount = (amount) => {
+    setFormData((prev) => ({ ...prev, montantCotisation: amount }));
+  };
+
+  const handleQuickMembers = (members) => {
+    setFormData((prev) => ({ ...prev, nombreMaxMembres: members }));
   };
 
   const handleSubmit = async (e) => {
@@ -51,12 +71,12 @@ export default function CreateGroup() {
     }
 
     if (formData.montantCotisation <= 0) {
-      setErrorMessage(t('groups.contributionAmount') + ' doit être supérieur à zéro.');
+      setErrorMessage(`${t('groups.contributionAmount')} doit être supérieur à zéro.`);
       return;
     }
 
     if (formData.nombreMaxMembres < 2 || formData.nombreMaxMembres > 100) {
-      setErrorMessage(t('groups.maxMembers') + ' doit être compris entre 2 et 100.');
+      setErrorMessage(`${t('groups.maxMembers')} doit être compris entre 2 et 100.`);
       return;
     }
 
@@ -78,194 +98,246 @@ export default function CreateGroup() {
   }
 
   return (
-    <div style={{ maxWidth: '800px', margin: '32px auto', padding: '0 20px' }}>
+    <div style={{ maxWidth: '860px', margin: '32px auto', padding: '0 20px' }}>
       <div className="glass-card animate-fade-in" style={{ padding: '36px 32px' }}>
-        {/* En-tête du formulaire */}
-        <div style={{ marginBottom: '28px', borderBottom: '1px solid var(--color-border)', paddingBottom: '18px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
+        {/* En-tête de la page */}
+        <div style={{ marginBottom: '32px', borderBottom: '1px solid var(--color-border)', paddingBottom: '20px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '8px' }}>
             <div
               style={{
-                width: '40px',
-                height: '40px',
+                width: '44px',
+                height: '44px',
                 borderRadius: 'var(--radius-sm)',
-                background: 'linear-gradient(135deg, var(--color-primary), var(--color-secondary))',
+                background: 'linear-gradient(135deg, var(--color-secondary), var(--color-primary))',
                 display: 'grid',
                 placeItems: 'center',
-                color: '#ffffff'
+                color: 'var(--color-text-primary)'
               }}
             >
-              <PlusCircle size={22} />
+              <PlusCircle size={24} />
             </div>
-            <h1 style={{ fontSize: '1.7rem', color: 'var(--color-text-primary)' }}>
-              {t('groups.createTitle')}
-            </h1>
+            <div>
+              <h1 style={{ fontSize: '1.75rem', color: 'var(--color-text-primary)' }}>
+                {t('groups.createTitle')}
+              </h1>
+              <p style={{ color: 'var(--color-text-secondary)', fontSize: '0.92rem', marginTop: '2px' }}>
+                {t('groups.createSubtitle')}
+              </p>
+            </div>
           </div>
-          <p style={{ color: 'var(--color-text-secondary)', fontSize: '0.95rem' }}>
-            {t('groups.createSubtitle')}
-          </p>
         </div>
 
-        {/* Message d'erreur */}
+        {/* Alerte d'erreur */}
         {errorMessage && (
           <div
             className="animate-fade-in"
             style={{
-              padding: '12px 16px',
-              backgroundColor: 'rgba(229, 62, 62, 0.15)',
+              padding: '14px 18px',
+              backgroundColor: 'rgba(239, 68, 68, 0.12)',
               border: '1px solid var(--color-danger)',
-              borderRadius: 'var(--radius-md)',
+              borderRadius: 'var(--radius-sm)',
               color: 'var(--color-danger)',
-              marginBottom: '24px',
+              marginBottom: '26px',
               display: 'flex',
               alignItems: 'center',
-              gap: '10px',
-              fontSize: '0.9rem'
+              gap: '12px',
+              fontSize: '0.92rem'
             }}
           >
-            <AlertCircle size={18} />
+            <AlertCircle size={20} />
             <span>{errorMessage}</span>
           </div>
         )}
 
-        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '22px' }}>
-          {/* Nom du groupe */}
-          <div className="form-group">
-            <label className="form-label" htmlFor="nom">
-              {t('groups.groupName')} *
-            </label>
-            <input
-              id="nom"
-              name="nom"
-              type="text"
-              required
-              className="form-input"
-              value={formData.nom}
-              onChange={handleChange}
-              placeholder={t('groups.groupNamePlaceholder')}
-              maxLength={80}
-            />
-          </div>
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '30px' }}>
+          {/* Section 1 : Identité et règles de la tontine */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--color-secondary-light)' }}>
+              <Sparkles size={18} />
+              <h2 style={{ fontSize: '1.1rem', fontWeight: '700' }}>{t('groups.sectionIdentity')}</h2>
+            </div>
 
-          {/* Description et règles */}
-          <div className="form-group">
-            <label className="form-label" htmlFor="description">
-              {t('groups.groupDescription')}
-            </label>
-            <textarea
-              id="description"
-              name="description"
-              rows={3}
-              className="form-input"
-              value={formData.description}
-              onChange={handleChange}
-              placeholder={t('groups.descriptionPlaceholder')}
-              maxLength={500}
-              style={{ resize: 'vertical' }}
-            />
-          </div>
-
-          {/* Paramètres financiers : Montant, Devise, Fréquence */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '16px' }}>
             <div className="form-group">
-              <label className="form-label" htmlFor="montantCotisation">
-                {t('groups.contributionAmount')} *
+              <label className="form-label" htmlFor="nom">
+                <span>{t('groups.groupName')} <span style={{ color: 'var(--color-accent)' }}>*</span></span>
+                <span style={{ fontSize: '0.78rem', color: 'var(--color-text-muted)' }}>Max 80 caractères</span>
               </label>
               <input
-                id="montantCotisation"
-                name="montantCotisation"
-                type="number"
-                min="100"
-                step="100"
+                id="nom"
+                name="nom"
+                type="text"
                 required
                 className="form-input"
-                value={formData.montantCotisation}
+                value={formData.nom}
                 onChange={handleChange}
+                placeholder={t('groups.groupNamePlaceholder')}
+                maxLength={80}
               />
             </div>
 
             <div className="form-group">
-              <label className="form-label" htmlFor="devise">
-                {t('groups.currencyLabel')}
+              <label className="form-label" htmlFor="description">
+                <span>{t('groups.groupDescription')}</span>
+                <span style={{ fontSize: '0.78rem', color: 'var(--color-text-muted)' }}>Optionnel</span>
               </label>
-              <select id="devise" name="devise" className="form-input" value={formData.devise} onChange={handleChange}>
-                <option value="XAF">XAF (FCFA CEMAC)</option>
-                <option value="XOF">XOF (FCFA UEMOA)</option>
-                <option value="EUR">EUR (€)</option>
-                <option value="USD">USD ($)</option>
-              </select>
-            </div>
-
-            <div className="form-group">
-              <label className="form-label" htmlFor="frequence">
-                {t('groups.frequency')}
-              </label>
-              <select id="frequence" name="frequence" className="form-input" value={formData.frequence} onChange={handleChange}>
-                <option value="MENSUEL">{t('groups.frequencyMonthly')}</option>
-                <option value="BI_MENSUEL">{t('groups.frequencyBiweekly')}</option>
-                <option value="HEBDOMADAIRE">{t('groups.frequencyWeekly')}</option>
-              </select>
-            </div>
-          </div>
-
-          {/* Paramètres d'organisation : Membres, Date, Délai de grâce */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '16px' }}>
-            <div className="form-group">
-              <label className="form-label" htmlFor="nombreMaxMembres">
-                {t('groups.maxMembers')} (2 - 100) *
-              </label>
-              <input
-                id="nombreMaxMembres"
-                name="nombreMaxMembres"
-                type="number"
-                min="2"
-                max="100"
-                required
-                className="form-input"
-                value={formData.nombreMaxMembres}
+              <textarea
+                id="description"
+                name="description"
+                rows={3}
+                className="form-textarea"
+                value={formData.description}
                 onChange={handleChange}
-              />
-            </div>
-
-            <div className="form-group">
-              <label className="form-label" htmlFor="dateDemarrage">
-                {t('groups.startDate')} *
-              </label>
-              <input
-                id="dateDemarrage"
-                name="dateDemarrage"
-                type="date"
-                required
-                className="form-input"
-                value={formData.dateDemarrage}
-                onChange={handleChange}
-              />
-            </div>
-
-            <div className="form-group">
-              <label className="form-label" htmlFor="dureeGraceJours">
-                {t('groups.graceDays')} (0 - 7)
-              </label>
-              <input
-                id="dureeGraceJours"
-                name="dureeGraceJours"
-                type="number"
-                min="0"
-                max="7"
-                className="form-input"
-                value={formData.dureeGraceJours}
-                onChange={handleChange}
+                placeholder={t('groups.descriptionPlaceholder')}
+                maxLength={500}
+                style={{ resize: 'vertical' }}
               />
             </div>
           </div>
 
-          {/* Simulateur de cagnotte en temps réel modulaire */}
+          {/* Section 2 : Paramètres financiers */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--color-secondary-light)' }}>
+              <Coins size={18} />
+              <h2 style={{ fontSize: '1.1rem', fontWeight: '700' }}>{t('groups.sectionFinancial')}</h2>
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '18px' }}>
+              <div className="form-group">
+                <label className="form-label" htmlFor="montantCotisation">
+                  <span>{t('groups.contributionAmount')} <span style={{ color: 'var(--color-accent)' }}>*</span></span>
+                </label>
+                <input
+                  id="montantCotisation"
+                  name="montantCotisation"
+                  type="number"
+                  min="100"
+                  step="500"
+                  required
+                  className="form-input"
+                  value={formData.montantCotisation}
+                  onChange={handleChange}
+                />
+              </div>
+
+              <div className="form-group">
+                <label className="form-label" htmlFor="devise">
+                  {t('groups.currencyLabel')}
+                </label>
+                <select id="devise" name="devise" className="form-select" value={formData.devise} onChange={handleChange}>
+                  <option value="XAF">XAF (FCFA CEMAC)</option>
+                  <option value="XOF">XOF (FCFA UEMOA)</option>
+                  <option value="EUR">EUR (€)</option>
+                  <option value="USD">USD ($)</option>
+                </select>
+              </div>
+
+              <div className="form-group">
+                <label className="form-label" htmlFor="frequence">
+                  {t('groups.frequency')}
+                </label>
+                <select id="frequence" name="frequence" className="form-select" value={formData.frequence} onChange={handleChange}>
+                  <option value="MENSUEL">{t('groups.frequencyMonthly')}</option>
+                  <option value="BI_MENSUEL">{t('groups.frequencyBiweekly')}</option>
+                  <option value="HEBDOMADAIRE">{t('groups.frequencyWeekly')}</option>
+                </select>
+              </div>
+            </div>
+
+            {/* Suggestions rapides de montants */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+              <span style={{ fontSize: '0.82rem', color: 'var(--color-text-muted)' }}>{t('groups.quickAmounts')}</span>
+              {QUICK_AMOUNTS.map((amt) => (
+                <button
+                  key={amt}
+                  type="button"
+                  onClick={() => handleQuickAmount(amt)}
+                  className={`chip-btn ${formData.montantCotisation === amt ? 'active' : ''}`}
+                >
+                  {amt.toLocaleString()} {formData.devise}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Section 3 : Calendrier et gouvernance des tours */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--color-secondary-light)' }}>
+              <Users size={18} />
+              <h2 style={{ fontSize: '1.1rem', fontWeight: '700' }}>{t('groups.sectionGovernance')}</h2>
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '18px' }}>
+              <div className="form-group">
+                <label className="form-label" htmlFor="nombreMaxMembres">
+                  <span>{t('groups.maxMembers')} (2 - 100) <span style={{ color: 'var(--color-accent)' }}>*</span></span>
+                </label>
+                <input
+                  id="nombreMaxMembres"
+                  name="nombreMaxMembres"
+                  type="number"
+                  min="2"
+                  max="100"
+                  required
+                  className="form-input"
+                  value={formData.nombreMaxMembres}
+                  onChange={handleChange}
+                />
+                <div style={{ display: 'flex', gap: '6px', marginTop: '6px', flexWrap: 'wrap' }}>
+                  {QUICK_MEMBERS.map((m) => (
+                    <button
+                      key={m}
+                      type="button"
+                      onClick={() => handleQuickMembers(m)}
+                      className={`chip-btn ${formData.nombreMaxMembres === m ? 'active' : ''}`}
+                    >
+                      {m} {t('common.members')}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="form-group">
+                <label className="form-label" htmlFor="dateDemarrage">
+                  <span>{t('groups.startDate')} <span style={{ color: 'var(--color-accent)' }}>*</span></span>
+                </label>
+                <input
+                  id="dateDemarrage"
+                  name="dateDemarrage"
+                  type="date"
+                  required
+                  className="form-input"
+                  value={formData.dateDemarrage}
+                  onChange={handleChange}
+                />
+              </div>
+
+              <div className="form-group">
+                <label className="form-label" htmlFor="dureeGraceJours">
+                  <span>{t('groups.graceDays')} (0 - 7)</span>
+                </label>
+                <input
+                  id="dureeGraceJours"
+                  name="dureeGraceJours"
+                  type="number"
+                  min="0"
+                  max="7"
+                  className="form-input"
+                  value={formData.dureeGraceJours}
+                  onChange={handleChange}
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Simulateur de cagnotte modulaire */}
           <GroupSimulationCard
             nombreMaxMembres={formData.nombreMaxMembres}
             montantCotisation={formData.montantCotisation}
             devise={formData.devise}
+            frequence={formData.frequence}
           />
 
-          {/* Actions du formulaire */}
+          {/* Boutons d'action */}
           <div style={{ display: 'flex', gap: '14px', justifyContent: 'flex-end', marginTop: '10px' }}>
             <button
               type="button"
@@ -273,13 +345,14 @@ export default function CreateGroup() {
               className="btn btn-secondary"
               disabled={loading}
             >
-              {t('common.cancel')}
+              <ArrowLeft size={16} />
+              <span>{t('common.cancel')}</span>
             </button>
             <button
               type="submit"
               className="btn btn-primary"
               disabled={loading}
-              style={{ minWidth: '180px' }}
+              style={{ minWidth: '190px' }}
             >
               {loading ? t('common.loading') : t('groups.submitCreate')}
             </button>

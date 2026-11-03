@@ -95,7 +95,7 @@ export default function BottomNav() {
           {isActive('/groups/create') && activeIndicator}
           <PlusCircle size={20} />
           <span style={{ fontSize: '0.72rem', fontWeight: isActive('/groups/create') ? 700 : 500 }}>
-            Créer
+            {t('nav.createShort')}
           </span>
         </Link>
       )}
@@ -105,7 +105,7 @@ export default function BottomNav() {
         {isActive('/groups/join') && activeIndicator}
         <KeyRound size={20} />
         <span style={{ fontSize: '0.72rem', fontWeight: isActive('/groups/join') ? 700 : 500 }}>
-          Rejoindre
+          {t('nav.joinShort')}
         </span>
       </Link>
 
@@ -115,7 +115,7 @@ export default function BottomNav() {
           {isActive('/admin') && activeIndicator}
           <ShieldAlert size={20} color="var(--color-accent)" />
           <span style={{ fontSize: '0.72rem', fontWeight: isActive('/admin') ? 700 : 500, color: 'var(--color-accent)' }}>
-            Admin
+            {t('nav.adminShort')}
           </span>
         </Link>
       )}
@@ -125,10 +125,9 @@ export default function BottomNav() {
         {isActive('/profile') && activeIndicator}
         <User size={20} />
         <span style={{ fontSize: '0.72rem', fontWeight: isActive('/profile') ? 700 : 500 }}>
-          Profil
+          {t('nav.profileShort')}
         </span>
       </Link>
     </nav>
   );
 }
-

@@ -87,7 +87,7 @@ export function StepIdentity({ formData, handleChange }) {
       <div className="form-group">
         <label className="form-label" htmlFor="description">
           <span>{t('groups.groupDescription')}</span>
-          <span style={{ fontSize: '0.78rem', color: 'var(--color-text-muted)' }}>Optionnel</span>
+          <span style={{ fontSize: '0.78rem', color: 'var(--color-text-muted)' }}>{t('common.optional')}</span>
         </label>
         <textarea
           id="description"

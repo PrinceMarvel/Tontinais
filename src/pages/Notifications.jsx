@@ -116,7 +116,7 @@ export default function Notifications() {
               type="button"
               onClick={() => navigate(-1)}
               className="stepper-btn"
-              title="Retour"
+              title={t('common.back')}
               style={{ width: '40px', height: '40px' }}
             >
               <ArrowLeft size={18} />
@@ -137,16 +137,18 @@ export default function Notifications() {
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                 <h1 style={{ fontSize: '1.65rem', color: 'var(--color-text-primary)' }}>
-                  Centre de Notifications
+                  {t('notifications.centerTitle')}
                 </h1>
                 {unreadCount > 0 && (
                   <span className="badge badge-warning" style={{ fontSize: '0.78rem' }}>
-                    {unreadCount} non lue{unreadCount > 1 ? 's' : ''}
+                    {unreadCount === 1
+                      ? t('notifications.unreadCountSingular', { count: unreadCount })
+                      : t('notifications.unreadCountPlural', { count: unreadCount })}
                   </span>
                 )}
               </div>
               <p style={{ color: 'var(--color-text-secondary)', fontSize: '0.9rem', marginTop: '2px' }}>
-                Suivi de vos activités financières, rappels de tours et adhésions
+                {t('notifications.centerSubtitle')}
               </p>
             </div>
           </div>
@@ -160,7 +162,7 @@ export default function Notifications() {
               style={{ padding: '8px 16px', fontSize: '0.85rem' }}
             >
               <CheckCheck size={16} />
-              <span>Tout marquer comme lu</span>
+              <span>{t('notifications.markAllAsRead')}</span>
             </button>
           )}
         </div>
@@ -173,7 +175,7 @@ export default function Notifications() {
             className={`chip-btn ${filter === 'ALL' ? 'active' : ''}`}
             style={{ padding: '8px 18px', fontSize: '0.85rem' }}
           >
-            Toutes ({notifications.length})
+            {t('notifications.filterAll')} ({notifications.length})
           </button>
           <button
             type="button"
@@ -181,7 +183,7 @@ export default function Notifications() {
             className={`chip-btn ${filter === 'UNREAD' ? 'active' : ''}`}
             style={{ padding: '8px 18px', fontSize: '0.85rem' }}
           >
-            Non lues ({unreadCount})
+            {t('notifications.filterUnread')} ({unreadCount})
           </button>
         </div>
 
@@ -215,12 +217,12 @@ export default function Notifications() {
               <Bell size={28} />
             </div>
             <h3 style={{ fontSize: '1.15rem', color: 'var(--color-text-primary)', marginBottom: '6px' }}>
-              Aucune notification
+              {t('notifications.emptyTitle')}
             </h3>
             <p style={{ color: 'var(--color-text-muted)', fontSize: '0.9rem' }}>
               {filter === 'UNREAD'
-                ? 'Toutes vos notifications ont été lues avec succès.'
-                : 'Vous n\'avez reçu aucune notification pour le moment.'}
+                ? t('notifications.emptyUnread')
+                : t('notifications.emptyAll')}
             </p>
           </div>
         ) : (
@@ -292,7 +294,7 @@ export default function Notifications() {
                           fontWeight: '600'
                         }}
                       >
-                        Consulter <ArrowRight size={14} />
+                        {t('notifications.viewAction')} <ArrowRight size={14} />
                       </span>
                     )}
                   </div>
@@ -305,4 +307,3 @@ export default function Notifications() {
     </div>
   );
 }
-

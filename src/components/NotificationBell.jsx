@@ -6,10 +6,12 @@
 
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { Bell } from 'lucide-react';
 import api from '../services/api';
 
 export default function NotificationBell() {
+  const { t } = useTranslation();
   const [unreadCount, setUnreadCount] = useState(0);
   const location = useLocation();
 
@@ -48,8 +50,8 @@ export default function NotificationBell() {
         textDecoration: 'none',
         transition: 'var(--transition-fast)'
       }}
-      title="Centre de Notifications"
-      aria-label="Centre de Notifications"
+      title={t('nav.notifications')}
+      aria-label={t('nav.notifications')}
     >
       <Bell size={20} />
       {unreadCount > 0 && (

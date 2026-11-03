@@ -223,7 +223,7 @@ export default function CreateGroup() {
                 disabled={loading}
               >
                 <ArrowLeft size={16} />
-                <span>Précédent</span>
+                <span>{t('common.previous')}</span>
               </button>
             )}
 
@@ -234,7 +234,7 @@ export default function CreateGroup() {
                 className="btn btn-primary"
                 style={{ minWidth: '180px' }}
               >
-                <span>Continuer</span>
+                <span>{t('common.continue')}</span>
                 <ArrowRight size={16} />
               </button>
             ) : (

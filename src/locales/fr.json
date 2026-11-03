@@ -10,6 +10,10 @@
     "confirm": "Confirmer",
     "validate": "Valider",
     "reject": "Rejeter",
+    "previous": "Précédent",
+    "continue": "Continuer",
+    "optional": "Optionnel",
+    "back": "Retour",
     "actions": "Actions",
     "status": "Statut",
     "date": "Date",
@@ -150,6 +154,19 @@
     "planned": "Planifié",
     "ongoing": "En cours",
     "blocked": "Bloqué"
+  },
+  "notifications": {
+    "centerTitle": "Centre de Notifications",
+    "centerSubtitle": "Suivi de vos activités financières, rappels de tours et adhésions",
+    "unreadCountSingular": "{{count}} non lue",
+    "unreadCountPlural": "{{count}} non lues",
+    "markAllAsRead": "Tout marquer comme lu",
+    "filterAll": "Toutes",
+    "filterUnread": "Non lues",
+    "emptyTitle": "Aucune notification",
+    "emptyAll": "Vous n'avez reçu aucune notification pour le moment.",
+    "emptyUnread": "Toutes vos notifications ont été lues avec succès.",
+    "viewAction": "Consulter"
   },
   "errors": {
     "generic": "Une erreur inattendue est survenue.",

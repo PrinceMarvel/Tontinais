@@ -10,6 +10,10 @@
     "confirm": "Confirm",
     "validate": "Validate",
     "reject": "Reject",
+    "previous": "Previous",
+    "continue": "Continue",
+    "optional": "Optional",
+    "back": "Back",
     "actions": "Actions",
     "status": "Status",
     "date": "Date",
@@ -150,6 +154,19 @@
     "planned": "Planned",
     "ongoing": "In progress",
     "blocked": "Blocked"
+  },
+  "notifications": {
+    "centerTitle": "Notifications Center",
+    "centerSubtitle": "Track your financial activity, round reminders and memberships",
+    "unreadCountSingular": "{{count}} unread",
+    "unreadCountPlural": "{{count}} unread",
+    "markAllAsRead": "Mark all as read",
+    "filterAll": "All",
+    "filterUnread": "Unread",
+    "emptyTitle": "No notifications",
+    "emptyAll": "You have not received any notifications yet.",
+    "emptyUnread": "All your notifications have been marked as read.",
+    "viewAction": "View"
   },
   "errors": {
     "generic": "An unexpected error occurred.",

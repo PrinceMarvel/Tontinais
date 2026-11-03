@@ -6,6 +6,7 @@ import Navbar from './components/Navbar';
 import BottomNav from './components/BottomNav';
 import ProtectedRoute from './components/ProtectedRoute';
 import Logo from './components/Logo';
+import ScrollToTop from './components/common/ScrollToTop';
 import { ToastProvider } from './context/ToastContext';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -64,6 +65,8 @@ function Home() {
 export default function App() {
   return (
     <ToastProvider>
+      {/* Réinitialisation automatique du scroll au sommet à chaque changement de page */}
+      <ScrollToTop />
       <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
         <Navbar />
         <main className="app-main">

@@ -1,7 +1,7 @@
 /**
  * @file Logo.jsx
  * @description Composant officiel du Logo TontiNaïs (Triptyque rotatif solidaire & Typographie Serif).
- * Respecte fidèlement la géométrie de l'ébauche originale adaptée à la charte colorimétrique FinTech.
+ * Respecte fidèlement la géométrie de l'ébauche originale avec flèches séparées et aérées.
  * @module components/Logo
  */
 
@@ -27,7 +27,7 @@ export default function Logo({
         ...style
       }}
     >
-      {/* Symbole Vectoriel : Triptyque Circulaire à 3 Flèches Éléments Rotatifs */}
+      {/* Symbole Vectoriel : Triptyque Circulaire à 3 Flèches Rotatives Séparées */}
       <svg
         width={size}
         height={size}
@@ -62,21 +62,22 @@ export default function Logo({
             <stop offset="100%" stopColor="#4FD1C5" />
           </linearGradient>
 
-          {/* Tracé unitaire d'un segment à flèche rotative et encoche chevron */}
+          {/* Tracé unitaire d'une flèche rotative séparée avec respiration visuelle */}
           <path
             id="tontiSegment"
-            d="M 106.8 155.3 
-               A 180 180 0 0 1 395.9 142.7 
-               L 414.6 140.8 
-               L 379.3 201.1 
-               L 326.9 200.6 
-               A 90 90 0 0 0 179.7 208.3 
-               L 158.9 162.2 
+            d="M 123.6 128.2 
+               A 184 184 0 0 1 364.2 107.1 
+               L 375.9 91.0 
+               L 380.6 165.5 
+               L 317.1 171.9 
+               L 328.9 155.7 
+               A 124 124 0 0 0 166.8 169.9 
+               L 174.4 125.4 
                Z"
           />
         </defs>
 
-        {/* Rotation symétrique à 120° des 3 branches du cycle de la tontine */}
+        {/* Rotation symétrique à 120° des 3 flèches autonomes */}
         <g>
           {/* Branche 1 (Haut) */}
           <use href="#tontiSegment" fill="url(#tontiTeal)" />
@@ -89,7 +90,7 @@ export default function Logo({
         </g>
       </svg>
 
-      {/* Typographie Serif Officielle TontiNais */}
+      {/* Typographie Serif Officielle TontiNaïs */}
       {showText && (
         <span
           style={{
@@ -111,7 +112,7 @@ export default function Logo({
               WebkitTextFillColor: 'transparent'
             }}
           >
-            Nais
+            Naïs
           </span>
         </span>
       )}

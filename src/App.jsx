@@ -16,6 +16,7 @@ import JoinGroup from './pages/JoinGroup';
 import GroupDetails from './pages/GroupDetails';
 import AdminDashboard from './pages/AdminDashboard';
 import Profile from './pages/Profile';
+import Notifications from './pages/Notifications';
 import { useAuth } from './context/AuthContext';
 
 function Home() {
@@ -119,6 +120,14 @@ export default function App() {
               element={
                 <ProtectedRoute>
                   <Profile />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/notifications"
+              element={
+                <ProtectedRoute>
+                  <Notifications />
                 </ProtectedRoute>
               }
             />

@@ -45,7 +45,7 @@ export default function DeclareContributionModal({
     setErrorMessage('');
 
     if (!phone.trim()) {
-      setErrorMessage('Veuillez renseigner un numéro de téléphone Mobile Money valide.');
+      setErrorMessage(t('contributions.modalPhoneRequired'));
       return;
     }
 
@@ -63,7 +63,7 @@ export default function DeclareContributionModal({
         // Redirection immédiate vers le guichet de paiement de l'opérateur
         setCheckoutSession(res.checkoutSession);
       } else {
-        throw new Error(res.error || 'Impossible d\'ouvrir la session de paiement.');
+        throw new Error(res.error || t('errors.generic'));
       }
     } catch (err) {
       setErrorMessage(err.message || t('errors.generic'));
@@ -126,7 +126,7 @@ export default function DeclareContributionModal({
             color: 'var(--color-text-secondary)',
             cursor: 'pointer'
           }}
-          aria-label="Fermer"
+          aria-label={t('common.cancel')}
         >
           <X size={20} />
         </button>
@@ -146,7 +146,7 @@ export default function DeclareContributionModal({
           </div>
           <div>
             <h2 style={{ fontSize: '1.25rem', margin: 0, color: 'var(--color-text-primary)' }}>
-              Cotisation Mobile Money
+              {t('contributions.modalTitle')}
             </h2>
             <p style={{ margin: 0, fontSize: '0.85rem', color: 'var(--color-text-secondary)' }}>
               {group?.nom}
@@ -178,7 +178,7 @@ export default function DeclareContributionModal({
           {/* Montant & Tour */}
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
             <div>
-              <label className="label">Montant de la cotisation</label>
+              <label className="label">{t('contributions.modalAmountLabel')}</label>
               <div
                 style={{
                   padding: '12px 14px',
@@ -195,7 +195,7 @@ export default function DeclareContributionModal({
             </div>
 
             <div>
-              <label className="label">Tour concerné</label>
+              <label className="label">{t('contributions.modalTourLabel')}</label>
               <input
                 type="number"
                 min="1"
@@ -210,7 +210,7 @@ export default function DeclareContributionModal({
 
           {/* Choix de l'opérateur */}
           <div>
-            <label className="label">Sélectionnez votre portefeuille</label>
+            <label className="label">{t('contributions.modalWalletLabel')}</label>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '10px' }}>
               {OPERATORS.map((op) => {
                 const isSelected = operator === op.id;
@@ -254,34 +254,34 @@ export default function DeclareContributionModal({
 
           {/* Numéro de téléphone */}
           <div>
-            <label className="label">Numéro de téléphone du compte</label>
+            <label className="label">{t('contributions.modalPhoneLabel')}</label>
             <input
               type="tel"
               className="input"
-              placeholder="+237 6XX XX XX XX"
+              placeholder={t('contributions.modalPhonePlaceholder')}
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
               required
             />
             <small style={{ color: 'var(--color-text-secondary)', fontSize: '0.78rem', marginTop: '4px', display: 'block' }}>
-              Vous serez dirigé vers le guichet sécurisé de l&apos;opérateur pour valider avec votre code PIN secret.
+              {t('contributions.modalPhoneHint')}
             </small>
           </div>
 
           {/* Boutons d'action */}
           <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end', marginTop: '10px' }}>
             <button type="button" onClick={onClose} className="btn btn-outline" disabled={loading}>
-              Annuler
+              {t('common.cancel')}
             </button>
             <button type="submit" className="btn btn-primary" disabled={loading} style={{ minWidth: '180px' }}>
               {loading ? (
                 <>
                   <Loader2 size={16} className="animate-spin" />
-                  <span>Connexion au guichet...</span>
+                  <span>{t('contributions.modalConnecting')}</span>
                 </>
               ) : (
                 <>
-                  <span>Payer sur le Guichet</span>
+                  <span>{t('contributions.modalSubmit')}</span>
                   <ArrowRight size={16} />
                 </>
               )}

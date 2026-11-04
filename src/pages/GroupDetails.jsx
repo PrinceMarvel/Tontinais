@@ -86,18 +86,43 @@ export default function GroupDetails() {
     }
   };
 
-  const chefId = group?.chefDeTontine?._id || group?.chefDeTontine;
+  // Identification sûre du chef et du membre actif — évaluée seulement après le chargement
   const userId = user?._id;
-  const isChef =
-    (!!chefId && !!userId && String(chefId) === String(userId)) ||
-    role === 'SUPER_ADMIN';
 
-  const isMemberActive = members.some(
-    (m) => {
-      const memberId = m.user?._id || m.user;
-      return !!memberId && !!userId && String(memberId) === String(userId) && m.statut === 'ACTIF';
-    }
-  );
+  const chefId = group?.chefDeTontine?._id
+    ? String(group.chefDeTontine._id)
+    : group?.chefDeTontine
+    ? String(group.chefDeTontine)
+    : null;
+
+  const isChef =
+    !loading &&
+    ((!!chefId && !!userId && chefId === String(userId)) ||
+      role === 'SUPER_ADMIN');
+
+  const isMemberActive =
+    !loading &&
+    members.some((m) => {
+      const memberId = m.user?._id ? String(m.user._id) : m.user ? String(m.user) : null;
+      return !!memberId && !!userId && memberId === String(userId) && m.statut === 'ACTIF';
+    });
+
+  // Le bouton est affiché dès lors que le chargement est terminé et que l'utilisateur est éligible
+  const canDeclareContribution = !loading && (isMemberActive || isChef);
+
+  const tabStyle = (tab) => ({
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: '8px',
+    padding: '10px 16px',
+    background: 'none',
+    border: 'none',
+    cursor: 'pointer',
+    fontWeight: '600',
+    fontSize: '0.95rem',
+    color: activeTab === tab ? 'var(--color-secondary-light)' : 'var(--color-text-secondary)',
+    borderBottom: activeTab === tab ? '2px solid var(--color-secondary-light)' : '2px solid transparent'
+  });
 
   if (loading) {
     return (
@@ -165,72 +190,24 @@ export default function GroupDetails() {
         }}
       >
         <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-          <button
-            type="button"
-            onClick={() => setActiveTab('members')}
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '8px',
-              padding: '10px 16px',
-              background: 'none',
-              border: 'none',
-              cursor: 'pointer',
-              fontWeight: '600',
-              fontSize: '0.95rem',
-              color: activeTab === 'members' ? 'var(--color-secondary-light)' : 'var(--color-text-secondary)',
-              borderBottom: activeTab === 'members' ? '2px solid var(--color-secondary-light)' : '2px solid transparent'
-            }}
-          >
+          <button type="button" onClick={() => setActiveTab('members')} style={tabStyle('members')}>
             <Users size={18} />
-            <span>Participants ({members.length})</span>
+            <span>{t('groups.tabMembers')} ({members.length})</span>
           </button>
 
-          <button
-            type="button"
-            onClick={() => setActiveTab('payouts')}
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '8px',
-              padding: '10px 16px',
-              background: 'none',
-              border: 'none',
-              cursor: 'pointer',
-              fontWeight: '600',
-              fontSize: '0.95rem',
-              color: activeTab === 'payouts' ? 'var(--color-secondary-light)' : 'var(--color-text-secondary)',
-              borderBottom: activeTab === 'payouts' ? '2px solid var(--color-secondary-light)' : '2px solid transparent'
-            }}
-          >
+          <button type="button" onClick={() => setActiveTab('payouts')} style={tabStyle('payouts')}>
             <Calendar size={18} />
-            <span>Tours &amp; Cagnottes ({payouts.length})</span>
+            <span>{t('groups.tabPayouts')} ({payouts.length})</span>
           </button>
 
-          <button
-            type="button"
-            onClick={() => setActiveTab('contributions')}
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '8px',
-              padding: '10px 16px',
-              background: 'none',
-              border: 'none',
-              cursor: 'pointer',
-              fontWeight: '600',
-              fontSize: '0.95rem',
-              color: activeTab === 'contributions' ? 'var(--color-secondary-light)' : 'var(--color-text-secondary)',
-              borderBottom: activeTab === 'contributions' ? '2px solid var(--color-secondary-light)' : '2px solid transparent'
-            }}
-          >
+          <button type="button" onClick={() => setActiveTab('contributions')} style={tabStyle('contributions')}>
             <CreditCard size={18} />
-            <span>Cotisations ({contributions.length})</span>
+            <span>{t('groups.tabContributions')} ({contributions.length})</span>
           </button>
         </div>
 
-        {/* Action cotiser réservée aux membres actifs */}
-        {(isMemberActive || isChef) && (
+        {/* Bouton « Payer ma cotisation » — affiché uniquement après chargement complet */}
+        {canDeclareContribution && (
           <button
             type="button"
             className="btn btn-primary"

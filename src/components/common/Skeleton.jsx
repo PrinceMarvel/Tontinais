@@ -7,18 +7,38 @@
 import React from 'react';
 
 /**
- * Bloc de chargement générique avec effet Shimmer
+ * Bloc de chargement générique avec effet Shimmer.
+ * @param {string} width - Largeur CSS du bloc (défaut : '100%').
+ * @param {string} height - Hauteur CSS du bloc (défaut : '20px').
+ * @param {string} borderRadius - Rayon de bordure (défaut : var(--radius-sm)).
+ * @param {number} count - Nombre de blocs à afficher empilés (défaut : 1).
+ * @param {object} style - Styles CSS supplémentaires.
  */
-export function Skeleton({ width = '100%', height = '20px', borderRadius = 'var(--radius-sm)', style = {} }) {
+export function Skeleton({
+  width = '100%',
+  height = '20px',
+  borderRadius = 'var(--radius-sm)',
+  count = 1,
+  style = {}
+}) {
+  if (count > 1) {
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+        {Array.from({ length: count }).map((_, i) => (
+          <div
+            key={i}
+            className="skeleton"
+            style={{ width, height, borderRadius, ...style }}
+          />
+        ))}
+      </div>
+    );
+  }
+
   return (
     <div
       className="skeleton"
-      style={{
-        width,
-        height,
-        borderRadius,
-        ...style
-      }}
+      style={{ width, height, borderRadius, ...style }}
     />
   );
 }
@@ -73,4 +93,3 @@ export function SkeletonCard() {
 }
 
 export default Skeleton;
-

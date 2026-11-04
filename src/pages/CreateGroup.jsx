@@ -117,16 +117,12 @@ export default function CreateGroup() {
   const progressPercent = ((currentStep - 1) / (STEPS.length - 1)) * 100;
 
   return (
-    <div style={{ maxWidth: '840px', margin: '32px auto', padding: '0 20px' }}>
-      <div className="glass-card animate-fade-in" style={{ padding: '36px 32px' }}>
+    <div className="create-group-container">
+      <div className="glass-card animate-fade-in create-group-card">
         {/* En-tête avec Stepper guidé */}
-        <div style={{ marginBottom: '32px', textAlign: 'center' }}>
-          <h1 style={{ fontSize: '1.75rem', color: 'var(--color-text-primary)', marginBottom: '6px' }}>
-            {t('groups.createTitle')}
-          </h1>
-          <p style={{ color: 'var(--color-text-secondary)', fontSize: '0.92rem' }}>
-            {t('groups.createSubtitle')}
-          </p>
+        <div className="create-group-header">
+          <h1>{t('groups.createTitle')}</h1>
+          <p>{t('groups.createSubtitle')}</p>
         </div>
 
         {/* Barre de progression Stepper */}
@@ -155,6 +151,14 @@ export default function CreateGroup() {
               </button>
             );
           })}
+        </div>
+
+        {/* Badge d'étape actif sur smartphone pour une lisibilité sans débordement */}
+        <div className="wizard-mobile-step-badge">
+          <span>
+            {t('groups.stepIndicator', { current: currentStep, total: STEPS.length })} :{' '}
+            <strong>{t(STEPS[currentStep - 1].labelKey)}</strong>
+          </span>
         </div>
 
         {/* Message d'erreur */}
@@ -194,17 +198,7 @@ export default function CreateGroup() {
           </div>
 
           {/* Barre d'action de navigation */}
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              gap: '16px',
-              marginTop: '36px',
-              paddingTop: '20px',
-              borderTop: '1px solid var(--color-border)'
-            }}
-          >
+          <div className="create-group-actions">
             {currentStep === 1 ? (
               <button
                 type="button"
@@ -232,7 +226,6 @@ export default function CreateGroup() {
                 type="button"
                 onClick={handleNext}
                 className="btn btn-primary"
-                style={{ minWidth: '180px' }}
               >
                 <span>{t('common.continue')}</span>
                 <ArrowRight size={16} />
@@ -243,7 +236,6 @@ export default function CreateGroup() {
                 className="btn btn-primary"
                 disabled={loading}
                 style={{
-                  minWidth: '220px',
                   background: 'linear-gradient(135deg, var(--color-secondary), var(--color-primary))'
                 }}
               >

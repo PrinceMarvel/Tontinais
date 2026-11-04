@@ -43,10 +43,16 @@ export default function GroupPayoutsList({ payouts = [], isChef, groupId, devise
   };
 
   const handleDistributeWallet = async (payout) => {
-    const benefName = `${payout.beneficiaire?.prenom} ${payout.beneficiaire?.nom}`;
+    const benefName = `${payout.beneficiaire?.prenom || ''} ${payout.beneficiaire?.nom || ''}`.trim();
     const benefPhone = payout.beneficiaire?.telephone || '';
+    const amount = payout.montantTotal?.toLocaleString() || '0';
 
-    const confirmMsg = `Confirmez-vous le versement direct de la cagnotte (${payout.montantTotal?.toLocaleString()} ${devise}) vers le portefeuille Mobile Money de ${benefName} (${benefPhone}) ?`;
+    const confirmMsg = t('payouts.confirmDistribute', {
+      amount,
+      currency: devise,
+      name: benefName,
+      phone: benefPhone
+    });
     if (!window.confirm(confirmMsg)) return;
 
     try {
@@ -60,7 +66,7 @@ export default function GroupPayoutsList({ payouts = [], isChef, groupId, devise
       });
 
       if (res.success) {
-        setSuccessMessage(res.message || 'Cagnotte transférée avec succès vers le portefeuille du bénéficiaire.');
+        setSuccessMessage(res.message || t('payouts.distributed'));
         if (onPayoutsUpdated) onPayoutsUpdated();
       }
     } catch (err) {
@@ -76,21 +82,21 @@ export default function GroupPayoutsList({ payouts = [], isChef, groupId, devise
         return (
           <span className="badge badge-success">
             <CheckCircle size={12} />
-            <span>Versé sur Wallet</span>
+            <span>{t('payouts.distributed')}</span>
           </span>
         );
       case 'BLOQUE':
         return (
           <span className="badge badge-danger">
             <AlertTriangle size={12} />
-            <span>Bloqué</span>
+            <span>{t('payouts.blocked')}</span>
           </span>
         );
       case 'EN_COURS':
         return (
           <span className="badge badge-info">
             <Clock size={12} />
-            <span>En cours</span>
+            <span>{t('payouts.ongoing')}</span>
           </span>
         );
       case 'PLANIFIE':
@@ -98,7 +104,7 @@ export default function GroupPayoutsList({ payouts = [], isChef, groupId, devise
         return (
           <span className="badge badge-warning">
             <Clock size={12} />
-            <span>Planifié</span>
+            <span>{t('payouts.planned')}</span>
           </span>
         );
     }
@@ -171,7 +177,7 @@ export default function GroupPayoutsList({ payouts = [], isChef, groupId, devise
               style={{ fontSize: '0.85rem' }}
             >
               <PlayCircle size={16} />
-              <span>Générer l&apos;échéancier des tours</span>
+              <span>{t('groups.generateSchedule')}</span>
             </button>
           )}
         </div>
@@ -179,12 +185,10 @@ export default function GroupPayoutsList({ payouts = [], isChef, groupId, devise
         {payouts.length === 0 ? (
           <div style={{ textAlign: 'center', padding: '36px 16px', color: 'var(--color-text-secondary)' }}>
             <Gift size={36} color="var(--color-text-muted)" style={{ margin: '0 auto 12px' }} />
-            <p style={{ fontSize: '0.95rem' }}>
-              L&apos;échéancier des cagnottes n&apos;a pas encore été généré pour ce cycle.
-            </p>
+            <p style={{ fontSize: '0.95rem' }}>{t('groups.noPayouts')}</p>
             {isChef && (
               <p style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)', marginTop: '6px' }}>
-                Assurez-vous que les participants sont validés, puis cliquez sur le bouton de génération.
+                {t('groups.noPayoutsChef')}
               </p>
             )}
           </div>
@@ -228,16 +232,18 @@ export default function GroupPayoutsList({ payouts = [], isChef, groupId, devise
 
                     <div>
                       <div style={{ fontWeight: '700', color: 'var(--color-text-primary)' }}>
-                        {benef.prenom ? `${benef.prenom} ${benef.nom}` : 'Bénéficiaire à désigner'}
+                        {benef.prenom
+                          ? `${benef.prenom} ${benef.nom}`
+                          : t('payouts.beneficiary')}
                       </div>
                       <div style={{ fontSize: '0.8rem', color: 'var(--color-text-secondary)', display: 'flex', alignItems: 'center', gap: '6px' }}>
                         <Smartphone size={12} />
-                        <span>{benef.telephone || 'Non renseigné'}</span>
-                        <span>• Prévu le {new Date(payout.datePrevue).toLocaleDateString('fr-FR')}</span>
+                        <span>{benef.telephone || '—'}</span>
+                        <span>• {t('payouts.expectedDate')} : {new Date(payout.datePrevue).toLocaleDateString('fr-FR')}</span>
                       </div>
                       {payout.transactionReference && (
                         <div style={{ fontSize: '0.75rem', fontFamily: 'monospace', color: 'var(--color-secondary-light)', marginTop: '2px' }}>
-                          Réf : {payout.transactionReference}
+                          {payout.transactionReference}
                         </div>
                       )}
                     </div>
@@ -262,12 +268,12 @@ export default function GroupPayoutsList({ payouts = [], isChef, groupId, devise
                         {isProcessing ? (
                           <>
                             <Loader2 size={14} className="animate-spin" />
-                            <span>Transfert...</span>
+                            <span>{t('groups.transferring')}</span>
                           </>
                         ) : (
                           <>
                             <Send size={14} />
-                            <span>Verser au Wallet</span>
+                            <span>{t('groups.distributeWallet')}</span>
                           </>
                         )}
                       </button>

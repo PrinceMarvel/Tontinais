@@ -33,6 +33,13 @@ export default function GroupContributionsList({
   const { t } = useTranslation();
   const [filterStatut, setFilterStatut] = useState('ALL');
 
+  const FILTER_OPTIONS = [
+    { key: 'ALL', label: t('contributions.filterStatutAll') },
+    { key: 'PAYE', label: t('contributions.statusPaid') },
+    { key: 'EN_ATTENTE_USSD', label: t('contributions.statusPending') },
+    { key: 'ECHOUE', label: t('contributions.statusFailed') }
+  ];
+
   const filtered = contributions.filter((c) => {
     if (filterStatut === 'ALL') return true;
     return c.statut === filterStatut;
@@ -44,21 +51,21 @@ export default function GroupContributionsList({
         return (
           <span className="badge badge-success">
             <CheckCircle size={12} />
-            <span>Payé (Opérateur)</span>
+            <span>{t('contributions.statusPaid')}</span>
           </span>
         );
       case 'EN_ATTENTE_USSD':
         return (
           <span className="badge badge-warning">
             <Clock size={12} />
-            <span>En attente PIN</span>
+            <span>{t('contributions.statusPending')}</span>
           </span>
         );
       case 'ECHOUE':
         return (
           <span className="badge badge-danger">
             <AlertCircle size={12} />
-            <span>Échec débit</span>
+            <span>{t('contributions.statusFailed')}</span>
           </span>
         );
       default:
@@ -80,19 +87,19 @@ export default function GroupContributionsList({
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--color-text-secondary)' }}>
           <Filter size={16} />
-          <span style={{ fontSize: '0.85rem', fontWeight: '600' }}>Filtrer par statut :</span>
+          <span style={{ fontSize: '0.85rem', fontWeight: '600' }}>{t('contributions.filterStatutLabel')}</span>
         </div>
 
         <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-          {['ALL', 'PAYE', 'EN_ATTENTE_USSD', 'ECHOUE'].map((st) => (
+          {FILTER_OPTIONS.map((opt) => (
             <button
-              key={st}
+              key={opt.key}
               type="button"
-              onClick={() => setFilterStatut(st)}
-              className={filterStatut === st ? 'btn btn-primary' : 'btn btn-outline'}
+              onClick={() => setFilterStatut(opt.key)}
+              className={filterStatut === opt.key ? 'btn btn-primary' : 'btn btn-outline'}
               style={{ padding: '6px 12px', fontSize: '0.8rem' }}
             >
-              {st === 'ALL' ? 'Toutes' : st}
+              {opt.label}
             </button>
           ))}
         </div>
@@ -102,7 +109,7 @@ export default function GroupContributionsList({
       {filtered.length === 0 ? (
         <div className="glass-card" style={{ padding: '40px 20px', textAlign: 'center', color: 'var(--color-text-secondary)' }}>
           <CreditCard size={36} style={{ margin: '0 auto 12px', opacity: 0.5 }} />
-          <p style={{ margin: 0, fontSize: '0.95rem' }}>Aucune cotisation enregistrée pour ce filtre.</p>
+          <p style={{ margin: 0, fontSize: '0.95rem' }}>{t('groups.noContributions')}</p>
         </div>
       ) : (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
@@ -150,10 +157,12 @@ export default function GroupContributionsList({
                     </div>
                     <div style={{ display: 'flex', gap: '8px', alignItems: 'center', marginTop: '2px' }}>
                       <span className="badge badge-info" style={{ fontSize: '0.7rem' }}>
-                        Tour n°{item.tourNumber}
+                        {t('payouts.round')} n°{item.tourNumber}
                       </span>
                       <span style={{ fontSize: '0.8rem', color: 'var(--color-text-secondary)' }}>
-                        {item.datePaiement ? new Date(item.datePaiement).toLocaleDateString() : new Date(item.createdAt).toLocaleDateString()}
+                        {item.datePaiement
+                          ? new Date(item.datePaiement).toLocaleDateString()
+                          : new Date(item.createdAt).toLocaleDateString()}
                       </span>
                     </div>
                   </div>
@@ -191,7 +200,9 @@ export default function GroupContributionsList({
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '4px', justifyContent: 'flex-end', marginTop: '2px' }}>
                       <ShieldCheck size={13} color="var(--color-secondary-light)" />
-                      <span style={{ fontSize: '0.7rem', color: 'var(--color-text-secondary)' }}>Certifié</span>
+                      <span style={{ fontSize: '0.7rem', color: 'var(--color-text-secondary)' }}>
+                        {t('contributions.certified')}
+                      </span>
                     </div>
                   </div>
 

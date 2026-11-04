@@ -79,7 +79,7 @@ export default function GroupMembersList({ members, isChef, groupId, onMemberUpd
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '16px' }}>
             <Clock size={20} color="var(--color-warning)" />
             <h3 style={{ fontSize: '1.1rem', color: 'var(--color-text-primary)' }}>
-              Demandes d&apos;adhésion en attente ({pendingMembers.length})
+              {t('groups.pendingRequests')} ({pendingMembers.length})
             </h3>
           </div>
 
@@ -156,14 +156,14 @@ export default function GroupMembersList({ members, isChef, groupId, onMemberUpd
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
             <Users size={20} color="var(--color-secondary-light)" />
             <h3 style={{ fontSize: '1.2rem', color: 'var(--color-text-primary)' }}>
-              Participants actifs ({activeMembers.length})
+              {t('groups.activeParticipants')} ({activeMembers.length})
             </h3>
           </div>
         </div>
 
         {activeMembers.length === 0 ? (
           <p style={{ color: 'var(--color-text-secondary)', fontSize: '0.9rem', textAlign: 'center', padding: '24px 0' }}>
-            Aucun membre actif dans cette tontine pour l&apos;instant.
+            {t('groups.noActiveMembers')}
           </p>
         ) : (
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '14px' }}>
@@ -197,11 +197,11 @@ export default function GroupMembersList({ members, isChef, groupId, onMemberUpd
                     {isChefMember ? (
                       <span className="badge badge-info" style={{ fontSize: '0.75rem' }}>
                         <Shield size={12} />
-                        <span>Chef</span>
+                        <span>{t('groups.memberStatusChef')}</span>
                       </span>
                     ) : (
                       <span className="badge badge-success" style={{ fontSize: '0.75rem' }}>
-                        Actif
+                        {t('groups.memberStatusActive')}
                       </span>
                     )}
                   </div>
@@ -219,7 +219,7 @@ export default function GroupMembersList({ members, isChef, groupId, onMemberUpd
                       }}
                     >
                       <span>{t('dashboard.myTurn')} :</span>
-                      <strong>Tour n°{membership.rangTour}</strong>
+                      <strong>{t('dashboard.turnNumber')}{membership.rangTour}</strong>
                     </div>
                   )}
                 </div>

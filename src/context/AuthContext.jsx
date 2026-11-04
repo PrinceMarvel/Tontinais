@@ -9,11 +9,27 @@ import api, { storeTokens, clearStoredTokens, getStoredTokens } from '../service
 
 const AuthContext = createContext(null);
 
+/**
+ * Normalise l'objet utilisateur pour garantir la disponibilité conjointe de _id et id.
+ * @param {Object|null} rawUser Données brutes de l'utilisateur.
+ * @returns {Object|null} Objet utilisateur normalisé.
+ */
+const normalizeUser = (rawUser) => {
+  if (!rawUser) return null;
+  const uid = rawUser._id || rawUser.id;
+  const uidStr = uid ? String(uid) : undefined;
+  return {
+    ...rawUser,
+    _id: uidStr,
+    id: uidStr
+  };
+};
+
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(() => {
     const savedUser = localStorage.getItem('tontinais_user');
     try {
-      return savedUser ? JSON.parse(savedUser) : null;
+      return savedUser ? normalizeUser(JSON.parse(savedUser)) : null;
     } catch {
       return null;
     }
@@ -35,8 +51,9 @@ export const AuthProvider = ({ children }) => {
       try {
         const response = await api.get('/auth/me');
         if (isMounted && response.success && response.user) {
-          setUser(response.user);
-          localStorage.setItem('tontinais_user', JSON.stringify(response.user));
+          const normalized = normalizeUser(response.user);
+          setUser(normalized);
+          localStorage.setItem('tontinais_user', JSON.stringify(normalized));
         }
       } catch (err) {
         console.warn('Session expirée ou invalide :', err.message);
@@ -66,9 +83,10 @@ export const AuthProvider = ({ children }) => {
     const response = await api.post('/auth/login', { email, motDePasse });
     if (response.success) {
       storeTokens(response.token, response.refreshToken);
-      localStorage.setItem('tontinais_user', JSON.stringify(response.user));
+      const normalized = normalizeUser(response.user);
+      localStorage.setItem('tontinais_user', JSON.stringify(normalized));
       setToken(response.token);
-      setUser(response.user);
+      setUser(normalized);
     }
     return response;
   }, []);
@@ -81,9 +99,10 @@ export const AuthProvider = ({ children }) => {
     const response = await api.post('/auth/register', userData);
     if (response.success) {
       storeTokens(response.token, response.refreshToken);
-      localStorage.setItem('tontinais_user', JSON.stringify(response.user));
+      const normalized = normalizeUser(response.user);
+      localStorage.setItem('tontinais_user', JSON.stringify(normalized));
       setToken(response.token);
-      setUser(response.user);
+      setUser(normalized);
     }
     return response;
   }, []);
@@ -112,7 +131,7 @@ export const AuthProvider = ({ children }) => {
    */
   const updateUserData = useCallback((updatedFields) => {
     setUser((prev) => {
-      const nextUser = { ...prev, ...updatedFields };
+      const nextUser = normalizeUser({ ...prev, ...updatedFields });
       localStorage.setItem('tontinais_user', JSON.stringify(nextUser));
       return nextUser;
     });

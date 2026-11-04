@@ -14,7 +14,8 @@ import {
   PlusCircle,
   Key,
   ArrowRight,
-  AlertCircle
+  AlertCircle,
+  CreditCard
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import api from '../services/api';
@@ -48,6 +49,7 @@ export default function Dashboard() {
 
   const activeGroupsCount = groups.filter((g) => g.membershipStatus === 'ACTIF').length;
   const totalCotisations = groups.reduce((acc, g) => acc + (g.montantCotisation || 0), 0);
+  const primaryCurrency = groups[0]?.devise || 'XAF';
 
   return (
     <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '32px 20px' }}>
@@ -104,7 +106,7 @@ export default function Dashboard() {
               </div>
               <div>
                 <div style={{ fontSize: '0.85rem', color: 'var(--color-text-secondary)', fontWeight: '500' }}>{t('dashboard.kpiTotalSavings')}</div>
-                <div style={{ fontSize: '1.6rem', fontWeight: '800', color: 'var(--color-secondary-light)' }}>{totalCotisations.toLocaleString()} XAF</div>
+                <div style={{ fontSize: '1.6rem', fontWeight: '800', color: 'var(--color-secondary-light)' }}>{totalCotisations.toLocaleString()} {primaryCurrency}</div>
               </div>
             </div>
 
@@ -189,14 +191,22 @@ export default function Dashboard() {
                   </div>
                 </div>
 
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px' }}>
                   <span style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)' }}>
                     Code : <strong style={{ color: 'var(--color-text-primary)' }}>{group.codeInvitation}</strong>
                   </span>
-                  <Link to={`/groups/${group._id}`} className="btn btn-outline" style={{ padding: '6px 12px', fontSize: '0.8rem' }}>
-                    <span>{t('dashboard.viewDetails')}</span>
-                    <ArrowRight size={14} />
-                  </Link>
+                  <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                    {isActif && (
+                      <Link to={`/groups/${group._id}?action=pay`} className="btn btn-primary" style={{ padding: '6px 12px', fontSize: '0.8rem' }}>
+                        <CreditCard size={14} />
+                        <span>{t('groups.contributeNow')}</span>
+                      </Link>
+                    )}
+                    <Link to={`/groups/${group._id}`} className="btn btn-outline" style={{ padding: '6px 12px', fontSize: '0.8rem' }}>
+                      <span>{t('dashboard.viewDetails')}</span>
+                      <ArrowRight size={14} />
+                    </Link>
+                  </div>
                 </div>
               </div>
             );

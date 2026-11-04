@@ -13,7 +13,8 @@ import {
   AlertCircle,
   Filter,
   ShieldCheck,
-  Smartphone
+  Smartphone,
+  PlusCircle
 } from 'lucide-react';
 
 const OPERATOR_COLORS = {
@@ -28,6 +29,8 @@ export default function GroupContributionsList({
   isChef,
   groupId,
   devise = 'XAF',
+  canDeclareContribution = false,
+  onOpenDeclareModal,
   onContributionUpdated
 }) {
   const { t } = useTranslation();
@@ -107,9 +110,31 @@ export default function GroupContributionsList({
 
       {/* Liste des cotisations directes */}
       {filtered.length === 0 ? (
-        <div className="glass-card" style={{ padding: '40px 20px', textAlign: 'center', color: 'var(--color-text-secondary)' }}>
-          <CreditCard size={36} style={{ margin: '0 auto 12px', opacity: 0.5 }} />
+        <div
+          className="glass-card"
+          style={{
+            padding: '44px 20px',
+            textAlign: 'center',
+            color: 'var(--color-text-secondary)',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: '8px'
+          }}
+        >
+          <CreditCard size={38} style={{ opacity: 0.5, marginBottom: '6px' }} />
           <p style={{ margin: 0, fontSize: '0.95rem' }}>{t('groups.noContributions')}</p>
+          {canDeclareContribution && onOpenDeclareModal && (
+            <button
+              type="button"
+              className="btn btn-primary"
+              onClick={onOpenDeclareModal}
+              style={{ marginTop: '12px', fontSize: '0.85rem' }}
+            >
+              <PlusCircle size={16} />
+              <span>{t('contributions.declarePayment')}</span>
+            </button>
+          )}
         </div>
       ) : (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>

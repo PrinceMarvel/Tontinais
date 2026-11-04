@@ -100,10 +100,13 @@
     "createTitle": "Créer un nouveau groupe",
     "createSubtitle": "Configurez les paramètres financiers et les règles de votre tontine collaborative.",
     "stepIndicator": "Étape {{current}} sur {{total}}",
-<<<<<<< HEAD
     "tabMembers": "Participants",
     "tabPayouts": "Tours & Cagnottes",
     "tabContributions": "Cotisations",
+    "unitContribution": "Cotisation unitaire",
+    "participantsCapacity": "Capacité participants",
+    "pendingApprovalNotice": "Votre adhésion est en attente de validation par le Chef de tontine. Le paiement des cotisations sera accessible dès validation de votre statut.",
+    "contributeNow": "Cotiser",
     "filterAll": "Toutes",
     "filterPaid": "Payées",
     "filterPending": "En attente",
@@ -119,8 +122,6 @@
     "memberStatusChef": "Chef",
     "distributeWallet": "Verser au Wallet",
     "transferring": "Transfert...",
-=======
->>>>>>> 61dfe8c5579669111f831cb4dbb4f1ba69c4edef
     "sectionIdentity": "Identité et règles de la tontine",
     "sectionFinancial": "Paramètres financiers et cotisations",
     "sectionGovernance": "Calendrier et gouvernance des tours",

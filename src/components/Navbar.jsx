@@ -16,7 +16,8 @@ import {
   Menu,
   X,
   ShieldAlert,
-  KeyRound
+  KeyRound,
+  User
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import LanguageSelector from './LanguageSelector';
@@ -130,14 +131,24 @@ export default function Navbar() {
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
               <NotificationBell />
 
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', lineHeight: '1.2' }}>
+              <Link
+                to="/profile"
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'flex-end',
+                  lineHeight: '1.2',
+                  textDecoration: 'none'
+                }}
+                title={t('nav.profile')}
+              >
                 <span style={{ fontSize: '0.85rem', fontWeight: '700', color: 'var(--color-text-primary)' }}>
                   {user?.prenom} {user?.nom}
                 </span>
                 <span className="badge badge-info" style={{ fontSize: '0.7rem', padding: '1px 6px', marginTop: '2px' }}>
                   {roleLabel}
                 </span>
-              </div>
+              </Link>
 
               <button
                 type="button"
@@ -195,10 +206,23 @@ export default function Navbar() {
         >
           {isAuthenticated ? (
             <>
-              <div style={{ paddingBottom: '10px', borderBottom: '1px solid var(--color-border)' }}>
-                <div style={{ fontWeight: '700', fontSize: '0.9rem' }}>{user?.prenom} {user?.nom}</div>
-                <div className="badge badge-info" style={{ marginTop: '4px' }}>{roleLabel}</div>
-              </div>
+              <Link
+                to="/profile"
+                onClick={() => setMobileMenuOpen(false)}
+                style={{
+                  paddingBottom: '10px',
+                  borderBottom: '1px solid var(--color-border)',
+                  textDecoration: 'none',
+                  display: 'block'
+                }}
+              >
+                <div style={{ fontWeight: '700', fontSize: '0.9rem', color: 'var(--color-text-primary)' }}>
+                  {user?.prenom} {user?.nom}
+                </div>
+                <div className="badge badge-info" style={{ marginTop: '4px' }}>
+                  {roleLabel}
+                </div>
+              </Link>
 
               <Link to="/dashboard" onClick={() => setMobileMenuOpen(false)} style={navLinkStyle('/dashboard')}>
                 <LayoutDashboard size={18} />
@@ -215,6 +239,11 @@ export default function Navbar() {
               <Link to="/groups/join" onClick={() => setMobileMenuOpen(false)} style={navLinkStyle('/groups/join')}>
                 <KeyRound size={18} />
                 <span>{t('nav.joinGroup')}</span>
+              </Link>
+
+              <Link to="/profile" onClick={() => setMobileMenuOpen(false)} style={navLinkStyle('/profile')}>
+                <User size={18} />
+                <span>{t('nav.profile')}</span>
               </Link>
 
               {role === 'SUPER_ADMIN' && (

@@ -38,10 +38,10 @@ export default function GroupHeader({
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '6px' }}>
             <h1 style={{ fontSize: '1.8rem', color: 'var(--color-text-primary)' }}>{group.nom}</h1>
-            <span className="badge badge-success">{group.statut || 'ACTIF'}</span>
+            <span className="badge badge-success">{group.statut || t('dashboard.statusActive')}</span>
           </div>
           <p style={{ color: 'var(--color-text-secondary)', fontSize: '0.95rem', maxWidth: '680px' }}>
-            {group.description || 'Tontine solidaire et collaborative.'}
+            {group.description || t('home.heroSubtitle')}
           </p>
         </div>
 
@@ -135,25 +135,25 @@ export default function GroupHeader({
         }}
       >
         <div>
-          <div style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>Cotisation unitaire</div>
+          <div style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>{t('groups.unitContribution')}</div>
           <div style={{ fontSize: '1.15rem', fontWeight: '700', color: 'var(--color-secondary-light)' }}>
             {group.montantCotisation?.toLocaleString()} {group.devise}
           </div>
         </div>
         <div>
-          <div style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>Périodicité</div>
+          <div style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>{t('groups.frequency')}</div>
           <div style={{ fontSize: '1.05rem', fontWeight: '600', color: 'var(--color-text-primary)' }}>
             {group.frequence}
           </div>
         </div>
         <div>
-          <div style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>Capacité participants</div>
+          <div style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>{t('groups.participantsCapacity')}</div>
           <div style={{ fontSize: '1.05rem', fontWeight: '600', color: 'var(--color-text-primary)' }}>
             {activeMembersCount} / {group.nombreMaxMembres}
           </div>
         </div>
         <div>
-          <div style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>Cagnotte totale par cycle</div>
+          <div style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>{t('groups.totalPotLabel')}</div>
           <div style={{ fontSize: '1.15rem', fontWeight: '700', color: 'var(--color-accent)' }}>
             {totalPot.toLocaleString()} {group.devise}
           </div>

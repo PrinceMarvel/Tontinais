@@ -5,7 +5,7 @@
  */
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, useSearchParams, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
   ArrowLeft,
@@ -13,7 +13,8 @@ import {
   Calendar,
   CreditCard,
   PlusCircle,
-  AlertCircle
+  AlertCircle,
+  Clock
 } from 'lucide-react';
 import api from '../services/api';
 import { useAuth } from '../context/AuthContext';
@@ -25,6 +26,7 @@ import DeclareContributionModal from '../components/groups/DeclareContributionMo
 
 export default function GroupDetails() {
   const { id } = useParams();
+  const [searchParams] = useSearchParams();
   const { t } = useTranslation();
   const { user, role } = useAuth();
 
@@ -86,8 +88,8 @@ export default function GroupDetails() {
     }
   };
 
-  // Identification sûre du chef et du membre actif — évaluée seulement après le chargement
-  const userId = user?._id;
+  // Identification robuste de l'utilisateur avec support conjoint de _id et id
+  const userId = user?._id ? String(user._id) : user?.id ? String(user.id) : null;
 
   const chefId = group?.chefDeTontine?._id
     ? String(group.chefDeTontine._id)
@@ -97,18 +99,33 @@ export default function GroupDetails() {
 
   const isChef =
     !loading &&
-    ((!!chefId && !!userId && chefId === String(userId)) ||
+    ((!!chefId && !!userId && chefId === userId) ||
       role === 'SUPER_ADMIN');
 
   const isMemberActive =
     !loading &&
     members.some((m) => {
       const memberId = m.user?._id ? String(m.user._id) : m.user ? String(m.user) : null;
-      return !!memberId && !!userId && memberId === String(userId) && m.statut === 'ACTIF';
+      return !!memberId && !!userId && memberId === userId && m.statut === 'ACTIF';
     });
 
-  // Le bouton est affiché dès lors que le chargement est terminé et que l'utilisateur est éligible
+  const isMemberPending =
+    !loading &&
+    !isChef &&
+    members.some((m) => {
+      const memberId = m.user?._id ? String(m.user._id) : m.user ? String(m.user) : null;
+      return !!memberId && !!userId && memberId === userId && m.statut === 'EN_ATTENTE';
+    });
+
+  // Le bouton cotiser est affiché pour le chef et tout membre actif
   const canDeclareContribution = !loading && (isMemberActive || isChef);
+
+  // Ouverture automatique de la modale si demandée via l'URL (?action=pay)
+  useEffect(() => {
+    if (searchParams.get('action') === 'pay' && canDeclareContribution) {
+      setIsDeclareModalOpen(true);
+    }
+  }, [searchParams, canDeclareContribution]);
 
   const tabStyle = (tab) => ({
     display: 'inline-flex',
@@ -176,6 +193,28 @@ export default function GroupDetails() {
         setShowQrModal={setShowQrModal}
       />
 
+      {/* Message explicatif si l'adhésion est en attente de validation par le Chef */}
+      {isMemberPending && (
+        <div
+          className="animate-fade-in"
+          style={{
+            padding: '14px 18px',
+            backgroundColor: 'rgba(245, 158, 11, 0.1)',
+            border: '1px solid var(--color-warning)',
+            borderRadius: 'var(--radius-sm)',
+            color: 'var(--color-warning)',
+            marginBottom: '20px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '12px',
+            fontSize: '0.9rem'
+          }}
+        >
+          <Clock size={20} />
+          <span>{t('groups.pendingApprovalNotice')}</span>
+        </div>
+      )}
+
       {/* Barre d'onglets et actions rapides */}
       <div
         style={{
@@ -206,7 +245,7 @@ export default function GroupDetails() {
           </button>
         </div>
 
-        {/* Bouton « Payer ma cotisation » — affiché uniquement après chargement complet */}
+        {/* Bouton « Payer ma cotisation » toujours visible pour tout participant éligible */}
         {canDeclareContribution && (
           <button
             type="button"
@@ -246,6 +285,8 @@ export default function GroupDetails() {
           isChef={isChef}
           groupId={group._id}
           devise={group.devise}
+          canDeclareContribution={canDeclareContribution}
+          onOpenDeclareModal={() => setIsDeclareModalOpen(true)}
           onContributionUpdated={fetchGroupData}
         />
       )}

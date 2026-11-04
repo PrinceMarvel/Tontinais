@@ -99,6 +99,7 @@
     "title": "Gestion des Groupes de Tontine",
     "createTitle": "Créer un nouveau groupe",
     "createSubtitle": "Configurez les paramètres financiers et les règles de votre tontine collaborative.",
+    "stepIndicator": "Étape {{current}} sur {{total}}",
     "sectionIdentity": "Identité et règles de la tontine",
     "sectionFinancial": "Paramètres financiers et cotisations",
     "sectionGovernance": "Calendrier et gouvernance des tours",

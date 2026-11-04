@@ -99,6 +99,7 @@
     "title": "Tontine Groups Management",
     "createTitle": "Create a new group",
     "createSubtitle": "Configure financial parameters and rules for your collaborative tontine.",
+    "stepIndicator": "Step {{current}} of {{total}}",
     "sectionIdentity": "Tontine Identity and Rules",
     "sectionFinancial": "Financial Parameters and Contributions",
     "sectionGovernance": "Schedule and Round Governance",

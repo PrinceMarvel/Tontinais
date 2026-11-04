@@ -3,21 +3,55 @@
  * @description Styles du Wizard de création de tontine : Stepper guidé et cartes sombres sélectionnables.
  */
 
+/* Conteneur principal et carte du formulaire Wizard */
+.create-group-container {
+  width: 100%;
+  max-width: 840px;
+  margin: 32px auto;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
+.create-group-card {
+  padding: 36px 32px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.create-group-header {
+  margin-bottom: 28px;
+  text-align: center;
+}
+
+.create-group-header h1 {
+  font-size: 1.75rem;
+  color: var(--color-text-primary);
+  margin-bottom: 6px;
+}
+
+.create-group-header p {
+  color: var(--color-text-secondary);
+  font-size: 0.92rem;
+}
+
 /* Stepper de progression */
 .wizard-stepper {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
-  margin-bottom: 32px;
+  margin-bottom: 28px;
   position: relative;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0 10px;
 }
 
 .wizard-stepper::before {
   content: '';
   position: absolute;
-  top: 20px;
-  left: 30px;
-  right: 30px;
+  top: 21px;
+  left: 35px;
+  right: 35px;
   height: 2px;
   background: var(--color-border);
   z-index: 1;
@@ -25,8 +59,8 @@
 
 .wizard-progress-bar {
   position: absolute;
-  top: 20px;
-  left: 30px;
+  top: 21px;
+  left: 35px;
   height: 2px;
   background: linear-gradient(90deg, var(--color-secondary), var(--color-secondary-light));
   z-index: 2;
@@ -44,6 +78,8 @@
   background: transparent;
   border: none;
   padding: 0;
+  max-width: 170px;
+  text-align: center;
 }
 
 .wizard-step-circle {
@@ -53,11 +89,12 @@
   background: var(--color-bg-surface);
   border: 2px solid var(--color-border);
   display: grid;
-  place-Items: center;
+  place-items: center;
   color: var(--color-text-muted);
   font-weight: 700;
   font-size: 0.95rem;
   transition: var(--transition-fast);
+  flex-shrink: 0;
 }
 
 .wizard-step-node.active .wizard-step-circle {
@@ -78,15 +115,15 @@
   font-weight: 600;
   color: var(--color-text-muted);
   transition: var(--transition-fast);
-  white-space: nowrap;
+  line-height: 1.3;
 }
 
-.wizard-step-node.active .wizard-step-label {
-  color: var(--color-secondary-light);
-}
+.wizard-step-node.active .wizard-step-label { color: var(--color-secondary-light); }
+.wizard-step-node.completed .wizard-step-label { color: var(--color-text-primary); }
 
-.wizard-step-node.completed .wizard-step-label {
-  color: var(--color-text-primary);
+/* Badge indicatif de l'étape active sur mobile */
+.wizard-mobile-step-badge {
+  display: none;
 }
 
 /* Cartes sombres sélectionnables (Zéro select blanc) */
@@ -154,10 +191,7 @@
   transition: var(--transition-fast);
 }
 
-.select-card.active .select-card-radio {
-  border-color: var(--color-secondary-light);
-}
-
+.select-card.active .select-card-radio { border-color: var(--color-secondary-light); }
 .select-card-radio-inner {
   width: 8px;
   height: 8px;
@@ -207,24 +241,57 @@
   color: var(--color-secondary-light);
 }
 
-.stepper-btn:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
+.stepper-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* Barre d'action de navigation du formulaire */
+.create-group-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 36px;
+  padding-top: 20px;
+  border-top: 1px solid var(--color-border);
 }
 
+/* Optimisation tactile et responsivité Smartphone */
 @media (max-width: 640px) {
-  .wizard-stepper::before,
-  .wizard-progress-bar {
-    left: 20px;
-    right: 20px;
-  }
-  .wizard-step-circle {
-    width: 36px;
-    height: 36px;
+  .create-group-container { margin: 16px auto; padding: 0 12px; }
+  .create-group-card { padding: 22px 16px; }
+  .create-group-header { margin-bottom: 20px; }
+  .create-group-header h1 { font-size: 1.35rem; }
+  .create-group-header p { font-size: 0.85rem; }
+
+  .wizard-stepper { margin-bottom: 16px; padding: 0 6px; }
+  .wizard-stepper::before, .wizard-progress-bar { left: 24px; right: 24px; top: 19px; }
+  .wizard-step-circle { width: 38px; height: 38px; font-size: 0.85rem; }
+
+  /* Sur smartphone, masquer les libellés sous les cercles pour supprimer tout débordement */
+  .wizard-step-label { display: none; }
+
+  /* Badge centré de l'étape active sur mobile */
+  .wizard-mobile-step-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 8px 14px;
+    margin-bottom: 20px;
+    background: rgba(49, 151, 149, 0.12);
+    border: 1px solid rgba(79, 209, 197, 0.28);
+    border-radius: var(--radius-sm);
+    color: var(--color-secondary-light);
     font-size: 0.85rem;
+    font-weight: 600;
+    text-align: center;
   }
-  .wizard-step-label {
-    font-size: 0.72rem;
+
+  .select-grid { grid-template-columns: 1fr; gap: 10px; }
+  .create-group-actions { gap: 10px; margin-top: 28px; padding-top: 16px; }
+  .create-group-actions .btn {
+    flex: 1;
+    min-width: 0 !important;
+    padding: 10px 12px;
+    font-size: 0.88rem;
   }
 }
-

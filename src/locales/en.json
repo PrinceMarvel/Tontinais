@@ -100,6 +100,7 @@
     "createTitle": "Create a new group",
     "createSubtitle": "Configure financial parameters and rules for your collaborative tontine.",
     "stepIndicator": "Step {{current}} of {{total}}",
+<<<<<<< HEAD
     "tabMembers": "Participants",
     "tabPayouts": "Rounds & Payouts",
     "tabContributions": "Contributions",
@@ -118,6 +119,8 @@
     "memberStatusChef": "Chief",
     "distributeWallet": "Disburse to Wallet",
     "transferring": "Transferring...",
+=======
+>>>>>>> 61dfe8c5579669111f831cb4dbb4f1ba69c4edef
     "sectionIdentity": "Tontine Identity and Rules",
     "sectionFinancial": "Financial Parameters and Contributions",
     "sectionGovernance": "Schedule and Round Governance",

@@ -4,19 +4,14 @@
  * @module components/groups/DeclareContributionModal
  */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { X, Smartphone, AlertCircle, ArrowRight, Loader2 } from 'lucide-react';
 import api from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
 import WalletCheckoutModal from './WalletCheckoutModal';
-
-const OPERATORS = [
-  { id: 'ORANGE_MONEY', name: 'Orange Money', color: '#ff7900', badge: 'OM' },
-  { id: 'MTN_MOMO', name: 'MTN Mobile Money', color: '#ffcc00', textColor: '#000', badge: 'MoMo' },
-  { id: 'WAVE', name: 'Wave Money', color: '#1dc4ff', badge: 'Wave' },
-  { id: 'MOOV', name: 'Moov Money', color: '#0066b2', badge: 'Moov' }
-];
+import CountryPhoneInput from '../common/CountryPhoneInput';
+import { detectCountryFromPhone, WALLET_CONFIG, validatePhoneNumber } from '../../data/countries';
 
 export default function DeclareContributionModal({
   isOpen,
@@ -29,11 +24,20 @@ export default function DeclareContributionModal({
   const { user } = useAuth();
 
   const [tourNumber, setTourNumber] = useState(1);
-  const [operator, setOperator] = useState('ORANGE_MONEY');
   const [phone, setPhone] = useState(user?.telephone || '');
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [checkoutSession, setCheckoutSession] = useState(null);
+
+  const currentCountry = detectCountryFromPhone(phone);
+  const availableWallets = (currentCountry.wallets || []).map((id) => WALLET_CONFIG[id]).filter(Boolean);
+  const [operator, setOperator] = useState(() => availableWallets[0]?.id || 'ORANGE_MONEY');
+
+  useEffect(() => {
+    if (availableWallets.length > 0 && !availableWallets.some((w) => w.id === operator)) {
+      setOperator(availableWallets[0].id);
+    }
+  }, [currentCountry.code]);
 
   if (!isOpen) return null;
 
@@ -46,6 +50,13 @@ export default function DeclareContributionModal({
 
     if (!phone.trim()) {
       setErrorMessage(t('contributions.modalPhoneRequired'));
+      return;
+    }
+
+    const local = phone.startsWith(currentCountry.dialCode) ? phone.slice(currentCountry.dialCode.length) : phone;
+    const check = validatePhoneNumber(currentCountry.dialCode, local, currentCountry);
+    if (!check.valid) {
+      setErrorMessage(check.error || 'Numéro de téléphone non valide pour ce pays.');
       return;
     }
 
@@ -208,11 +219,28 @@ export default function DeclareContributionModal({
             </div>
           </div>
 
-          {/* Choix de l'opérateur */}
+          {/* Numéro de téléphone Mobile Money avec indicatif pays */}
           <div>
-            <label className="label">{t('contributions.modalWalletLabel')}</label>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '10px' }}>
-              {OPERATORS.map((op) => {
+            <label className="label">{t('contributions.modalPhoneLabel')}</label>
+            <CountryPhoneInput
+              id="phone"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              placeholder="Numéro Mobile Money du compte"
+              required
+            />
+          </div>
+
+          {/* Choix du portefeuille lié au pays */}
+          <div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+              <label className="label" style={{ margin: 0 }}>{t('contributions.modalWalletLabel')}</label>
+              <span style={{ fontSize: '0.78rem', color: 'var(--color-secondary-light)', fontWeight: '600' }}>
+                {currentCountry.flag} {currentCountry.name}
+              </span>
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '8px' }}>
+              {availableWallets.map((op) => {
                 const isSelected = operator === op.id;
                 return (
                   <button
@@ -220,7 +248,7 @@ export default function DeclareContributionModal({
                     type="button"
                     onClick={() => setOperator(op.id)}
                     style={{
-                      padding: '12px 14px',
+                      padding: '10px 12px',
                       borderRadius: 'var(--radius-sm)',
                       border: isSelected ? `2px solid ${op.color}` : '1px solid var(--color-border)',
                       backgroundColor: isSelected ? 'rgba(49, 151, 149, 0.15)' : 'rgba(30, 41, 59, 0.5)',
@@ -228,10 +256,11 @@ export default function DeclareContributionModal({
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'space-between',
-                      transition: 'all 0.2s ease'
+                      gap: '6px',
+                      transition: 'var(--transition-fast)'
                     }}
                   >
-                    <span style={{ fontSize: '0.9rem', fontWeight: isSelected ? '700' : '500', color: '#fff' }}>
+                    <span style={{ fontSize: '0.86rem', fontWeight: isSelected ? '700' : '500', color: '#fff' }}>
                       {op.name}
                     </span>
                     <span
@@ -239,8 +268,8 @@ export default function DeclareContributionModal({
                         backgroundColor: op.color,
                         color: op.textColor || '#fff',
                         fontWeight: '800',
-                        fontSize: '0.7rem',
-                        padding: '2px 6px',
+                        fontSize: '0.68rem',
+                        padding: '2px 5px',
                         borderRadius: '4px'
                       }}
                     >
@@ -250,22 +279,6 @@ export default function DeclareContributionModal({
                 );
               })}
             </div>
-          </div>
-
-          {/* Numéro de téléphone */}
-          <div>
-            <label className="label">{t('contributions.modalPhoneLabel')}</label>
-            <input
-              type="tel"
-              className="input"
-              placeholder={t('contributions.modalPhonePlaceholder')}
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              required
-            />
-            <small style={{ color: 'var(--color-text-secondary)', fontSize: '0.78rem', marginTop: '4px', display: 'block' }}>
-              {t('contributions.modalPhoneHint')}
-            </small>
           </div>
 
           {/* Boutons d'action */}

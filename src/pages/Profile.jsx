@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import api from '../services/api';
 import { useAuth } from '../context/AuthContext';
+import CountryPhoneInput from '../components/common/CountryPhoneInput';
 
 const fieldInputStyle = {
   width: '100%',
@@ -166,7 +167,11 @@ export default function Profile() {
 
           <div>
             <label style={fieldLabelStyle}>{t('auth.phoneLabel')}</label>
-            <input type="text" value={profileForm.telephone} onChange={(e) => setProfileForm({ ...profileForm, telephone: e.target.value })} style={fieldInputStyle} />
+            <CountryPhoneInput
+              id="telephone"
+              value={profileForm.telephone}
+              onChange={(e) => setProfileForm({ ...profileForm, telephone: e.target.value })}
+            />
           </div>
 
           <button type="submit" className="btn btn-secondary" disabled={loadingProfile} style={{ alignSelf: 'flex-start', padding: '10px 18px', fontSize: '0.9rem' }}>

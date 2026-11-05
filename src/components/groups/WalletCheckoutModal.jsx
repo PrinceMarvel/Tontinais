@@ -10,38 +10,15 @@ import { ShieldCheck, Lock, CheckCircle2, AlertCircle, ArrowLeft, Loader2, Smart
 import api from '../../services/api';
 
 const THEMES = {
-  ORANGE_MONEY: {
-    name: 'Orange Money Web Payment',
-    primary: '#ff7900',
-    headerBg: '#1e1e1e',
-    textColor: '#ffffff',
-    accentColor: '#ff7900',
-    instruction: 'Veuillez saisir votre code secret Orange Money à 4 chiffres pour autoriser le prélèvement.'
-  },
-  MTN_MOMO: {
-    name: 'MTN Mobile Money Gateway',
-    primary: '#ffcc00',
-    headerBg: '#ffcc00',
-    textColor: '#000000',
-    accentColor: '#000000',
-    instruction: 'Veuillez saisir votre code PIN secret MTN MoMo à 4 ou 5 chiffres pour confirmer.'
-  },
-  WAVE: {
-    name: 'Wave Digital Checkout',
-    primary: '#1dc4ff',
-    headerBg: '#0b192c',
-    textColor: '#ffffff',
-    accentColor: '#1dc4ff',
-    instruction: 'Saisissez votre code secret Wave pour valider instantanément le transfert sans frais.'
-  },
-  MOOV: {
-    name: 'Moov Money Portal',
-    primary: '#0066b2',
-    headerBg: '#00284d',
-    textColor: '#ffffff',
-    accentColor: '#0066b2',
-    instruction: 'Entrez le mot de passe secret de votre portefeuille Moov Money.'
-  }
+  ORANGE_MONEY: { name: 'Orange Money Web Payment', primary: '#ff7900', headerBg: '#1e1e1e', textColor: '#fff', accentColor: '#ff7900', instruction: 'Saisissez votre code secret Orange Money à 4 chiffres pour autoriser le prélèvement.' },
+  MTN_MOMO: { name: 'MTN Mobile Money Gateway', primary: '#ffcc00', headerBg: '#ffcc00', textColor: '#000', accentColor: '#000', instruction: 'Saisissez votre code PIN secret MTN MoMo à 4 ou 5 chiffres pour confirmer.' },
+  WAVE: { name: 'Wave Digital Checkout', primary: '#1dc4ff', headerBg: '#0b192c', textColor: '#fff', accentColor: '#1dc4ff', instruction: 'Saisissez votre code secret Wave pour valider instantanément le transfert.' },
+  MOOV: { name: 'Moov Money Portal', primary: '#0066b2', headerBg: '#00284d', textColor: '#fff', accentColor: '#0066b2', instruction: 'Entrez le mot de passe secret de votre portefeuille Moov Money.' },
+  AIRTEL_MONEY: { name: 'Airtel Money Secure Checkout', primary: '#e60000', headerBg: '#2a0000', textColor: '#fff', accentColor: '#e60000', instruction: 'Entrez votre code PIN secret Airtel Money pour valider.' },
+  MPESA: { name: 'M-Pesa Express', primary: '#00a651', headerBg: '#002613', textColor: '#fff', accentColor: '#00a651', instruction: 'Entrez votre code secret M-Pesa pour valider le versement.' },
+  FREE_MONEY: { name: 'Free Money Sénégal', primary: '#e10028', headerBg: '#1f0006', textColor: '#fff', accentColor: '#e10028', instruction: 'Entrez votre code secret Free Money.' },
+  TMONEY: { name: 'T-Money Togo', primary: '#0088cc', headerBg: '#001a29', textColor: '#fff', accentColor: '#0088cc', instruction: 'Saisissez votre code PIN secret T-Money.' },
+  CARTE_BANCAIRE: { name: 'Guichet Carte Bancaire / Visa', primary: '#2b4c7e', headerBg: '#0f172a', textColor: '#fff', accentColor: '#4fd1c5', instruction: 'Saisissez votre code de sécurité bancaire à 4 chiffres (3D Secure).' }
 };
 
 export default function WalletCheckoutModal({

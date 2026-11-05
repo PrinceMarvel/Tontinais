@@ -9,6 +9,8 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { UserPlus, AlertCircle } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import CountryPhoneInput from '../components/common/CountryPhoneInput';
+import { detectCountryFromPhone, validatePhoneNumber } from '../data/countries';
 
 export default function Register() {
   const { t } = useTranslation();
@@ -41,6 +43,14 @@ export default function Register() {
 
     if (!nom.trim() || !prenom.trim() || !email.trim() || !telephone.trim() || !motDePasse) {
       setErrorMessage(t('errors.requiredFields'));
+      return;
+    }
+
+    const country = detectCountryFromPhone(telephone);
+    const local = telephone.startsWith(country.dialCode) ? telephone.slice(country.dialCode.length) : telephone;
+    const phoneCheck = validatePhoneNumber(country.dialCode, local, country);
+    if (!phoneCheck.valid) {
+      setErrorMessage(phoneCheck.error || 'Numéro de téléphone non valide pour ce pays.');
       return;
     }
 
@@ -122,7 +132,12 @@ export default function Register() {
 
           <div>
             <label htmlFor="telephone" className="label">{t('auth.phoneLabel')}</label>
-            <input id="telephone" name="telephone" type="tel" className="input" value={formData.telephone} onChange={handleChange} placeholder={t('auth.phonePlaceholder')} required />
+            <CountryPhoneInput
+              id="telephone"
+              value={formData.telephone}
+              onChange={handleChange}
+              required
+            />
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>

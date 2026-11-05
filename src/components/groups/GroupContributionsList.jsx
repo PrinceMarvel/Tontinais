@@ -21,7 +21,12 @@ const OPERATOR_COLORS = {
   ORANGE_MONEY: { label: 'Orange Money', bg: 'rgba(255, 121, 0, 0.15)', border: '#ff7900', color: '#ff9433' },
   MTN_MOMO: { label: 'MTN MoMo', bg: 'rgba(255, 204, 0, 0.15)', border: '#ffcc00', color: '#ffd633' },
   WAVE: { label: 'Wave', bg: 'rgba(29, 196, 255, 0.15)', border: '#1dc4ff', color: '#52d3ff' },
-  MOOV: { label: 'Moov', bg: 'rgba(0, 102, 178, 0.15)', border: '#0066b2', color: '#3399ff' }
+  MOOV: { label: 'Moov', bg: 'rgba(0, 102, 178, 0.15)', border: '#0066b2', color: '#3399ff' },
+  AIRTEL_MONEY: { label: 'Airtel Money', bg: 'rgba(230, 0, 0, 0.15)', border: '#e60000', color: '#ff6666' },
+  MPESA: { label: 'M-Pesa', bg: 'rgba(0, 166, 81, 0.15)', border: '#00a651', color: '#33d67a' },
+  FREE_MONEY: { label: 'Free Money', bg: 'rgba(225, 0, 40, 0.15)', border: '#e10028', color: '#ff667a' },
+  TMONEY: { label: 'T-Money', bg: 'rgba(0, 136, 204, 0.15)', border: '#0088cc', color: '#33bbff' },
+  CARTE_BANCAIRE: { label: 'Carte Bancaire', bg: 'rgba(43, 76, 126, 0.25)', border: '#4fd1c5', color: '#4fd1c5' }
 };
 
 export default function GroupContributionsList({

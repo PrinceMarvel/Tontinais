@@ -154,7 +154,17 @@
     "successCreatedTitle": "Tontine créée avec succès !",
     "successCreatedSubtitle": "Partagez ce code ou ce QR Code avec vos participants pour qu'ils rejoignent votre groupe.",
     "goToGroup": "Accéder à la tontine",
-    "backToDashboard": "Retour au tableau de bord"
+    "backToDashboard": "Retour au tableau de bord",
+    "scanTab": "Scanner un QR Code",
+    "manualTab": "Saisir un code",
+    "scanSubtitle": "Scannez le QR Code fourni par le Chef de tontine pour rejoindre instantanément le groupe.",
+    "scanInstructions": "Placez le QR Code de la tontine au centre du cadre pour le scanner.",
+    "joiningInProgress": "Adhésion en cours...",
+    "toggleCamera": "Changer de caméra",
+    "uploadQrImage": "Importer une image",
+    "cameraPermissionError": "Accès à la caméra refusé. Veuillez autoriser l'accès ou importer une image.",
+    "cameraGenericError": "Impossible d'accéder à la caméra. Vérifiez vos périphériques ou importez une image.",
+    "qrDecodeError": "Aucun QR Code valide détecté dans cette image."
   },
   "contributions": {
     "title": "Suivi des Cotisations Directes",

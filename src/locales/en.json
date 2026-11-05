@@ -154,7 +154,17 @@
     "successCreatedTitle": "Tontine created successfully!",
     "successCreatedSubtitle": "Share this code or QR Code with your participants so they can join your group.",
     "goToGroup": "Go to tontine",
-    "backToDashboard": "Back to dashboard"
+    "backToDashboard": "Back to dashboard",
+    "scanTab": "Scan QR Code",
+    "manualTab": "Enter Code",
+    "scanSubtitle": "Scan the QR Code provided by the Tontine Leader to join the group instantly.",
+    "scanInstructions": "Position the tontine's QR Code in the center of the frame to scan it.",
+    "joiningInProgress": "Joining in progress...",
+    "toggleCamera": "Switch camera",
+    "uploadQrImage": "Upload an image",
+    "cameraPermissionError": "Camera access denied. Please grant permission or upload an image.",
+    "cameraGenericError": "Unable to access camera. Check your device or upload an image.",
+    "qrDecodeError": "No valid QR Code found in this image."
   },
   "contributions": {
     "title": "Direct Contributions Tracking",

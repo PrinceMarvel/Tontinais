@@ -1,29 +1,30 @@
 /**
  * @file JoinGroup.jsx
- * @description Page d'adhésion à une tontine via code d'invitation ou QR code.
+ * @description Page d'adhésion à une tontine via scan de QR code ou saisie de code avec redirection immédiate.
  * @module pages/JoinGroup
  */
 
-import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useSearchParams, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { KeyRound, ArrowLeft, CheckCircle2, AlertCircle, Users } from 'lucide-react';
+import { KeyRound, ArrowLeft, AlertCircle, QrCode, Loader2 } from 'lucide-react';
 import api from '../services/api';
+import QrCodeScanner from '../components/groups/QrCodeScanner';
 
 export default function JoinGroup() {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
 
+  const [joinMethod, setJoinMethod] = useState('scan'); // 'scan' | 'manual'
   const [codeInvitation, setCodeInvitation] = useState('');
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const [successInfo, setSuccessInfo] = useState(null);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleJoinWithCode = async (codeToSubmit) => {
     setErrorMessage('');
+    const trimmedCode = (codeToSubmit || codeInvitation).trim().toUpperCase();
 
-    const trimmedCode = codeInvitation.trim().toUpperCase();
     if (!trimmedCode) {
       setErrorMessage(t('groups.enterCode'));
       return;
@@ -33,16 +34,34 @@ export default function JoinGroup() {
       setLoading(true);
       const res = await api.post('/groups/join', { codeInvitation: trimmedCode });
       if (res.success) {
-        setSuccessInfo({
-          message: res.message || 'Votre demande d\'adhésion a été transmise au Chef de Tontine.',
-          group: res.group
-        });
+        const targetGroupId = res.group?._id || res.membership?.group;
+        if (targetGroupId) {
+          // Redirection directe vers la tontine rejointe
+          navigate(`/groups/${targetGroupId}`, { replace: true });
+        } else {
+          navigate('/dashboard', { replace: true });
+        }
       }
     } catch (err) {
       setErrorMessage(err.message || t('errors.generic'));
     } finally {
       setLoading(false);
     }
+  };
+
+  // Traitement automatique d'un code transmis par paramètre d'URL (?code=XXXXXXXX)
+  useEffect(() => {
+    const queryCode = searchParams.get('code');
+    if (queryCode && queryCode.trim().length === 8) {
+      setCodeInvitation(queryCode.trim().toUpperCase());
+      setJoinMethod('manual');
+      handleJoinWithCode(queryCode.trim().toUpperCase());
+    }
+  }, [searchParams]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    handleJoinWithCode();
   };
 
   return (
@@ -66,7 +85,7 @@ export default function JoinGroup() {
         </div>
 
         {/* Titre et description */}
-        <div style={{ textAlign: 'center', marginBottom: '28px' }}>
+        <div style={{ textAlign: 'center', marginBottom: '24px' }}>
           <div
             style={{
               width: '56px',
@@ -80,14 +99,54 @@ export default function JoinGroup() {
               boxShadow: 'var(--shadow-glow)'
             }}
           >
-            <KeyRound size={28} />
+            {joinMethod === 'scan' ? <QrCode size={28} /> : <KeyRound size={28} />}
           </div>
           <h1 style={{ fontSize: '1.75rem', marginBottom: '8px', color: 'var(--color-text-primary)' }}>
             {t('groups.joinTitle')}
           </h1>
           <p style={{ color: 'var(--color-text-secondary)', fontSize: '0.95rem' }}>
-            {t('groups.enterCode')}
+            {joinMethod === 'scan'
+              ? t('groups.scanSubtitle')
+              : t('groups.enterCode')}
           </p>
+        </div>
+
+        {/* Sélecteur de méthode : Scanner QR vs Saisie manuelle */}
+        <div
+          style={{
+            display: 'flex',
+            gap: '8px',
+            marginBottom: '24px',
+            backgroundColor: 'var(--color-bg-surface)',
+            padding: '4px',
+            borderRadius: 'var(--radius-sm)',
+            border: '1px solid var(--color-border)'
+          }}
+        >
+          <button
+            type="button"
+            onClick={() => {
+              setErrorMessage('');
+              setJoinMethod('scan');
+            }}
+            className={`btn ${joinMethod === 'scan' ? 'btn-primary' : 'btn-outline'}`}
+            style={{ flex: 1, padding: '8px 12px', fontSize: '0.88rem' }}
+          >
+            <QrCode size={16} />
+            <span>{t('groups.scanTab')}</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setErrorMessage('');
+              setJoinMethod('manual');
+            }}
+            className={`btn ${joinMethod === 'manual' ? 'btn-primary' : 'btn-outline'}`}
+            style={{ flex: 1, padding: '8px 12px', fontSize: '0.88rem' }}
+          >
+            <KeyRound size={16} />
+            <span>{t('groups.manualTab')}</span>
+          </button>
         </div>
 
         {/* Message d'erreur */}
@@ -111,50 +170,32 @@ export default function JoinGroup() {
           </div>
         )}
 
-        {/* Succès après soumission */}
-        {successInfo ? (
+        {/* Indicateur de chargement pendant l'adhésion */}
+        {loading && (
           <div
             style={{
+              padding: '24px',
               textAlign: 'center',
-              padding: '24px 16px',
-              backgroundColor: 'var(--color-bg-surface)',
-              borderRadius: 'var(--radius-md)',
-              border: '1px solid var(--color-border)'
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: '12px'
             }}
           >
-            <div
-              style={{
-                width: '48px',
-                height: '48px',
-                borderRadius: '50%',
-                background: 'rgba(16, 185, 129, 0.15)',
-                display: 'grid',
-                placeItems: 'center',
-                margin: '0 auto 16px',
-                color: 'var(--color-success)'
-              }}
-            >
-              <CheckCircle2 size={28} />
-            </div>
-            <h2 style={{ fontSize: '1.25rem', marginBottom: '10px', color: 'var(--color-text-primary)' }}>
-              Demande enregistrée !
-            </h2>
-            <p style={{ color: 'var(--color-text-secondary)', marginBottom: '24px', fontSize: '0.95rem' }}>
-              {successInfo.message}
+            <Loader2 size={32} className="animate-spin" color="var(--color-secondary-light)" />
+            <p style={{ color: 'var(--color-text-secondary)', fontSize: '0.92rem' }}>
+              {t('groups.joiningInProgress')}
             </p>
-            <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
-              <button
-                type="button"
-                className="btn btn-primary"
-                onClick={() => navigate('/dashboard')}
-              >
-                <Users size={16} />
-                <span>{t('groups.backToDashboard')}</span>
-              </button>
-            </div>
           </div>
-        ) : (
-          /* Formulaire de saisie du code */
+        )}
+
+        {/* Mode 1 : Lecteur de QR Code interactif */}
+        {!loading && joinMethod === 'scan' && (
+          <QrCodeScanner onScanSuccess={(code) => handleJoinWithCode(code)} />
+        )}
+
+        {/* Mode 2 : Formulaire classique de saisie du code */}
+        {!loading && joinMethod === 'manual' && (
           <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
             <div>
               <label

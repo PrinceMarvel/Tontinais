@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "html5-qrcode": "^2.3.8",
     "i18next": "^23.11.5",
     "lucide-react": "^0.378.0",
     "qrcode.react": "^3.1.0",

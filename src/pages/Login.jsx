@@ -46,7 +46,7 @@ export default function Login() {
   return (
     <div
       style={{
-        minHeight: '100vh',
+        flex: 1,
         display: 'grid',
         placeItems: 'center',
         padding: '24px 16px'

@@ -65,8 +65,8 @@ export default function JoinGroup() {
   };
 
   return (
-    <div style={{ maxWidth: '640px', margin: '40px auto', padding: '0 20px' }}>
-      <div className="glass-card animate-fade-in" style={{ padding: '36px 28px' }}>
+    <div style={{ maxWidth: '640px', margin: 'clamp(16px, 3vh, 32px) auto', padding: '0 clamp(12px, 3vw, 20px)' }}>
+      <div className="glass-card animate-fade-in" style={{ padding: 'clamp(20px, 4vw, 32px) clamp(16px, 3vw, 28px)' }}>
         {/* Navigation retour */}
         <div style={{ marginBottom: '20px' }}>
           <Link

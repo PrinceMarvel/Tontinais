@@ -73,7 +73,7 @@ export default function Register() {
   };
 
   return (
-    <div style={{ minHeight: '100vh', display: 'grid', placeItems: 'center', padding: '32px 16px' }}>
+    <div style={{ flex: 1, display: 'grid', placeItems: 'center', padding: '32px 16px' }}>
       <div className="glass-card animate-fade-in" style={{ width: '100%', maxWidth: '520px', padding: '36px 28px' }}>
         
         <h1 style={{ fontSize: '1.6rem', marginBottom: '6px', color: 'var(--color-text-primary)' }}>

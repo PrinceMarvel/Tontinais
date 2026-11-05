@@ -24,17 +24,17 @@ function Home() {
   const { isAuthenticated } = useAuth();
 
   return (
-    <div style={{ minHeight: 'calc(100vh - 68px)', display: 'grid', placeItems: 'center', padding: '24px 20px' }}>
-      <div className="glass-card animate-fade-in" style={{ maxWidth: '560px', width: '100%', padding: '40px 32px', textAlign: 'center' }}>
+    <div style={{ flex: 1, display: 'grid', placeItems: 'center', padding: '24px 16px' }}>
+      <div className="glass-card animate-fade-in" style={{ maxWidth: '560px', width: '100%', padding: '36px 24px', textAlign: 'center' }}>
         <div style={{ marginBottom: '18px', display: 'flex', justifyContent: 'center' }}>
           <Logo size={96} showText={true} stacked={true} />
         </div>
 
-        <p style={{ color: 'var(--color-text-secondary)', marginBottom: '32px', fontSize: '1.05rem', lineHeight: '1.6' }}>
+        <p style={{ color: 'var(--color-text-secondary)', marginBottom: '28px', fontSize: '1rem', lineHeight: '1.6' }}>
           {t('common.slogan')}
         </p>
 
-        <div style={{ display: 'flex', gap: '14px', justifyContent: 'center', marginBottom: '28px', flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', marginBottom: '24px', flexWrap: 'wrap' }}>
           {isAuthenticated ? (
             <Link to="/dashboard" className="btn btn-primary" style={{ padding: '12px 24px', fontSize: '1rem' }}>
               <LayoutDashboard size={20} />
@@ -54,7 +54,7 @@ function Home() {
           )}
         </div>
 
-        <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', gap: '10px', justifyContent: 'center', flexWrap: 'wrap' }}>
           <span className="badge badge-success">{t('common.trustAndSecurity')}</span>
           <span className="badge badge-info">{t('common.pwaReady')}</span>
         </div>
@@ -64,13 +64,15 @@ function Home() {
 }
 
 export default function App() {
+  const { isAuthenticated } = useAuth();
+
   return (
     <ToastProvider>
       {/* Réinitialisation automatique du scroll au sommet à chaque changement de page */}
       <ScrollToTop />
-      <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+      <div style={{ minHeight: '100dvh', minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
         <Navbar />
-        <main className="app-main">
+        <main className={`app-main ${isAuthenticated ? 'has-bottom-nav' : ''}`}>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
@@ -133,7 +135,7 @@ export default function App() {
             />
           </Routes>
         </main>
-        {/* Navigation Inférieure Mobile (Affichée sur smartphone < 768px) */}
+        {/* Navigation Inférieure Mobile (Affichée sur smartphone < 768px pour utilisateurs connectés) */}
         <BottomNav />
       </div>
     </ToastProvider>

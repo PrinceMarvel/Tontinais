@@ -5,7 +5,7 @@
  */
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { useParams, useSearchParams, Link } from 'react-router-dom';
+import { useParams, useSearchParams, useNavigate, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
   ArrowLeft,
@@ -14,7 +14,8 @@ import {
   CreditCard,
   PlusCircle,
   AlertCircle,
-  Clock
+  Clock,
+  Trash2
 } from 'lucide-react';
 import api from '../services/api';
 import { useAuth } from '../context/AuthContext';
@@ -27,6 +28,7 @@ import DeclareContributionModal from '../components/groups/DeclareContributionMo
 export default function GroupDetails() {
   const { id } = useParams();
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const { user, role } = useAuth();
 
@@ -40,35 +42,24 @@ export default function GroupDetails() {
   const [copied, setCopied] = useState(false);
   const [showQrModal, setShowQrModal] = useState(false);
   const [isDeclareModalOpen, setIsDeclareModalOpen] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [deleting, setDeleting] = useState(false);
 
   const fetchGroupData = useCallback(async () => {
     try {
       setLoading(true);
       setErrorMessage('');
-
       const groupRes = await api.get(`/groups/${id}`);
       if (groupRes.success) {
         setGroup(groupRes.group);
         setMembers(groupRes.members || []);
       }
-
-      try {
-        const payoutsRes = await api.get(`/payouts/group/${id}`);
-        if (payoutsRes.success) {
-          setPayouts(payoutsRes.payouts || []);
-        }
-      } catch {
-        setPayouts([]);
-      }
-
-      try {
-        const contribRes = await api.get(`/contributions/group/${id}`);
-        if (contribRes.success) {
-          setContributions(contribRes.contributions || []);
-        }
-      } catch {
-        setContributions([]);
-      }
+      const [pRes, cRes] = await Promise.allSettled([
+        api.get(`/payouts/group/${id}`),
+        api.get(`/contributions/group/${id}`)
+      ]);
+      setPayouts(pRes.status === 'fulfilled' && pRes.value?.success ? pRes.value.payouts || [] : []);
+      setContributions(cRes.status === 'fulfilled' && cRes.value?.success ? cRes.value.contributions || [] : []);
     } catch (err) {
       setErrorMessage(err.message || t('errors.generic'));
     } finally {
@@ -88,37 +79,27 @@ export default function GroupDetails() {
     }
   };
 
-  // Identification robuste de l'utilisateur avec support conjoint de _id et id
   const userId = user?._id ? String(user._id) : user?.id ? String(user.id) : null;
-
-  const chefId = group?.chefDeTontine?._id
-    ? String(group.chefDeTontine._id)
-    : group?.chefDeTontine
-    ? String(group.chefDeTontine)
-    : null;
-
-  const isChef =
-    !loading &&
-    ((!!chefId && !!userId && chefId === userId) ||
-      role === 'SUPER_ADMIN');
-
-  const isMemberActive =
-    !loading &&
-    members.some((m) => {
-      const memberId = m.user?._id ? String(m.user._id) : m.user ? String(m.user) : null;
-      return !!memberId && !!userId && memberId === userId && m.statut === 'ACTIF';
-    });
-
-  const isMemberPending =
-    !loading &&
-    !isChef &&
-    members.some((m) => {
-      const memberId = m.user?._id ? String(m.user._id) : m.user ? String(m.user) : null;
-      return !!memberId && !!userId && memberId === userId && m.statut === 'EN_ATTENTE';
-    });
-
-  // Le bouton cotiser est affiché pour le chef et tout membre actif
+  const chefId = group?.chefDeTontine?._id ? String(group.chefDeTontine._id) : group?.chefDeTontine ? String(group.chefDeTontine) : null;
+  const isChef = !loading && ((!!chefId && !!userId && chefId === userId) || role === 'SUPER_ADMIN');
+  const isMemberActive = !loading && members.some((m) => String(m.user?._id || m.user) === userId && m.statut === 'ACTIF');
+  const isMemberPending = !loading && !isChef && members.some((m) => String(m.user?._id || m.user) === userId && m.statut === 'EN_ATTENTE');
   const canDeclareContribution = !loading && (isMemberActive || isChef);
+
+  const handleDeleteGroup = async () => {
+    try {
+      setDeleting(true);
+      const res = await api.delete(`/groups/${id}`);
+      if (res.success) {
+        navigate('/dashboard', { replace: true });
+      }
+    } catch (err) {
+      setErrorMessage(err.message || 'Erreur lors de la suppression de la tontine.');
+      setShowDeleteModal(false);
+    } finally {
+      setDeleting(false);
+    }
+  };
 
   // Ouverture automatique de la modale si demandée via l'URL (?action=pay)
   useEffect(() => {
@@ -142,11 +123,7 @@ export default function GroupDetails() {
   });
 
   if (loading) {
-    return (
-      <div style={{ maxWidth: '1100px', margin: '40px auto', padding: '0 20px', textAlign: 'center', color: 'var(--color-text-secondary)' }}>
-        {t('common.loading')}
-      </div>
-    );
+    return <div style={{ maxWidth: '1100px', margin: '40px auto', padding: '0 20px', textAlign: 'center', color: 'var(--color-text-secondary)' }}>{t('common.loading')}</div>;
   }
 
   if (errorMessage && !group) {
@@ -154,13 +131,9 @@ export default function GroupDetails() {
       <div style={{ maxWidth: '800px', margin: '40px auto', padding: '0 20px' }}>
         <div className="glass-card" style={{ padding: '32px', textAlign: 'center' }}>
           <AlertCircle size={32} color="var(--color-danger)" style={{ margin: '0 auto 12px' }} />
-          <h2 style={{ fontSize: '1.25rem', marginBottom: '8px', color: 'var(--color-text-primary)' }}>
-            {t('groups.errorTitle') || 'Erreur'}
-          </h2>
+          <h2 style={{ fontSize: '1.25rem', marginBottom: '8px', color: 'var(--color-text-primary)' }}>{t('groups.errorTitle') || 'Erreur'}</h2>
           <p style={{ color: 'var(--color-text-secondary)', marginBottom: '20px' }}>{errorMessage}</p>
-          <Link to="/dashboard" className="btn btn-primary">
-            {t('groups.backToDashboard')}
-          </Link>
+          <Link to="/dashboard" className="btn btn-primary">{t('groups.backToDashboard')}</Link>
         </div>
       </div>
     );
@@ -168,8 +141,8 @@ export default function GroupDetails() {
 
   return (
     <div style={{ maxWidth: '1100px', width: '100%', margin: 'clamp(14px, 2.5vh, 28px) auto', padding: '0 clamp(8px, 2.5vw, 16px)', boxSizing: 'border-box' }}>
-      {/* Lien de retour */}
-      <div style={{ marginBottom: '18px' }}>
+      {/* Lien de retour et action Chef */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '18px', flexWrap: 'wrap', gap: '10px' }}>
         <Link
           to="/dashboard"
           style={{
@@ -183,6 +156,29 @@ export default function GroupDetails() {
           <ArrowLeft size={16} />
           <span>{t('groups.backToDashboard')}</span>
         </Link>
+
+        {isChef && (
+          <button
+            type="button"
+            onClick={() => setShowDeleteModal(true)}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              padding: '6px 12px',
+              borderRadius: 'var(--radius-sm)',
+              background: 'rgba(239, 68, 68, 0.1)',
+              border: '1px solid var(--color-danger)',
+              color: 'var(--color-danger)',
+              fontSize: '0.82rem',
+              cursor: 'pointer',
+              fontWeight: '600'
+            }}
+          >
+            <Trash2 size={14} />
+            <span>Supprimer la tontine</span>
+          </button>
+        )}
       </div>
 
       {/* En-tête avec métriques et partage de code */}
@@ -301,6 +297,27 @@ export default function GroupDetails() {
         group={group}
         onContributionSuccess={fetchGroupData}
       />
+
+      {/* Modale de confirmation de suppression */}
+      {showDeleteModal && (
+        <div style={{ position: 'fixed', inset: 0, zIndex: 999, backgroundColor: 'rgba(15, 23, 42, 0.8)', backdropFilter: 'var(--backdrop-blur)', display: 'grid', placeItems: 'center', padding: '16px' }}>
+          <div className="glass-card animate-fade-in" style={{ maxWidth: '420px', width: '100%', padding: '24px', textAlign: 'center' }}>
+            <Trash2 size={36} color="var(--color-danger)" style={{ margin: '0 auto 10px' }} />
+            <h3 style={{ fontSize: '1.2rem', marginBottom: '6px', color: 'var(--color-text-primary)' }}>Supprimer cette tontine ?</h3>
+            <p style={{ fontSize: '0.86rem', color: 'var(--color-text-secondary)', marginBottom: '18px' }}>
+              Cette action est irréversible. Le groupe &quot;{group.nom}&quot; et ses données seront définitivement effacés.
+            </p>
+            <div style={{ display: 'flex', gap: '10px', justifyContent: 'center' }}>
+              <button type="button" className="btn btn-outline" onClick={() => setShowDeleteModal(false)} disabled={deleting}>
+                Annuler
+              </button>
+              <button type="button" className="btn btn-primary" onClick={handleDeleteGroup} disabled={deleting} style={{ background: 'var(--color-danger)', borderColor: 'var(--color-danger)' }}>
+                {deleting ? 'Suppression...' : 'Confirmer'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

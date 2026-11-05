@@ -46,6 +46,20 @@ export default function Register() {
       return;
     }
 
+    const emailTrimmed = email.trim();
+    const emailDomain = emailTrimmed.split('@')[1]?.toLowerCase();
+    const DISPOSABLE_DOMAINS = [
+      'yopmail.com', 'yopmail.fr', 'mailinator.com', 'tempmail.com', 'temp-mail.org',
+      '10minutemail.com', 'guerrillamail.com', 'trashmail.com', 'sharklasers.com',
+      'dispostable.com', 'getairmail.com', 'mohmal.com', 'fakeinbox.com',
+      'throwawaymail.com', 'getnada.com', 'burnermail.io'
+    ];
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailRegex.test(emailTrimmed) || DISPOSABLE_DOMAINS.includes(emailDomain)) {
+      setErrorMessage('Veuillez fournir une adresse e-mail officielle et fonctionnelle (adresses temporaires/jetables interdites).');
+      return;
+    }
+
     const country = detectCountryFromPhone(telephone);
     const local = telephone.startsWith(country.dialCode) ? telephone.slice(country.dialCode.length) : telephone;
     const phoneCheck = validatePhoneNumber(country.dialCode, local, country);

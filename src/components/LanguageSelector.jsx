@@ -7,6 +7,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Globe } from 'lucide-react';
+import FlagIcon from './common/FlagIcon';
 
 export default function LanguageSelector() {
   const { i18n, t } = useTranslation();
@@ -37,6 +38,9 @@ export default function LanguageSelector() {
         type="button"
         onClick={() => changeLanguage('fr')}
         style={{
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: '4px',
           background: currentLang.startsWith('fr')
             ? 'var(--color-primary-light)'
             : 'transparent',
@@ -45,21 +49,24 @@ export default function LanguageSelector() {
             : 'var(--color-text-secondary)',
           border: 'none',
           borderRadius: 'var(--radius-sm)',
-          padding: '2px 8px',
-          fontSize: '0.8rem',
-          fontWeight: currentLang.startsWith('fr') ? '700' : '500',
+          padding: '2px 6px',
           cursor: 'pointer',
           transition: 'var(--transition-fast)'
         }}
+        aria-label="Français"
         aria-pressed={currentLang.startsWith('fr')}
       >
-        FR
+        <FlagIcon countryCode="FR" size={13} />
+        <span style={{ fontSize: '0.75rem', fontWeight: currentLang.startsWith('fr') ? '700' : '500' }}>FR</span>
       </button>
       <span style={{ color: 'var(--color-border)', fontSize: '0.8rem' }}>|</span>
       <button
         type="button"
         onClick={() => changeLanguage('en')}
         style={{
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: '4px',
           background: currentLang.startsWith('en')
             ? 'var(--color-primary-light)'
             : 'transparent',
@@ -68,15 +75,15 @@ export default function LanguageSelector() {
             : 'var(--color-text-secondary)',
           border: 'none',
           borderRadius: 'var(--radius-sm)',
-          padding: '2px 8px',
-          fontSize: '0.8rem',
-          fontWeight: currentLang.startsWith('en') ? '700' : '500',
+          padding: '2px 6px',
           cursor: 'pointer',
           transition: 'var(--transition-fast)'
         }}
+        aria-label="English"
         aria-pressed={currentLang.startsWith('en')}
       >
-        EN
+        <FlagIcon countryCode="GB" size={13} />
+        <span style={{ fontSize: '0.75rem', fontWeight: currentLang.startsWith('en') ? '700' : '500' }}>EN</span>
       </button>
     </div>
   );

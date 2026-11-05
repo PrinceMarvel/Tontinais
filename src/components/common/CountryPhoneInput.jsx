@@ -6,6 +6,7 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
 import { Search, ChevronDown, Check, X, Smartphone } from 'lucide-react';
+import FlagIcon from './FlagIcon';
 import {
   COUNTRIES,
   detectCountryFromPhone,
@@ -108,7 +109,7 @@ export default function CountryPhoneInput({
           }}
           aria-label="Sélectionner le pays"
         >
-          <span style={{ fontSize: '1.25rem', lineHeight: 1 }}>{selectedCountry.flag}</span>
+          <FlagIcon countryCode={selectedCountry.code} size={18} />
           <span style={{ color: 'var(--color-secondary-light)', fontSize: '0.85rem' }}>{selectedCountry.dialCode}</span>
           <ChevronDown size={14} style={{ color: 'var(--color-text-secondary)' }} />
         </button>
@@ -271,7 +272,7 @@ export default function CountryPhoneInput({
                       }}
                     >
                       <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                        <span style={{ fontSize: '1.4rem', lineHeight: 1 }}>{country.flag}</span>
+                        <FlagIcon countryCode={country.code} size={20} />
                         <div>
                           <div style={{ fontWeight: isSelected ? 700 : 500, fontSize: '0.9rem' }}>
                             {country.name}

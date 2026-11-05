@@ -1,9 +1,9 @@
 /**
  * @file sw.js
- * @description Service Worker pour TontiNaïs PWA : mise en cache statique et résilience réseau.
+ * @description Service Worker résilient pour TontiNaïs PWA : Network First universel et purge automatique des caches.
  */
 
-const CACHE_NAME = 'tontinais-cache-v2';
+const CACHE_NAME = 'tontinais-cache-v3';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
@@ -11,7 +11,7 @@ const STATIC_ASSETS = [
   '/logo.svg'
 ];
 
-// Installation du Service Worker et mise en cache des ressources critiques
+// Installation du Service Worker et pré-mise en cache
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
@@ -23,7 +23,7 @@ self.addEventListener('install', (event) => {
   self.skipWaiting();
 });
 
-// Activation et purge immédiate des anciens caches
+// Activation et purge immédiate de TOUTES les versions antérieures de cache
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((keys) => {
@@ -39,11 +39,11 @@ self.addEventListener('activate', (event) => {
   self.clients.claim();
 });
 
-// Stratégie réseau : Network First pour tout, avec fallback cache si déconnecté
+// Stratégie réseau : Network First systématique pour garantir la fraîcheur des scripts et images
 self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url);
 
-  // Ne pas intercepter les requêtes API, non-GET ou extensions de navigateur
+  // Ne pas intercepter les requêtes API, non-GET ou protocoles spécifiques (data:, blob:)
   if (
     url.pathname.startsWith('/api') ||
     event.request.method !== 'GET' ||
@@ -66,26 +66,27 @@ self.addEventListener('fetch', (event) => {
         .catch(async () => {
           const cached = await caches.match(event.request);
           if (cached) return cached;
-          const fallback = await caches.match('/index.html') || await caches.match('/');
+          const fallback = (await caches.match('/index.html')) || (await caches.match('/'));
           return fallback;
         })
     );
     return;
   }
 
-  // Fichiers statiques : Cache First avec mise à jour réseau en tâche de fond
+  // Fichiers statiques et médias : Network First avec secours sur le cache local
   event.respondWith(
-    caches.match(event.request).then((cachedResponse) => {
-      if (cachedResponse) {
-        return cachedResponse;
-      }
-      return fetch(event.request).then((networkResponse) => {
+    fetch(event.request)
+      .then((networkResponse) => {
         if (networkResponse && networkResponse.status === 200 && networkResponse.type === 'basic') {
           const copy = networkResponse.clone();
           caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
         }
         return networkResponse;
-      });
-    })
+      })
+      .catch(async () => {
+        const cachedResponse = await caches.match(event.request);
+        if (cachedResponse) return cachedResponse;
+        return new Response('', { status: 408, statusText: 'Offline asset' });
+      })
   );
 });

@@ -66,26 +66,30 @@ export default function Navbar() {
         backdropFilter: 'var(--backdrop-blur)',
         WebkitBackdropFilter: 'var(--backdrop-blur)',
         borderBottom: '1px solid var(--color-border)',
-        padding: '0 clamp(12px, 3vw, 20px)', width: '100%', maxWidth: '100vw', boxSizing: 'border-box'
+        padding: '0 clamp(8px, 2.5vw, 16px)',
+        width: '100%',
+        maxWidth: '100%',
+        boxSizing: 'border-box'
       }}
     >
       <div
         style={{
           maxWidth: '1200px',
           margin: '0 auto',
-          height: '68px',
+          height: '62px',
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'space-between'
+          justifyContent: 'space-between',
+          gap: '8px'
         }}
       >
         {/* Logo & Branding Officiel */}
         <Link
           to={isAuthenticated ? '/dashboard' : '/'}
-          style={{ textDecoration: 'none' }}
+          style={{ textDecoration: 'none', flexShrink: 0 }}
           onClick={() => setMobileMenuOpen(false)}
         >
-          <Logo size={36} showText={true} />
+          <Logo size={32} showText={true} />
         </Link>
 
         {/* Navigation Bureau */}
@@ -176,7 +180,7 @@ export default function Navbar() {
         </div>
 
         {/* Bouton Hamburger pour mobile */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }} className="mobile-toggle">
+        <div style={{ display: 'flex', alignItems: 'center', gap: 'clamp(4px, 1.5vw, 8px)' }} className="mobile-toggle">
           {isAuthenticated && <NotificationBell />}
           <LanguageSelector />
           <button
@@ -185,7 +189,7 @@ export default function Navbar() {
             style={{ background: 'transparent', border: 'none', color: 'var(--color-text-primary)', cursor: 'pointer', padding: '6px' }}
             aria-label="Menu"
           >
-            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
         </div>
       </div>
@@ -195,13 +199,15 @@ export default function Navbar() {
         <div
           className="glass-card animate-fade-in"
           style={{
-            margin: '0 -20px',
-            padding: '16px 20px',
+            margin: '0',
+            padding: '16px 14px',
             borderTop: '1px solid var(--color-border)',
             borderRadius: 0,
             display: 'flex',
             flexDirection: 'column',
-            gap: '12px'
+            gap: '12px',
+            width: '100%',
+            boxSizing: 'border-box'
           }}
         >
           {isAuthenticated ? (

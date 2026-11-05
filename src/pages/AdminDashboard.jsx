@@ -61,9 +61,9 @@ export default function AdminDashboard() {
   }, [fetchAdminData]);
 
   return (
-    <div style={{ maxWidth: '1200px', margin: '32px auto', padding: '0 20px' }}>
+    <div style={{ maxWidth: '1200px', width: '100%', margin: 'clamp(16px, 3vh, 32px) auto', padding: '0 clamp(10px, 3vw, 20px)', boxSizing: 'border-box' }}>
       {/* En-tête de la page */}
-      <div className="glass-card animate-fade-in" style={{ padding: '28px', marginBottom: '24px' }}>
+      <div className="glass-card animate-fade-in" style={{ padding: 'clamp(16px, 3vw, 28px)', marginBottom: '24px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
           <div
             style={{
@@ -79,7 +79,7 @@ export default function AdminDashboard() {
             <ShieldAlert size={22} />
           </div>
           <div>
-            <h1 style={{ fontSize: '1.8rem', color: 'var(--color-text-primary)' }}>
+            <h1 style={{ fontSize: 'clamp(1.4rem, 4vw, 1.8rem)', color: 'var(--color-text-primary)' }}>
               Administration Centrale
             </h1>
             <p style={{ color: 'var(--color-text-secondary)', fontSize: '0.9rem' }}>
@@ -112,7 +112,7 @@ export default function AdminDashboard() {
       <div
         style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 180px), 1fr))',
           gap: '16px',
           marginBottom: '28px'
         }}

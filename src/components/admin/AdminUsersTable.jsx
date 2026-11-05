@@ -188,7 +188,7 @@ export default function AdminUsersTable({ users = [], onUserUpdated }) {
       </div>
 
       {/* Liste des utilisateurs : Cartes mobile & Tableau bureau */}
-      <div className="glass-card" style={{ padding: '20px' }}>
+      <div className="glass-card" style={{ padding: 'clamp(12px, 3vw, 20px)' }}>
         {filteredUsers.length === 0 ? (
           <div style={{ textAlign: 'center', padding: '40px 20px', color: 'var(--color-text-secondary)' }}>
             <Users size={36} color="var(--color-text-muted)" style={{ margin: '0 auto 12px' }} />
@@ -217,7 +217,7 @@ export default function AdminUsersTable({ users = [], onUserUpdated }) {
                   }}
                 >
                   {/* Identité utilisateur */}
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', minWidth: '220px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', minWidth: 'min(100%, 200px)' }}>
                     <div
                       style={{
                         width: '40px',
@@ -254,7 +254,7 @@ export default function AdminUsersTable({ users = [], onUserUpdated }) {
                   </div>
 
                   {/* Coordonnées de contact */}
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '14px', fontSize: '0.85rem' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 'clamp(8px, 2vw, 14px)', fontSize: '0.85rem', flexWrap: 'wrap' }}>
                     {user.telephone && (
                       <a
                         href={`tel:${user.telephone}`}
@@ -280,7 +280,7 @@ export default function AdminUsersTable({ users = [], onUserUpdated }) {
                   </div>
 
                   {/* Rôle et actions */}
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
                     <select
                       value={user.role}
                       disabled={isUpdating}

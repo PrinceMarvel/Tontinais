@@ -52,15 +52,15 @@ export default function Dashboard() {
   const primaryCurrency = groups[0]?.devise || 'XAF';
 
   return (
-    <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '32px 20px' }}>
+    <div style={{ maxWidth: '1200px', width: '100%', margin: '0 auto', padding: 'clamp(16px, 3vh, 32px) clamp(10px, 3vw, 20px)', boxSizing: 'border-box' }}>
       {/* En-tête de bienvenue */}
-      <div className="glass-card animate-fade-in" style={{ padding: '28px 24px', marginBottom: '28px' }}>
+      <div className="glass-card animate-fade-in" style={{ padding: 'clamp(16px, 3vw, 24px)', marginBottom: '24px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
           <div>
-            <h1 style={{ fontSize: '1.8rem', color: 'var(--color-text-primary)', marginBottom: '4px' }}>
+            <h1 style={{ fontSize: 'clamp(1.4rem, 4vw, 1.8rem)', color: 'var(--color-text-primary)', marginBottom: '4px' }}>
               {t('dashboard.welcome')}, {user?.prenom} !
             </h1>
-            <p style={{ color: 'var(--color-text-secondary)', fontSize: '0.95rem' }}>
+            <p style={{ color: 'var(--color-text-secondary)', fontSize: '0.92rem' }}>
               {t('dashboard.welcomeSubtitle')}
             </p>
           </div>
@@ -81,7 +81,7 @@ export default function Dashboard() {
       </div>
 
       {/* Cartes KPI Financières avec Squelettes animés au chargement */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '16px', marginBottom: '32px' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 200px), 1fr))', gap: '16px', marginBottom: '28px' }}>
         {loading ? (
           <>
             <SkeletonKPI />
@@ -136,13 +136,13 @@ export default function Dashboard() {
       )}
 
       {loading ? (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '20px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 280px), 1fr))', gap: '16px' }}>
           <SkeletonCard />
           <SkeletonCard />
           <SkeletonCard />
         </div>
       ) : groups.length === 0 ? (
-        <div className="glass-card" style={{ padding: '48px 24px', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px' }}>
+        <div className="glass-card" style={{ padding: 'clamp(28px, 5vw, 48px) 20px', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px' }}>
           <div style={{ width: '60px', height: '60px', borderRadius: '50%', background: 'rgba(49, 151, 149, 0.12)', display: 'grid', placeItems: 'center', color: 'var(--color-secondary-light)', marginBottom: '8px' }}>
             <Users size={32} />
           </div>
@@ -162,11 +162,11 @@ export default function Dashboard() {
           </div>
         </div>
       ) : (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '20px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 280px), 1fr))', gap: '16px' }}>
           {groups.map((group) => {
             const isActif = group.membershipStatus === 'ACTIF';
             return (
-              <div key={group._id} className="glass-card" style={{ padding: '24px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: '18px' }}>
+              <div key={group._id} className="glass-card" style={{ padding: 'clamp(16px, 3vw, 22px)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: '16px' }}>
                 <div>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '8px' }}>
                     <h3 style={{ fontSize: '1.15rem', color: 'var(--color-text-primary)' }}>{group.nom}</h3>
@@ -195,14 +195,14 @@ export default function Dashboard() {
                   <span style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)' }}>
                     Code : <strong style={{ color: 'var(--color-text-primary)' }}>{group.codeInvitation}</strong>
                   </span>
-                  <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                  <div style={{ display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap' }}>
                     {isActif && (
-                      <Link to={`/groups/${group._id}?action=pay`} className="btn btn-primary" style={{ padding: '6px 12px', fontSize: '0.8rem' }}>
+                      <Link to={`/groups/${group._id}?action=pay`} className="btn btn-primary" style={{ padding: '6px 12px', fontSize: '0.8rem', flex: '1 1 auto' }}>
                         <CreditCard size={14} />
                         <span>{t('groups.contributeNow')}</span>
                       </Link>
                     )}
-                    <Link to={`/groups/${group._id}`} className="btn btn-outline" style={{ padding: '6px 12px', fontSize: '0.8rem' }}>
+                    <Link to={`/groups/${group._id}`} className="btn btn-outline" style={{ padding: '6px 12px', fontSize: '0.8rem', flex: '1 1 auto' }}>
                       <span>{t('dashboard.viewDetails')}</span>
                       <ArrowRight size={14} />
                     </Link>

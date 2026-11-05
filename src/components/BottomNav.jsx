@@ -66,7 +66,7 @@ export default function BottomNav() {
         position: 'fixed',
         bottom: 0,
         left: 0,
-        right: 0, width: '100%', maxWidth: '100vw', overflow: 'hidden', boxSizing: 'border-box',
+        right: 0, width: '100%', maxWidth: '100%', overflow: 'hidden', boxSizing: 'border-box',
         zIndex: 90,
         backgroundColor: 'rgba(15, 23, 42, 0.94)',
         backdropFilter: 'var(--backdrop-blur)',

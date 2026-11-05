@@ -130,13 +130,13 @@ export default function GroupDetails() {
   const tabStyle = (tab) => ({
     display: 'inline-flex',
     alignItems: 'center',
-    gap: '8px',
-    padding: '8px clamp(8px, 2vw, 16px)',
+    gap: '6px',
+    padding: '8px clamp(6px, 1.5vw, 14px)',
     background: 'none',
     border: 'none',
     cursor: 'pointer',
     fontWeight: '600',
-    fontSize: 'clamp(0.82rem, 2vw, 0.95rem)',
+    fontSize: 'clamp(0.78rem, 1.8vw, 0.92rem)',
     color: activeTab === tab ? 'var(--color-secondary-light)' : 'var(--color-text-secondary)',
     borderBottom: activeTab === tab ? '2px solid var(--color-secondary-light)' : '2px solid transparent'
   });
@@ -167,7 +167,7 @@ export default function GroupDetails() {
   }
 
   return (
-    <div style={{ maxWidth: '1100px', width: '100%', margin: 'clamp(16px, 3vh, 32px) auto', padding: '0 clamp(10px, 3vw, 20px)', boxSizing: 'border-box' }}>
+    <div style={{ maxWidth: '1100px', width: '100%', margin: 'clamp(14px, 2.5vh, 28px) auto', padding: '0 clamp(8px, 2.5vw, 16px)', boxSizing: 'border-box' }}>
       {/* Lien de retour */}
       <div style={{ marginBottom: '18px' }}>
         <Link
@@ -232,17 +232,17 @@ export default function GroupDetails() {
       >
         <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap', maxWidth: '100%' }}>
           <button type="button" onClick={() => setActiveTab('members')} style={tabStyle('members')}>
-            <Users size={18} />
+            <Users size={16} />
             <span>{t('groups.tabMembers')} ({members.length})</span>
           </button>
 
           <button type="button" onClick={() => setActiveTab('payouts')} style={tabStyle('payouts')}>
-            <Calendar size={18} />
+            <Calendar size={16} />
             <span>{t('groups.tabPayouts')} ({payouts.length})</span>
           </button>
 
           <button type="button" onClick={() => setActiveTab('contributions')} style={tabStyle('contributions')}>
-            <CreditCard size={18} />
+            <CreditCard size={16} />
             <span>{t('groups.tabContributions')} ({contributions.length})</span>
           </button>
         </div>
@@ -253,9 +253,9 @@ export default function GroupDetails() {
             type="button"
             className="btn btn-primary"
             onClick={() => setIsDeclareModalOpen(true)}
-            style={{ fontSize: '0.85rem' }}
+            style={{ fontSize: '0.84rem', padding: '8px 14px' }}
           >
-            <PlusCircle size={16} />
+            <PlusCircle size={15} />
             <span>{t('contributions.declarePayment')}</span>
           </button>
         )}

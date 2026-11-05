@@ -110,7 +110,7 @@ export default function BottomNav() {
       </Link>
 
       {/* 4. Administration (Super Admin uniquement) */}
-      {role === 'SUPER_ADMIN' && (
+      {(role === 'SUPER_ADMIN' || role === 'CHEF_DE_TONTINE') && (
         <Link to="/admin" style={navItemStyle('/admin')}>
           {isActive('/admin') && activeIndicator}
           <ShieldAlert size={20} color="var(--color-accent)" />

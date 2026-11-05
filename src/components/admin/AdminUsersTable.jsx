@@ -1,6 +1,6 @@
 /**
  * @file AdminUsersTable.jsx
- * @description Composant modulaire affichant la gestion des utilisateurs et l'attribution des rôles administrateurs.
+ * @description Back-Office utilisateurs : suivi temps réel des nouveaux inscrits et attribution des rôles.
  * @module components/admin/AdminUsersTable
  */
 
@@ -11,7 +11,11 @@ import {
   Search,
   Filter,
   Shield,
-  UserCheck,
+  Phone,
+  Mail,
+  RefreshCw,
+  Sparkles,
+  Calendar,
   AlertCircle
 } from 'lucide-react';
 import api from '../../services/api';
@@ -29,6 +33,14 @@ export default function AdminUsersTable({ users = [], onUserUpdated }) {
   const [roleFilter, setRoleFilter] = useState('ALL');
   const [updatingUserId, setUpdatingUserId] = useState(null);
   const [errorMessage, setErrorMessage] = useState('');
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
+  const handleRefresh = async () => {
+    if (!onUserUpdated) return;
+    setIsRefreshing(true);
+    await onUserUpdated();
+    setTimeout(() => setIsRefreshing(false), 500);
+  };
 
   const handleRoleChange = async (userId, newRole) => {
     try {
@@ -46,6 +58,13 @@ export default function AdminUsersTable({ users = [], onUserUpdated }) {
     }
   };
 
+  const now = new Date();
+  const isRecent = (dateStr) => dateStr ? ((now - new Date(dateStr)) / 36e5) < 48 : false;
+
+  const recentCount = users.filter((u) => isRecent(u.createdAt)).length;
+
+  const formatDate = (dateStr) => !dateStr ? 'Date inconnue' : new Date(dateStr).toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+
   const filteredUsers = users.filter((u) => {
     const matchesSearch =
       (u.nom && u.nom.toLowerCase().includes(searchTerm.toLowerCase())) ||
@@ -54,12 +73,11 @@ export default function AdminUsersTable({ users = [], onUserUpdated }) {
       (u.telephone && u.telephone.includes(searchTerm));
 
     const matchesRole = roleFilter === 'ALL' || u.role === roleFilter;
-
     return matchesSearch && matchesRole;
   });
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
       {errorMessage && (
         <div
           style={{
@@ -78,6 +96,41 @@ export default function AdminUsersTable({ users = [], onUserUpdated }) {
           <span>{errorMessage}</span>
         </div>
       )}
+
+      {/* Cartes KPI rapides Back-Office */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '14px' }}>
+        <div className="glass-card" style={{ padding: '16px 20px', display: 'flex', alignItems: 'center', gap: '14px' }}>
+          <div style={{ width: '42px', height: '42px', borderRadius: '50%', background: 'rgba(79, 209, 197, 0.15)', display: 'grid', placeItems: 'center', color: 'var(--color-secondary-light)' }}>
+            <Users size={22} />
+          </div>
+          <div>
+            <div style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)' }}>Total Inscrits</div>
+            <div style={{ fontSize: '1.4rem', fontWeight: '700', color: 'var(--color-text-primary)' }}>{users.length}</div>
+          </div>
+        </div>
+
+        <div className="glass-card" style={{ padding: '16px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+            <div style={{ width: '42px', height: '42px', borderRadius: '50%', background: 'rgba(16, 185, 129, 0.18)', display: 'grid', placeItems: 'center', color: 'var(--color-success)' }}>
+              <Sparkles size={22} />
+            </div>
+            <div>
+              <div style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)' }}>Nouveaux (48h)</div>
+              <div style={{ fontSize: '1.4rem', fontWeight: '700', color: 'var(--color-success)' }}>+{recentCount}</div>
+            </div>
+          </div>
+          <button
+            type="button"
+            className="btn btn-outline"
+            onClick={handleRefresh}
+            title="Rafraîchir la liste"
+            style={{ padding: '8px 12px', fontSize: '0.8rem' }}
+          >
+            <RefreshCw size={14} className={isRefreshing ? 'animate-spin' : ''} />
+            <span>Actualiser</span>
+          </button>
+        </div>
+      </div>
 
       {/* Barre de recherche et filtre */}
       <div
@@ -105,7 +158,7 @@ export default function AdminUsersTable({ users = [], onUserUpdated }) {
               border: '1px solid var(--color-border)',
               backgroundColor: 'var(--color-bg-surface)',
               color: 'var(--color-text-primary)',
-              fontSize: '0.85rem'
+              fontSize: '0.88rem'
             }}
           />
         </div>
@@ -121,101 +174,140 @@ export default function AdminUsersTable({ users = [], onUserUpdated }) {
               border: '1px solid var(--color-border)',
               backgroundColor: 'var(--color-bg-surface)',
               color: 'var(--color-text-primary)',
-              fontSize: '0.85rem'
+              fontSize: '0.88rem'
             }}
           >
-            <option value="ALL">Tous les rôles</option>
+            <option value="ALL">Tous les rôles ({users.length})</option>
             {AVAILABLE_ROLES.map((r) => (
               <option key={r.value} value={r.value}>
-                {r.label}
+                {r.label} ({users.filter((u) => u.role === r.value).length})
               </option>
             ))}
           </select>
         </div>
       </div>
 
-      {/* Tableau des utilisateurs */}
-      <div className="glass-card" style={{ padding: '20px', overflowX: 'auto' }}>
-        <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', minWidth: '600px' }}>
-          <thead>
-            <tr style={{ borderBottom: '1px solid var(--color-border)', color: 'var(--color-text-muted)', fontSize: '0.8rem' }}>
-              <th style={{ padding: '10px 12px' }}>Utilisateur</th>
-              <th style={{ padding: '10px 12px' }}>Contact</th>
-              <th style={{ padding: '10px 12px' }}>Rôle Système</th>
-              <th style={{ padding: '10px 12px' }}>Inscription</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredUsers.length === 0 ? (
-              <tr>
-                <td colSpan="4" style={{ textAlign: 'center', padding: '30px', color: 'var(--color-text-secondary)' }}>
-                  Aucun utilisateur trouvé.
-                </td>
-              </tr>
-            ) : (
-              filteredUsers.map((user) => {
-                const isUpdating = updatingUserId === user._id;
+      {/* Liste des utilisateurs : Cartes mobile & Tableau bureau */}
+      <div className="glass-card" style={{ padding: '20px' }}>
+        {filteredUsers.length === 0 ? (
+          <div style={{ textAlign: 'center', padding: '40px 20px', color: 'var(--color-text-secondary)' }}>
+            <Users size={36} color="var(--color-text-muted)" style={{ margin: '0 auto 12px' }} />
+            <p style={{ fontSize: '0.95rem' }}>Aucun utilisateur trouvé.</p>
+          </div>
+        ) : (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            {filteredUsers.map((user) => {
+              const isUpdating = updatingUserId === user._id;
+              const isNew = isRecent(user.createdAt);
+              const initials = `${user.prenom?.[0] || ''}${user.nom?.[0] || ''}`.toUpperCase() || 'U';
 
-                return (
-                  <tr
-                    key={user._id}
-                    style={{
-                      borderBottom: '1px solid var(--color-border)',
-                      fontSize: '0.9rem',
-                      transition: 'background 0.2s'
-                    }}
-                  >
-                    <td style={{ padding: '12px' }}>
-                      <div style={{ fontWeight: '600', color: 'var(--color-text-primary)' }}>
-                        {user.prenom} {user.nom}
-                      </div>
-                      <div style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>
-                        ID: {user._id.slice(-6)}
-                      </div>
-                    </td>
-
-                    <td style={{ padding: '12px', color: 'var(--color-text-secondary)' }}>
-                      <div>{user.email}</div>
-                      <div style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)' }}>
-                        {user.telephone || 'Non renseigné'}
-                      </div>
-                    </td>
-
-                    <td style={{ padding: '12px' }}>
+              return (
+                <div
+                  key={user._id}
+                  style={{
+                    padding: '14px 16px',
+                    borderRadius: 'var(--radius-sm)',
+                    backgroundColor: isNew ? 'rgba(16, 185, 129, 0.05)' : 'var(--color-bg-surface)',
+                    border: `1px solid ${isNew ? 'rgba(16, 185, 129, 0.35)' : 'var(--color-border)'}`,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    flexWrap: 'wrap',
+                    gap: '12px'
+                  }}
+                >
+                  {/* Identité utilisateur */}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', minWidth: '220px' }}>
+                    <div
+                      style={{
+                        width: '40px',
+                        height: '40px',
+                        borderRadius: '50%',
+                        background: isNew
+                          ? 'linear-gradient(135deg, var(--color-success), #059669)'
+                          : 'linear-gradient(135deg, var(--color-primary-light), var(--color-secondary))',
+                        color: '#ffffff',
+                        display: 'grid',
+                        placeItems: 'center',
+                        fontWeight: '700',
+                        fontSize: '0.9rem',
+                        flexShrink: 0
+                      }}
+                    >
+                      {initials}
+                    </div>
+                    <div>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <select
-                          value={user.role}
-                          disabled={isUpdating}
-                          onChange={(e) => handleRoleChange(user._id, e.target.value)}
-                          style={{
-                            padding: '6px 10px',
-                            borderRadius: 'var(--radius-sm)',
-                            border: '1px solid var(--color-border)',
-                            backgroundColor: 'var(--color-bg-surface)',
-                            color: user.role === 'SUPER_ADMIN' ? 'var(--color-accent)' : 'var(--color-text-primary)',
-                            fontSize: '0.8rem',
-                            fontWeight: '600'
-                          }}
-                        >
-                          {AVAILABLE_ROLES.map((r) => (
-                            <option key={r.value} value={r.value}>
-                              {r.label}
-                            </option>
-                          ))}
-                        </select>
-                        {user.role === 'SUPER_ADMIN' && <Shield size={14} color="var(--color-accent)" />}
+                        <span style={{ fontWeight: '700', color: 'var(--color-text-primary)', fontSize: '0.95rem' }}>
+                          {user.prenom} {user.nom}
+                        </span>
+                        {isNew && (
+                          <span className="badge badge-success" style={{ fontSize: '0.7rem', padding: '2px 8px' }}>
+                            Nouveau
+                          </span>
+                        )}
                       </div>
-                    </td>
+                      <div style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', marginTop: '2px' }}>
+                        Inscrit le {formatDate(user.createdAt)}
+                      </div>
+                    </div>
+                  </div>
 
-                    <td style={{ padding: '12px', fontSize: '0.8rem', color: 'var(--color-text-secondary)' }}>
-                      {new Date(user.createdAt).toLocaleDateString('fr-FR')}
-                    </td>
-                  </tr>
-                );
-              })
-            )}
-          </tbody>
-        </table>
+                  {/* Coordonnées de contact */}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '14px', fontSize: '0.85rem' }}>
+                    {user.telephone && (
+                      <a
+                        href={`tel:${user.telephone}`}
+                        style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', color: 'var(--color-secondary-light)' }}
+                        title="Appeler directement"
+                      >
+                        <Phone size={14} />
+                        <span>{user.telephone}</span>
+                      </a>
+                    )}
+                    {user.email && (
+                      <a
+                        href={`mailto:${user.email}`}
+                        style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', color: 'var(--color-text-secondary)' }}
+                        title="Envoyer un e-mail"
+                      >
+                        <Mail size={14} />
+                        <span style={{ maxWidth: '180px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                          {user.email}
+                        </span>
+                      </a>
+                    )}
+                  </div>
+
+                  {/* Rôle et actions */}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <select
+                      value={user.role}
+                      disabled={isUpdating}
+                      onChange={(e) => handleRoleChange(user._id, e.target.value)}
+                      style={{
+                        padding: '6px 10px',
+                        borderRadius: 'var(--radius-sm)',
+                        border: '1px solid var(--color-border)',
+                        backgroundColor: 'var(--color-bg-dark)',
+                        color: user.role === 'SUPER_ADMIN' ? 'var(--color-accent)' : 'var(--color-text-primary)',
+                        fontSize: '0.8rem',
+                        fontWeight: '600'
+                      }}
+                    >
+                      {AVAILABLE_ROLES.map((r) => (
+                        <option key={r.value} value={r.value}>
+                          {r.label}
+                        </option>
+                      ))}
+                    </select>
+                    {user.role === 'SUPER_ADMIN' && <Shield size={16} color="var(--color-accent)" />}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
       </div>
     </div>
   );

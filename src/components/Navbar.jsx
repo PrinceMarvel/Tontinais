@@ -109,10 +109,10 @@ export default function Navbar() {
                 <span>{t('nav.joinGroup')}</span>
               </Link>
 
-              {role === 'SUPER_ADMIN' && (
+              {(role === 'SUPER_ADMIN' || role === 'CHEF_DE_TONTINE') && (
                 <Link to="/admin" style={navLinkStyle('/admin')}>
                   <ShieldAlert size={16} color="var(--color-accent)" />
-                  <span style={{ color: 'var(--color-accent)' }}>Administration</span>
+                  <span style={{ color: 'var(--color-accent)' }}>Back-Office</span>
                 </Link>
               )}
             </>
@@ -246,10 +246,10 @@ export default function Navbar() {
                 <span>{t('nav.profile')}</span>
               </Link>
 
-              {role === 'SUPER_ADMIN' && (
+              {(role === 'SUPER_ADMIN' || role === 'CHEF_DE_TONTINE') && (
                 <Link to="/admin" onClick={() => setMobileMenuOpen(false)} style={navLinkStyle('/admin')}>
                   <ShieldAlert size={18} color="var(--color-accent)" />
-                  <span style={{ color: 'var(--color-accent)' }}>Administration</span>
+                  <span style={{ color: 'var(--color-accent)' }}>Back-Office</span>
                 </Link>
               )}
 

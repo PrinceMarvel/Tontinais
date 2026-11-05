@@ -57,7 +57,7 @@ export default function GroupHeader({
   const statusInfo = getStatusInfo(group.statut);
 
   return (
-    <div className="glass-card animate-fade-in" style={{ padding: '28px', marginBottom: '24px' }}>
+    <div className="glass-card animate-fade-in" style={{ padding: 'clamp(14px, 3vw, 24px)', marginBottom: '24px' }}>
       <div
         style={{
           display: 'flex',
@@ -162,7 +162,7 @@ export default function GroupHeader({
       <div
         style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 130px), 1fr))',
           gap: '12px',
           padding: '16px',
           backgroundColor: 'var(--color-bg-surface)',

@@ -131,12 +131,12 @@ export default function GroupDetails() {
     display: 'inline-flex',
     alignItems: 'center',
     gap: '8px',
-    padding: '10px 16px',
+    padding: '8px clamp(8px, 2vw, 16px)',
     background: 'none',
     border: 'none',
     cursor: 'pointer',
     fontWeight: '600',
-    fontSize: '0.95rem',
+    fontSize: 'clamp(0.82rem, 2vw, 0.95rem)',
     color: activeTab === tab ? 'var(--color-secondary-light)' : 'var(--color-text-secondary)',
     borderBottom: activeTab === tab ? '2px solid var(--color-secondary-light)' : '2px solid transparent'
   });
@@ -167,7 +167,7 @@ export default function GroupDetails() {
   }
 
   return (
-    <div style={{ maxWidth: '1100px', margin: '32px auto', padding: '0 20px' }}>
+    <div style={{ maxWidth: '1100px', width: '100%', margin: 'clamp(16px, 3vh, 32px) auto', padding: '0 clamp(10px, 3vw, 20px)', boxSizing: 'border-box' }}>
       {/* Lien de retour */}
       <div style={{ marginBottom: '18px' }}>
         <Link
@@ -230,7 +230,7 @@ export default function GroupDetails() {
           paddingBottom: '8px'
         }}
       >
-        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap', maxWidth: '100%' }}>
           <button type="button" onClick={() => setActiveTab('members')} style={tabStyle('members')}>
             <Users size={18} />
             <span>{t('groups.tabMembers')} ({members.length})</span>

@@ -66,7 +66,7 @@ export default function Navbar() {
         backdropFilter: 'var(--backdrop-blur)',
         WebkitBackdropFilter: 'var(--backdrop-blur)',
         borderBottom: '1px solid var(--color-border)',
-        padding: '0 20px'
+        padding: '0 clamp(12px, 3vw, 20px)', width: '100%', maxWidth: '100vw', boxSizing: 'border-box'
       }}
     >
       <div
@@ -89,7 +89,7 @@ export default function Navbar() {
         </Link>
 
         {/* Navigation Bureau */}
-        <nav style={{ display: 'none', alignItems: 'center', gap: '20px' }} className="desktop-nav">
+        <nav style={{ display: 'none', alignItems: 'center', gap: '12px' }} className="desktop-nav">
           {isAuthenticated ? (
             <>
               <Link to="/dashboard" style={navLinkStyle('/dashboard')}>
@@ -279,7 +279,7 @@ export default function Navbar() {
       )}
 
       <style>{`
-        @media (min-width: 768px) {
+        @media (min-width: 1024px) {
           .desktop-nav { display: flex !important; }
           .desktop-actions { display: flex !important; }
           .mobile-toggle { display: none !important; }

@@ -34,13 +34,13 @@ export default function BottomNav() {
       alignItems: 'center',
       justifyContent: 'center',
       gap: '4px',
-      flex: 1,
+      flex: 1, minWidth: 0,
       height: '100%',
       color: active ? 'var(--color-secondary-light)' : 'var(--color-text-secondary)',
       textDecoration: 'none',
       transition: 'var(--transition-fast)',
       position: 'relative',
-      padding: '6px 0'
+      padding: '4px 2px'
     };
   };
 
@@ -66,7 +66,7 @@ export default function BottomNav() {
         position: 'fixed',
         bottom: 0,
         left: 0,
-        right: 0,
+        right: 0, width: '100%', maxWidth: '100vw', overflow: 'hidden', boxSizing: 'border-box',
         zIndex: 90,
         backgroundColor: 'rgba(15, 23, 42, 0.94)',
         backdropFilter: 'var(--backdrop-blur)',
@@ -84,7 +84,7 @@ export default function BottomNav() {
       <Link to="/dashboard" style={navItemStyle('/dashboard')}>
         {isActive('/dashboard') && activeIndicator}
         <LayoutDashboard size={20} />
-        <span style={{ fontSize: '0.72rem', fontWeight: isActive('/dashboard') ? 700 : 500 }}>
+        <span style={{ fontSize: '0.68rem', fontWeight: isActive('/dashboard') ? 700 : 500 }}>
           {t('nav.dashboard')}
         </span>
       </Link>
@@ -94,7 +94,7 @@ export default function BottomNav() {
         <Link to="/groups/create" style={navItemStyle('/groups/create')}>
           {isActive('/groups/create') && activeIndicator}
           <PlusCircle size={20} />
-          <span style={{ fontSize: '0.72rem', fontWeight: isActive('/groups/create') ? 700 : 500 }}>
+          <span style={{ fontSize: '0.68rem', fontWeight: isActive('/groups/create') ? 700 : 500 }}>
             {t('nav.createShort')}
           </span>
         </Link>
@@ -104,7 +104,7 @@ export default function BottomNav() {
       <Link to="/groups/join" style={navItemStyle('/groups/join')}>
         {isActive('/groups/join') && activeIndicator}
         <KeyRound size={20} />
-        <span style={{ fontSize: '0.72rem', fontWeight: isActive('/groups/join') ? 700 : 500 }}>
+        <span style={{ fontSize: '0.68rem', fontWeight: isActive('/groups/join') ? 700 : 500 }}>
           {t('nav.joinShort')}
         </span>
       </Link>
@@ -114,7 +114,7 @@ export default function BottomNav() {
         <Link to="/admin" style={navItemStyle('/admin')}>
           {isActive('/admin') && activeIndicator}
           <ShieldAlert size={20} color="var(--color-accent)" />
-          <span style={{ fontSize: '0.72rem', fontWeight: isActive('/admin') ? 700 : 500, color: 'var(--color-accent)' }}>
+          <span style={{ fontSize: '0.68rem', fontWeight: isActive('/admin') ? 700 : 500, color: 'var(--color-accent)' }}>
             {t('nav.adminShort')}
           </span>
         </Link>
@@ -124,7 +124,7 @@ export default function BottomNav() {
       <Link to="/profile" style={navItemStyle('/profile')}>
         {isActive('/profile') && activeIndicator}
         <User size={20} />
-        <span style={{ fontSize: '0.72rem', fontWeight: isActive('/profile') ? 700 : 500 }}>
+        <span style={{ fontSize: '0.68rem', fontWeight: isActive('/profile') ? 700 : 500 }}>
           {t('nav.profileShort')}
         </span>
       </Link>

@@ -151,7 +151,7 @@ export default function GroupMembersList({ members, isChef, groupId, onMemberUpd
       )}
 
       {/* Liste des participants actifs */}
-      <div className="glass-card" style={{ padding: '24px' }}>
+      <div className="glass-card" style={{ padding: 'clamp(14px, 3vw, 20px)' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '18px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
             <Users size={20} color="var(--color-secondary-light)" />
@@ -166,7 +166,7 @@ export default function GroupMembersList({ members, isChef, groupId, onMemberUpd
             {t('groups.noActiveMembers')}
           </p>
         ) : (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '14px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 240px), 1fr))', gap: '14px' }}>
             {activeMembers.map((membership) => {
               const u = membership.user || {};
               const isChefMember = membership.roleDansGroupe === 'CHEF_DE_TONTINE';

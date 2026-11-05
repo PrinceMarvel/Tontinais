@@ -150,7 +150,7 @@ export default function GroupPayoutsList({ payouts = [], isChef, groupId, devise
         </div>
       )}
 
-      <div className="glass-card" style={{ padding: '24px' }}>
+      <div className="glass-card" style={{ padding: 'clamp(14px, 3vw, 20px)' }}>
         <div
           style={{
             display: 'flex',
@@ -236,7 +236,7 @@ export default function GroupPayoutsList({ payouts = [], isChef, groupId, devise
                           ? `${benef.prenom} ${benef.nom}`
                           : t('payouts.beneficiary')}
                       </div>
-                      <div style={{ fontSize: '0.8rem', color: 'var(--color-text-secondary)', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                      <div style={{ fontSize: '0.8rem', color: 'var(--color-text-secondary)', display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap', wordBreak: 'break-word' }}>
                         <Smartphone size={12} />
                         <span>{benef.telephone || '—'}</span>
                         <span>• {t('payouts.expectedDate')} : {new Date(payout.datePrevue).toLocaleDateString('fr-FR')}</span>

@@ -5,11 +5,11 @@
 
 :root {
   /* Charte Colorimétrique Officielle FinTech */
-  --color-primary: #1a365d;         /* Bleu Nuit Institutionnel */
+  --color-primary: #1a365d;
   --color-primary-light: #2b4c7e;
-  --color-secondary: #319795;       /* Vert Émeraude Tontine */
-  --color-secondary-light: #4fd1c5; /* Turquoise FinTech Lumineux */
-  --color-accent: #ed8936;          /* Or Solaire Prospérité */
+  --color-secondary: #319795;
+  --color-secondary-light: #4fd1c5;
+  --color-accent: #ed8936;
   --color-accent-light: #fbd38d;
 
   /* Arrière-plans & Surfaces Dark Premium */
@@ -54,7 +54,7 @@
   --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Reset Global, Stabilité & Protection Anti-Bascule */
+/* Reset Global & Protection Anti-Bascule */
 *, *::before, *::after {
   margin: 0;
   padding: 0;
@@ -72,8 +72,8 @@ body {
   font-family: var(--font-family-body);
   background-color: var(--color-bg-dark);
   color: var(--color-text-primary);
-  min-height: 100dvh;
   min-height: 100vh;
+  min-height: 100dvh;
   line-height: 1.5;
   overflow-x: hidden;
   max-width: 100%;
@@ -89,8 +89,8 @@ body {
 }
 
 #root {
-  min-height: 100dvh;
   min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
   overflow-x: hidden;
@@ -101,11 +101,11 @@ body {
 
 ::-webkit-scrollbar { width: 8px; height: 8px; }
 
- {  }
+::-webkit-scrollbar-track { background: #0f172a; }
 
 ::-webkit-scrollbar-thumb { background: rgba(148, 163, 184, 0.25); border-radius: var(--radius-full); }
 
- {  }
+::-webkit-scrollbar-thumb:hover { background: rgba(79, 209, 197, 0.45); }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-family-headings);
@@ -120,7 +120,7 @@ a {
   transition: var(--transition-fast);
 }
 
- {  }
+a:hover { color: var(--color-accent); }
 
 /* Glassmorphism Card Utility */
 .glass-card {
@@ -133,9 +133,9 @@ a {
   transition: var(--transition-smooth);
 }
 
- {  }
+.glass-card:hover { border-color: var(--color-border-hover); }
 
-/* Design System - Formulaires & Champs de Saisie Unifiés */
+/* Formulaires & Champs de Saisie Unifiés */
 .form-group {
   display: flex;
   flex-direction: column;
@@ -195,7 +195,7 @@ a {
 
 .chip-btn.active { background: var(--color-secondary); color: #ffffff; border-color: var(--color-secondary-light); }
 
-/* Design System - Boutons Principaux */
+/* Boutons Principaux */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -291,9 +291,9 @@ a {
   to { opacity: 1; transform: translateX(0); }
 }
 
- {  }
+.animate-fade-in { animation: fadeIn 0.25s ease-out forwards; }
 
- {  }
+.animate-slide-in { animation: slideInRight 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
 
 /* Ergonomie Mobile & Suppression des Espaces Inutiles */
 .app-main {
@@ -306,10 +306,16 @@ a {
 }
 
 /* Dégagement pour la barre mobile uniquement quand elle est affichée */
- {  }
+.app-main.has-bottom-nav {
+  padding-bottom: calc(64px + env(safe-area-inset-bottom, 0px) + 12px);
+}
 
 @media (min-width: 768px) {
   .app-main,
-   {  }
-   {  }
+  .app-main.has-bottom-nav {
+    padding-bottom: 0;
+  }
+  .mobile-bottom-nav {
+    display: none !important;
+  }
 }

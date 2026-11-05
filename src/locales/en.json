@@ -100,7 +100,7 @@
     "createTitle": "Create a new group",
     "createSubtitle": "Configure financial parameters and rules for your collaborative tontine.",
     "stepIndicator": "Step {{current}} of {{total}}",
-    "tabMembers": "Participants",
+    "tabMembers": "Team",
     "tabPayouts": "Rounds & Payouts",
     "tabContributions": "Contributions",
     "unitContribution": "Unit contribution",
@@ -116,7 +116,7 @@
     "noPayoutsChef": "Make sure participants are validated, then click the generate button.",
     "generateSchedule": "Generate rounds schedule",
     "pendingRequests": "Pending membership requests",
-    "activeParticipants": "Active participants",
+    "activeParticipants": "Team Members",
     "noActiveMembers": "No active members in this tontine yet.",
     "memberStatusActive": "Active",
     "memberStatusChef": "Chief",
@@ -164,7 +164,13 @@
     "uploadQrImage": "Upload an image",
     "cameraPermissionError": "Camera access denied. Please grant permission or upload an image.",
     "cameraGenericError": "Unable to access camera. Check your device or upload an image.",
-    "qrDecodeError": "No valid QR Code found in this image."
+    "qrDecodeError": "No valid QR Code found in this image.",
+    "statusCreated": "Created",
+    "statusInProgress": "In progress",
+    "statusCompleted": "Completed",
+    "statusSuspended": "Suspended",
+    "codeLabel": "Code:",
+    "errorTitle": "Error"
   },
   "contributions": {
     "title": "Direct Contributions Tracking",

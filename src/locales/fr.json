@@ -100,7 +100,7 @@
     "createTitle": "Créer un nouveau groupe",
     "createSubtitle": "Configurez les paramètres financiers et les règles de votre tontine collaborative.",
     "stepIndicator": "Étape {{current}} sur {{total}}",
-    "tabMembers": "Participants",
+    "tabMembers": "Équipe",
     "tabPayouts": "Tours & Cagnottes",
     "tabContributions": "Cotisations",
     "unitContribution": "Cotisation unitaire",
@@ -116,7 +116,7 @@
     "noPayoutsChef": "Assurez-vous que les participants sont validés, puis cliquez sur le bouton de génération.",
     "generateSchedule": "Générer l'échéancier des tours",
     "pendingRequests": "Demandes d'adhésion en attente",
-    "activeParticipants": "Participants actifs",
+    "activeParticipants": "Membres de l'équipe",
     "noActiveMembers": "Aucun membre actif dans cette tontine pour le moment.",
     "memberStatusActive": "Actif",
     "memberStatusChef": "Chef",
@@ -164,7 +164,13 @@
     "uploadQrImage": "Importer une image",
     "cameraPermissionError": "Accès à la caméra refusé. Veuillez autoriser l'accès ou importer une image.",
     "cameraGenericError": "Impossible d'accéder à la caméra. Vérifiez vos périphériques ou importez une image.",
-    "qrDecodeError": "Aucun QR Code valide détecté dans cette image."
+    "qrDecodeError": "Aucun QR Code valide détecté dans cette image.",
+    "statusCreated": "Créé",
+    "statusInProgress": "En cours",
+    "statusCompleted": "Terminé",
+    "statusSuspended": "Suspendu",
+    "codeLabel": "Code :",
+    "errorTitle": "Erreur"
   },
   "contributions": {
     "title": "Suivi des Cotisations Directes",

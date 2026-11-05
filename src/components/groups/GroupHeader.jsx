@@ -23,6 +23,39 @@ export default function GroupHeader({
   const activeMembersCount = members.filter((m) => m.statut === 'ACTIF').length;
   const totalPot = (group.montantCotisation || 0) * (group.nombreMaxMembres || 0);
 
+  const getStatusInfo = (statut) => {
+    switch (statut) {
+      case 'CREE':
+        return { label: t('groups.statusCreated') || 'Créé', className: 'badge-info' };
+      case 'EN_COURS':
+        return { label: t('groups.statusInProgress') || 'En cours', className: 'badge-success' };
+      case 'TERMINE':
+        return { label: t('groups.statusCompleted') || 'Terminé', className: 'badge-secondary' };
+      case 'SUSPENDU':
+        return { label: t('groups.statusSuspended') || 'Suspendu', className: 'badge-danger' };
+      default:
+        return { label: statut || t('dashboard.statusActive'), className: 'badge-success' };
+    }
+  };
+
+  const getFrequencyLabel = (freq) => {
+    switch (freq) {
+      case 'MENSUEL':
+      case 'MENSUELLE':
+        return t('groups.frequencyMonthly');
+      case 'HEBDOMADAIRE':
+        return t('groups.frequencyWeekly');
+      case 'BI_MENSUEL':
+      case 'BIMENSUEL':
+      case 'BIMENSUELLE':
+        return t('groups.frequencyBiweekly');
+      default:
+        return freq;
+    }
+  };
+
+  const statusInfo = getStatusInfo(group.statut);
+
   return (
     <div className="glass-card animate-fade-in" style={{ padding: '28px', marginBottom: '24px' }}>
       <div
@@ -38,7 +71,7 @@ export default function GroupHeader({
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '6px' }}>
             <h1 style={{ fontSize: '1.8rem', color: 'var(--color-text-primary)' }}>{group.nom}</h1>
-            <span className="badge badge-success">{group.statut || t('dashboard.statusActive')}</span>
+            <span className={`badge ${statusInfo.className}`}>{statusInfo.label}</span>
           </div>
           <p style={{ color: 'var(--color-text-secondary)', fontSize: '0.95rem', maxWidth: '680px' }}>
             {group.description || t('home.heroSubtitle')}
@@ -58,7 +91,9 @@ export default function GroupHeader({
               border: '1px solid var(--color-border)'
             }}
           >
-            <span style={{ fontSize: '0.8rem', color: 'var(--color-text-secondary)' }}>Code :</span>
+            <span style={{ fontSize: '0.8rem', color: 'var(--color-text-secondary)' }}>
+              {t('groups.codeLabel') || 'Code :'}
+            </span>
             <strong style={{ color: 'var(--color-secondary-light)', letterSpacing: '0.05em' }}>
               {group.codeInvitation}
             </strong>
@@ -143,7 +178,7 @@ export default function GroupHeader({
         <div>
           <div style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>{t('groups.frequency')}</div>
           <div style={{ fontSize: '1.05rem', fontWeight: '600', color: 'var(--color-text-primary)' }}>
-            {group.frequence}
+            {getFrequencyLabel(group.frequence)}
           </div>
         </div>
         <div>

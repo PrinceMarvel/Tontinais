@@ -154,7 +154,9 @@ export default function GroupDetails() {
       <div style={{ maxWidth: '800px', margin: '40px auto', padding: '0 20px' }}>
         <div className="glass-card" style={{ padding: '32px', textAlign: 'center' }}>
           <AlertCircle size={32} color="var(--color-danger)" style={{ margin: '0 auto 12px' }} />
-          <h2 style={{ fontSize: '1.25rem', marginBottom: '8px', color: 'var(--color-text-primary)' }}>Erreur</h2>
+          <h2 style={{ fontSize: '1.25rem', marginBottom: '8px', color: 'var(--color-text-primary)' }}>
+            {t('groups.errorTitle') || 'Erreur'}
+          </h2>
           <p style={{ color: 'var(--color-text-secondary)', marginBottom: '20px' }}>{errorMessage}</p>
           <Link to="/dashboard" className="btn btn-primary">
             {t('groups.backToDashboard')}

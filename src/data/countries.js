@@ -66,22 +66,22 @@ export const detectCountryFromPhone = (phone) => {
 
 export const cleanLocalNumber = (raw) => {
   if (!raw) return '';
-  return raw.replace(/[^\d]/g, '').replace(/^0+/, '');
+  return raw.replace(/[^\d]/g, '');
 };
 
 export const validatePhoneNumber = (dialCode, localNumber, country) => {
-  const cleaned = cleanLocalNumber(localNumber);
-  if (!cleaned) return { valid: false, error: 'Numéro requis.' };
+  const digits = cleanLocalNumber(localNumber);
+  if (!digits) return { valid: false, error: 'Numéro requis.' };
   if (country) {
-    if (cleaned.length < country.minDigits) {
-      return { valid: false, error: `Trop court (${country.minDigits} chiffres attendus pour ${country.name}).` };
+    if (digits.length < country.minDigits) {
+      return { valid: false, error: `${digits.length}/${country.minDigits} chiffres (${country.name})` };
     }
-    if (cleaned.length > country.maxDigits) {
-      return { valid: false, error: `Trop long (${country.maxDigits} chiffres max pour ${country.name}).` };
+    if (digits.length > country.maxDigits) {
+      return { valid: false, error: `Trop long (max ${country.maxDigits} chiffres pour ${country.name})` };
     }
-  } else if (cleaned.length < 6 || cleaned.length > 14) {
+  } else if (digits.length < 6 || digits.length > 14) {
     return { valid: false, error: 'Longueur de numéro non valide.' };
   }
-  return { valid: true, error: null, formatted: `${dialCode}${cleaned}` };
+  return { valid: true, error: null, formatted: `${dialCode}${digits}` };
 };
 

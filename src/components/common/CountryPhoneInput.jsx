@@ -27,7 +27,7 @@ export default function CountryPhoneInput({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
 
-  // Synchronisation lors du chargement initial ou mise à jour externe
+  // Synchronisation lors du chargement ou mise à jour externe de value
   useEffect(() => {
     if (value && typeof value === 'string') {
       const country = detectCountryFromPhone(value);
@@ -37,8 +37,10 @@ export default function CountryPhoneInput({
       } else {
         setLocalNumber(cleanLocalNumber(value));
       }
+    } else if (!value) {
+      setLocalNumber('');
     }
-  }, []);
+  }, [value]);
 
   // Filtrage des pays par nom ou indicatif
   const filteredCountries = useMemo(() => {
@@ -56,17 +58,38 @@ export default function CountryPhoneInput({
     setSelectedCountry(country);
     setIsModalOpen(false);
     setSearchTerm('');
-    const full = country.dialCode + cleanLocalNumber(localNumber);
+    const digits = cleanLocalNumber(localNumber);
+    const full = digits ? country.dialCode + digits : '';
     if (onChange) {
-      onChange({ target: { name: id, value: full } }, { country, localNumber: cleanLocalNumber(localNumber), fullNumber: full });
+      onChange({ target: { name: id, value: full } }, { country, localNumber: digits, fullNumber: full });
     }
   };
 
   const handleNumberChange = (e) => {
     const raw = e.target.value;
+
+    // Prise en charge du copier-coller avec indicatif (+225..., 00225...)
+    if (raw.startsWith('+') || raw.startsWith('00')) {
+      const normalized = raw.startsWith('00') ? '+' + raw.slice(2) : raw;
+      const detected = detectCountryFromPhone(normalized);
+      if (detected) {
+        setSelectedCountry(detected);
+        const remainder = normalized.startsWith(detected.dialCode)
+          ? normalized.slice(detected.dialCode.length)
+          : normalized;
+        const cleaned = cleanLocalNumber(remainder);
+        setLocalNumber(cleaned);
+        const full = cleaned ? detected.dialCode + cleaned : '';
+        if (onChange) {
+          onChange({ target: { name: id, value: full } }, { country: detected, localNumber: cleaned, fullNumber: full });
+        }
+        return;
+      }
+    }
+
     const cleaned = cleanLocalNumber(raw);
     setLocalNumber(cleaned);
-    const full = selectedCountry.dialCode + cleaned;
+    const full = cleaned ? selectedCountry.dialCode + cleaned : '';
     if (onChange) {
       onChange({ target: { name: id, value: full } }, { country: selectedCountry, localNumber: cleaned, fullNumber: full });
     }
@@ -119,6 +142,8 @@ export default function CountryPhoneInput({
           id={id}
           name={id}
           type="tel"
+          inputMode="tel"
+          autoComplete="tel"
           disabled={disabled}
           required={required}
           value={localNumber}

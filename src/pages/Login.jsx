@@ -9,8 +9,6 @@ import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Mail, Lock, LogIn, AlertCircle } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
-import LanguageSelector from '../components/LanguageSelector';
-import Logo from '../components/Logo';
 
 export default function Login() {
   const { t } = useTranslation();
@@ -62,19 +60,7 @@ export default function Login() {
           padding: '36px 28px'
         }}
       >
-        {/* En-tête de carte avec Logo Officiel et Sélecteur de Langue */}
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            marginBottom: '28px'
-          }}
-        >
-          <Logo size={36} showText={true} />
-          <LanguageSelector />
-        </div>
-
+        
         <h1
           style={{
             fontSize: '1.6rem',

@@ -9,8 +9,6 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { UserPlus, AlertCircle } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
-import LanguageSelector from '../components/LanguageSelector';
-import Logo from '../components/Logo';
 
 export default function Register() {
   const { t } = useTranslation();
@@ -77,12 +75,7 @@ export default function Register() {
   return (
     <div style={{ minHeight: '100vh', display: 'grid', placeItems: 'center', padding: '32px 16px' }}>
       <div className="glass-card animate-fade-in" style={{ width: '100%', maxWidth: '520px', padding: '36px 28px' }}>
-        {/* En-tête de carte avec Logo Officiel et Sélecteur de Langue */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
-          <Logo size={36} showText={true} />
-          <LanguageSelector />
-        </div>
-
+        
         <h1 style={{ fontSize: '1.6rem', marginBottom: '6px', color: 'var(--color-text-primary)' }}>
           {t('auth.registerTitle')}
         </h1>

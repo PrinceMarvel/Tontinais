@@ -36,15 +36,15 @@ export const COUNTRIES = [
 ];
 
 export const WALLET_CONFIG = {
-  WAVE: { id: 'WAVE', name: 'Wave', color: '#1dc4ff', textColor: '#ffffff', badge: 'Wave' },
-  ORANGE_MONEY: { id: 'ORANGE_MONEY', name: 'Orange Money', color: '#ff7900', textColor: '#ffffff', badge: 'OM' },
-  MTN_MOMO: { id: 'MTN_MOMO', name: 'MTN MoMo', color: '#ffcc00', textColor: '#000000', badge: 'MoMo' },
-  MOOV: { id: 'MOOV', name: 'Moov Money', color: '#0066b2', textColor: '#ffffff', badge: 'Moov' },
-  AIRTEL_MONEY: { id: 'AIRTEL_MONEY', name: 'Airtel Money', color: '#e60000', textColor: '#ffffff', badge: 'Airtel' },
-  MPESA: { id: 'MPESA', name: 'M-Pesa', color: '#00a651', textColor: '#ffffff', badge: 'M-Pesa' },
-  FREE_MONEY: { id: 'FREE_MONEY', name: 'Free Money', color: '#e10028', textColor: '#ffffff', badge: 'Free' },
-  TMONEY: { id: 'TMONEY', name: 'T-Money', color: '#0088cc', textColor: '#ffffff', badge: 'T-Money' },
-  CARTE_BANCAIRE: { id: 'CARTE_BANCAIRE', name: 'Carte Bancaire / Visa', color: '#2b4c7e', textColor: '#ffffff', badge: 'Carte' }
+  WAVE: { id: 'WAVE', name: 'Wave', color: '#1dc4ff', textColor: '#ffffff', badge: 'Wave', webUrl: 'https://pay.wave.com', deepLink: 'wave://' },
+  ORANGE_MONEY: { id: 'ORANGE_MONEY', name: 'Orange Money', color: '#ff7900', textColor: '#ffffff', badge: 'OM', ussd: '#144#', webUrl: 'https://orangemoney.orange.ci', deepLink: 'orange://' },
+  MTN_MOMO: { id: 'MTN_MOMO', name: 'MTN MoMo', color: '#ffcc00', textColor: '#000000', badge: 'MoMo', ussd: '*133#', webUrl: 'https://momo.mtn.com', deepLink: 'mtnmomo://' },
+  MOOV: { id: 'MOOV', name: 'Moov Money', color: '#0066b2', textColor: '#ffffff', badge: 'Moov', ussd: '*155#', webUrl: 'https://moov-africa.com' },
+  AIRTEL_MONEY: { id: 'AIRTEL_MONEY', name: 'Airtel Money', color: '#e60000', textColor: '#ffffff', badge: 'Airtel', ussd: '*128#', webUrl: 'https://airtel.africa' },
+  MPESA: { id: 'MPESA', name: 'M-Pesa', color: '#00a651', textColor: '#ffffff', badge: 'M-Pesa', ussd: '*334#', webUrl: 'https://safaricom.co.ke/mpesa' },
+  FREE_MONEY: { id: 'FREE_MONEY', name: 'Free Money', color: '#e10028', textColor: '#ffffff', badge: 'Free', ussd: '*145#', webUrl: 'https://freemoney.sn' },
+  TMONEY: { id: 'TMONEY', name: 'T-Money', color: '#0088cc', textColor: '#ffffff', badge: 'T-Money', ussd: '*145#', webUrl: 'https://togocom.tg' },
+  CARTE_BANCAIRE: { id: 'CARTE_BANCAIRE', name: 'Carte Bancaire / Visa', color: '#2b4c7e', textColor: '#ffffff', badge: 'Carte', webUrl: 'https://checkout.stripe.com' }
 };
 
 export const findCountryByCode = (code) => {

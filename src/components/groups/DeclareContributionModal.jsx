@@ -64,8 +64,16 @@ export default function DeclareContributionModal({ isOpen, onClose, groupId, gro
       <WalletCheckoutModal
         isOpen={true}
         sessionData={checkoutSession}
-        onClose={() => { setCheckoutSession(null); onClose(); }}
-        onPaymentSuccess={() => { setCheckoutSession(null); if (onContributionSuccess) onContributionSuccess(); onClose(); }}
+        onClose={() => {
+          setCheckoutSession(null);
+          if (onContributionSuccess) onContributionSuccess();
+          onClose();
+        }}
+        onPaymentSuccess={() => {
+          setCheckoutSession(null);
+          if (onContributionSuccess) onContributionSuccess();
+          onClose();
+        }}
       />
     );
   }
@@ -90,7 +98,7 @@ export default function DeclareContributionModal({ isOpen, onClose, groupId, gro
             </h2>
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginTop: '3px' }}>
               <span style={{ fontSize: '0.8rem', color: 'var(--color-text-secondary)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{group?.nom}</span>
-              <span style={{ fontSize: '0.72rem', color: 'var(--color-secondary-light)', fontWeight: '600' }}>• Tontine Active</span>
+              <span style={{ fontSize: '0.72rem', color: 'var(--color-secondary-light)', fontWeight: '600' }}>• {t('contributions.modalActiveTontine')}</span>
             </div>
           </div>
         </div>
@@ -98,15 +106,15 @@ export default function DeclareContributionModal({ isOpen, onClose, groupId, gro
         {/* Hero Card : Montant & Tour */}
         <div style={{ background: 'linear-gradient(135deg, rgba(49, 151, 149, 0.16) 0%, rgba(30, 41, 59, 0.7) 100%)', border: '1px solid rgba(49, 151, 149, 0.35)', borderRadius: '14px', padding: '14px 18px', marginBottom: '16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px' }}>
           <div>
-            <span style={{ fontSize: '0.74rem', fontWeight: '600', color: 'var(--color-text-secondary)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Montant de la cotisation</span>
+            <span style={{ fontSize: '0.74rem', fontWeight: '600', color: 'var(--color-text-secondary)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>{t('contributions.modalAmountLabel')}</span>
             <div style={{ fontSize: 'clamp(1.35rem, 3.8vw, 1.7rem)', fontWeight: '800', color: 'var(--color-secondary-light)', marginTop: '2px', letterSpacing: '-0.5px' }}>
               {montant.toLocaleString()} <span style={{ fontSize: '1rem', fontWeight: '600', color: 'var(--color-text-primary)' }}>{devise}</span>
             </div>
           </div>
           <div style={{ textAlign: 'right', flexShrink: 0 }}>
-            <span style={{ fontSize: '0.72rem', color: 'var(--color-text-secondary)', display: 'block', marginBottom: '4px' }}>Tour concerné</span>
+            <span style={{ fontSize: '0.72rem', color: 'var(--color-text-secondary)', display: 'block', marginBottom: '4px' }}>{t('contributions.modalTourLabel')}</span>
             <div style={{ display: 'inline-flex', alignItems: 'center', background: 'rgba(15, 23, 42, 0.8)', border: '1px solid rgba(255, 255, 255, 0.12)', borderRadius: '8px', padding: '4px 8px' }}>
-              <span style={{ fontSize: '0.8rem', fontWeight: '700', color: '#fff', marginRight: '4px' }}>N°</span>
+              <span style={{ fontSize: '0.8rem', fontWeight: '700', color: '#fff', marginRight: '4px' }}>{t('contributions.modalRoundPrefix')}</span>
               <input type="number" min="1" max="100" value={tourNumber} onChange={(e) => setTourNumber(e.target.value)} style={{ width: '38px', background: 'transparent', border: 'none', color: 'var(--color-secondary-light)', fontSize: '0.95rem', fontWeight: '800', textAlign: 'center', outline: 'none' }} required />
             </div>
           </div>
@@ -123,7 +131,7 @@ export default function DeclareContributionModal({ isOpen, onClose, groupId, gro
           {/* Saisie téléphone */}
           <div>
             <label className="label" style={{ fontSize: '0.84rem', fontWeight: '700', marginBottom: '6px' }}>{t('contributions.modalPhoneLabel')}</label>
-            <CountryPhoneInput id="phone" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="Numéro Mobile Money du compte" required />
+            <CountryPhoneInput id="phone" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder={t('contributions.modalPhonePlaceholder')} required />
           </div>
 
           {/* Choix portefeuilles */}
@@ -151,7 +159,7 @@ export default function DeclareContributionModal({ isOpen, onClose, groupId, gro
           {/* Note de sécurité */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>
             <Shield size={14} color="var(--color-secondary-light)" />
-            <span>Paiement sécurisé et tracé directement sur le réseau officiel de l'opérateur.</span>
+            <span>{t('contributions.modalSecurityHint')}</span>
           </div>
 
           {/* Boutons d'action */}
@@ -167,7 +175,7 @@ export default function DeclareContributionModal({ isOpen, onClose, groupId, gro
                 </>
               ) : (
                 <>
-                  <span>Payer sur le Guichet</span>
+                  <span>{t('contributions.modalSubmit')}</span>
                   <ArrowRight size={16} />
                 </>
               )}

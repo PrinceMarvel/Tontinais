@@ -1,10 +1,11 @@
 /**
  * @file WalletCheckoutModal.jsx
- * @description Guichet Mobile Money connecté aux portefeuilles réels, USSD et validation automatique.
+ * @description Guichet Mobile Money connecté aux portefeuilles réels, USSD et annulation en ÉCHEC automatique.
  * @module components/groups/WalletCheckoutModal
  */
 
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ShieldCheck, Lock, CheckCircle2, AlertCircle, ArrowLeft, Loader2, Smartphone, ExternalLink, PhoneCall } from 'lucide-react';
 import api from '../../services/api';
 
@@ -23,8 +24,10 @@ const THEMES = {
 const flexBetween = { display: 'flex', justifyContent: 'space-between', marginBottom: '6px' };
 
 export default function WalletCheckoutModal({ isOpen, onClose, sessionData, onPaymentSuccess }) {
+  const { t } = useTranslation();
   const [transactionCode, setTransactionCode] = useState('');
   const [step, setStep] = useState('AUTHENTICATION');
+  const [canceling, setCanceling] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [receiptData, setReceiptData] = useState(null);
 
@@ -35,11 +38,23 @@ export default function WalletCheckoutModal({ isOpen, onClose, sessionData, onPa
   const ussdCode = walletConfig?.ussd || theme.ussd;
   const appUrl = walletConfig?.deepLink || walletConfig?.webUrl || theme.webUrl;
 
+  const handleCancelPayment = async () => {
+    try {
+      setCanceling(true);
+      await api.post(`/contributions/${contributionId}/cancel`);
+    } catch (err) {
+      console.warn('Annulation :', err);
+    } finally {
+      setCanceling(false);
+      onClose();
+    }
+  };
+
   const handleConfirmPayment = async (e) => {
     e.preventDefault();
     const code = transactionCode.trim();
     if (!code || code.length < 3) {
-      setErrorMessage('Veuillez renseigner le code de confirmation ou l’ID de transaction reçu de l’opérateur.');
+      setErrorMessage(t('contributions.modalPhoneRequired'));
       return;
     }
     try {
@@ -49,13 +64,13 @@ export default function WalletCheckoutModal({ isOpen, onClose, sessionData, onPa
       if (res.success) {
         setReceiptData({ transactionId: res.transactionId || code, date: res.datePaiement || new Date().toISOString() });
         setStep('SUCCESS');
-        setTimeout(() => { if (onPaymentSuccess) onPaymentSuccess(); onClose(); }, 2600);
+        setTimeout(() => { if (onPaymentSuccess) onPaymentSuccess(); onClose(); }, 2400);
       } else {
-        throw new Error(res.error || 'Erreur lors de la confirmation.');
+        throw new Error(res.error || t('errors.generic'));
       }
     } catch (err) {
       setStep('AUTHENTICATION');
-      setErrorMessage(err.message || 'La confirmation a échoué. Vérifiez votre code opérateur.');
+      setErrorMessage(err.message || t('errors.generic'));
     }
   };
 
@@ -67,11 +82,11 @@ export default function WalletCheckoutModal({ isOpen, onClose, sessionData, onPa
         <div style={{ backgroundColor: theme.headerBg, color: theme.textColor, padding: '14px 20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: `2px solid ${theme.primary}` }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <Smartphone size={20} />
-            <span style={{ fontWeight: '800', fontSize: '0.95rem' }}>Guichet {theme.name}</span>
+            <span style={{ fontWeight: '800', fontSize: '0.95rem' }}>{t('contributions.checkoutTitle')} {theme.name}</span>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.75rem', opacity: 0.9 }}>
             <Lock size={12} />
-            <span>Sécurisé</span>
+            <span>{t('contributions.checkoutSecure')}</span>
           </div>
         </div>
 
@@ -82,15 +97,15 @@ export default function WalletCheckoutModal({ isOpen, onClose, sessionData, onPa
               {/* Détails cotisation */}
               <div style={{ backgroundColor: 'rgba(30, 41, 59, 0.7)', border: '1px solid var(--color-border)', borderRadius: '12px', padding: '14px', marginBottom: '14px' }}>
                 <div style={flexBetween}>
-                  <span style={{ fontSize: '0.82rem', color: 'var(--color-text-secondary)' }}>Tontine &amp; Tour</span>
-                  <span style={{ fontSize: '0.82rem', fontWeight: '700', color: 'var(--color-text-primary)' }}>{groupName} • Tour n°{tourNumber}</span>
+                  <span style={{ fontSize: '0.82rem', color: 'var(--color-text-secondary)' }}>{t('contributions.checkoutGroupRound')}</span>
+                  <span style={{ fontSize: '0.82rem', fontWeight: '700', color: 'var(--color-text-primary)' }}>{groupName} • N°{tourNumber}</span>
                 </div>
                 <div style={flexBetween}>
-                  <span style={{ fontSize: '0.82rem', color: 'var(--color-text-secondary)' }}>Compte débité</span>
+                  <span style={{ fontSize: '0.82rem', color: 'var(--color-text-secondary)' }}>{t('contributions.checkoutAccountDebited')}</span>
                   <span style={{ fontSize: '0.82rem', color: 'var(--color-text-primary)' }}>{phone}</span>
                 </div>
                 <div style={{ ...flexBetween, borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: '8px', marginBottom: 0 }}>
-                  <span style={{ fontSize: '0.85rem', fontWeight: '600' }}>Montant cotisation</span>
+                  <span style={{ fontSize: '0.85rem', fontWeight: '600' }}>{t('contributions.checkoutTotalAmount')}</span>
                   <span style={{ fontSize: '1.2rem', fontWeight: '800', color: theme.primary }}>{amount?.toLocaleString()} {currency}</span>
                 </div>
               </div>
@@ -98,19 +113,19 @@ export default function WalletCheckoutModal({ isOpen, onClose, sessionData, onPa
               {/* Message transaction en cours & raccourcis */}
               <div style={{ backgroundColor: 'rgba(49, 151, 149, 0.12)', border: '1px solid var(--color-secondary-light)', borderRadius: '10px', padding: '12px', marginBottom: '14px' }}>
                 <p style={{ margin: 0, fontSize: '0.82rem', color: 'var(--color-text-primary)', lineHeight: 1.4 }}>
-                  <strong>Transaction en cours :</strong> Une demande de versement a été émise vers {theme.name}.
+                  {t('contributions.checkoutPendingNotice')} <strong>{theme.name}</strong>.
                 </p>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: '10px' }}>
                   {ussdCode && (
                     <a href={`tel:${ussdCode.replace(/#/g, '%23')}`} style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '6px 12px', borderRadius: '6px', backgroundColor: 'rgba(255, 255, 255, 0.1)', color: '#fff', textDecoration: 'none', fontSize: '0.78rem', fontWeight: '600', border: '1px solid rgba(255, 255, 255, 0.2)' }}>
                       <PhoneCall size={13} />
-                      <span>Composer {ussdCode}</span>
+                      <span>{t('contributions.checkoutDialUssd')} {ussdCode}</span>
                     </a>
                   )}
                   {appUrl && (
                     <a href={appUrl} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '6px 12px', borderRadius: '6px', backgroundColor: theme.primary, color: theme.textColor, textDecoration: 'none', fontSize: '0.78rem', fontWeight: '700' }}>
                       <ExternalLink size={13} />
-                      <span>Ouvrir l'application {theme.name}</span>
+                      <span>{t('contributions.checkoutOpenApp')} {theme.name}</span>
                     </a>
                   )}
                 </div>
@@ -126,16 +141,16 @@ export default function WalletCheckoutModal({ isOpen, onClose, sessionData, onPa
               {/* Saisie code de confirmation de l'opérateur */}
               <div style={{ marginBottom: '16px' }}>
                 <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: '700', marginBottom: '4px' }}>
-                  Code de confirmation de transaction opérateur
+                  {t('contributions.checkoutCodeLabel')}
                 </label>
                 <p style={{ fontSize: '0.75rem', color: 'var(--color-text-secondary)', margin: '0 0 8px' }}>
-                  Renseignez l'ID ou code reçu par SMS de {theme.name} (ex: TXN-4920, OM821) :
+                  {t('contributions.checkoutCodeHint', { name: theme.name })}
                 </p>
                 <input
                   type="text"
                   autoFocus
                   required
-                  placeholder="ex : TXN-84920 ou ID SMS reçu"
+                  placeholder={t('contributions.checkoutCodePlaceholder')}
                   value={transactionCode}
                   onChange={(e) => setTransactionCode(e.target.value)}
                   style={{ width: '100%', padding: '12px 14px', fontSize: '1rem', fontWeight: '600', backgroundColor: 'rgba(15, 23, 42, 0.8)', border: '1px solid var(--color-border)', borderRadius: '8px', color: '#ffffff', outline: 'none', boxSizing: 'border-box' }}
@@ -144,13 +159,13 @@ export default function WalletCheckoutModal({ isOpen, onClose, sessionData, onPa
 
               {/* Boutons d'action responsive */}
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
-                <button type="button" onClick={onClose} className="btn btn-outline" style={{ flex: '1 1 auto', padding: '10px 14px' }}>
+                <button type="button" onClick={handleCancelPayment} disabled={canceling} className="btn btn-outline" style={{ flex: '1 1 auto', padding: '10px 14px' }}>
                   <ArrowLeft size={16} />
-                  <span>Annuler</span>
+                  <span>{canceling ? t('contributions.checkoutCanceling') : t('common.cancel')}</span>
                 </button>
                 <button type="submit" style={{ flex: '2 1 auto', padding: '10px 16px', backgroundColor: theme.primary, color: theme.textColor, border: 'none', borderRadius: 'var(--radius-sm)', fontWeight: '800', fontSize: '0.92rem', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
                   <ShieldCheck size={18} />
-                  <span>Confirmer le paiement</span>
+                  <span>{t('contributions.checkoutConfirmBtn')}</span>
                 </button>
               </div>
             </form>
@@ -159,8 +174,8 @@ export default function WalletCheckoutModal({ isOpen, onClose, sessionData, onPa
           {step === 'PROCESSING' && (
             <div style={{ textAlign: 'center', padding: '32px 12px' }}>
               <Loader2 size={44} color={theme.primary} className="animate-spin" style={{ margin: '0 auto 14px' }} />
-              <h3 style={{ fontSize: '1.1rem', margin: '0 0 6px', color: '#fff' }}>Vérification auprès de {theme.name}...</h3>
-              <p style={{ fontSize: '0.82rem', color: 'var(--color-text-secondary)', margin: 0 }}>Enregistrement certifié de la transaction et validation du statut payé.</p>
+              <h3 style={{ fontSize: '1.1rem', margin: '0 0 6px', color: '#fff' }}>{t('contributions.checkoutProcessingTitle', { name: theme.name })}</h3>
+              <p style={{ fontSize: '0.82rem', color: 'var(--color-text-secondary)', margin: 0 }}>{t('contributions.checkoutProcessingSubtitle')}</p>
             </div>
           )}
 
@@ -169,20 +184,20 @@ export default function WalletCheckoutModal({ isOpen, onClose, sessionData, onPa
               <CheckCircle2 size={50} color="var(--color-success)" style={{ margin: '0 auto 12px' }} />
               
               <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '6px 14px', borderRadius: '20px', backgroundColor: 'rgba(16, 185, 129, 0.18)', border: '1px solid var(--color-success)', color: 'var(--color-success)', fontWeight: '800', fontSize: '0.95rem', marginBottom: '12px' }}>
-                <span>STATUT : PAYÉ</span>
+                <span>STATUT : {t('contributions.statusPaid').toUpperCase()}</span>
               </div>
 
-              <h3 style={{ fontSize: '1.2rem', margin: '0 0 6px', color: '#fff' }}>Cotisation validée avec succès !</h3>
+              <h3 style={{ fontSize: '1.2rem', margin: '0 0 6px', color: '#fff' }}>{t('contributions.checkoutSuccessTitle')}</h3>
               <p style={{ fontSize: '0.86rem', color: 'var(--color-text-secondary)', margin: '0 0 14px' }}>
-                Votre versement de <strong>{amount?.toLocaleString()} {currency}</strong> a été certifié par {theme.name}.
+                {t('contributions.checkoutSuccessSubtitle', { amount: amount?.toLocaleString(), currency, name: theme.name })}
               </p>
 
               <div style={{ backgroundColor: 'rgba(30, 41, 59, 0.7)', border: '1px solid var(--color-border)', padding: '10px 14px', borderRadius: '8px', fontFamily: 'monospace', fontSize: '0.8rem', display: 'inline-block', color: 'var(--color-secondary-light)' }}>
-                Code Opérateur : {receiptData?.transactionId}
+                {t('contributions.checkoutOperatorCode')} {receiptData?.transactionId}
               </div>
 
               <p style={{ fontSize: '0.76rem', color: 'var(--color-text-muted)', marginTop: '14px' }}>
-                Actualisation automatique de votre tontine en cours...
+                {t('contributions.checkoutRedirecting')}
               </p>
             </div>
           )}

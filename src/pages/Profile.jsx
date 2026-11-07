@@ -119,42 +119,46 @@ export default function Profile() {
       : t('auth.roleMember');
 
   return (
-    <div style={{ maxWidth: '800px', margin: '32px auto', padding: '0 20px' }}>
+    <div style={{ width: '100%', maxWidth: '760px', margin: 'clamp(14px, 3vh, 28px) auto', padding: '0 clamp(10px, 3.5vw, 20px)', boxSizing: 'border-box' }}>
       {/* En-tête profil */}
-      <div className="glass-card animate-fade-in" style={{ padding: '24px', marginBottom: '24px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '16px', flexWrap: 'wrap' }}>
-          <div style={{ width: '56px', height: '56px', borderRadius: '50%', background: 'linear-gradient(135deg, var(--color-primary-light), var(--color-secondary))', display: 'grid', placeItems: 'center', color: '#ffffff', fontSize: '1.4rem', fontWeight: '700' }}>
+      <div className="glass-card animate-fade-in" style={{ padding: 'clamp(14px, 4vw, 22px)', marginBottom: 'clamp(14px, 3vh, 20px)' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '14px', flexWrap: 'wrap' }}>
+          <div style={{ width: '52px', height: '52px', borderRadius: '50%', background: 'linear-gradient(135deg, var(--color-primary-light), var(--color-secondary))', display: 'grid', placeItems: 'center', color: '#ffffff', fontSize: '1.35rem', fontWeight: '700', flexShrink: 0 }}>
             {user?.prenom?.[0] || 'U'}
           </div>
-          <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <h1 style={{ fontSize: '1.5rem', color: 'var(--color-text-primary)' }}>{user?.prenom} {user?.nom}</h1>
-              <span className="badge badge-info">{roleLabel}</span>
+          <div style={{ minWidth: 0, flex: 1 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+              <h1 style={{ fontSize: 'clamp(1.2rem, 4vw, 1.45rem)', margin: 0, color: 'var(--color-text-primary)' }}>
+                {user?.prenom} {user?.nom}
+              </h1>
+              <span className="badge badge-info" style={{ fontSize: '0.72rem' }}>{roleLabel}</span>
             </div>
-            <p style={{ color: 'var(--color-text-secondary)', fontSize: '0.85rem', marginTop: '2px' }}>{user?.email} &bull; Compte actif</p>
+            <p style={{ color: 'var(--color-text-secondary)', fontSize: '0.82rem', marginTop: '4px', marginBotton: 0, wordBreak: 'break-word', overflowWrap: 'anywhere' }}>
+              {user?.email} &bull; Compte actif
+            </p>
           </div>
         </div>
       </div>
 
       {errorMessage && (
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '12px 16px', backgroundColor: 'rgba(239, 68, 68, 0.12)', border: '1px solid var(--color-danger)', borderRadius: 'var(--radius-sm)', color: 'var(--color-danger)', marginBottom: '20px', fontSize: '0.9rem' }}>
-          <AlertCircle size={18} />
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '12px 14px', backgroundColor: 'rgba(239, 68, 68, 0.12)', border: '1px solid var(--color-danger)', borderRadius: 'var(--radius-sm)', color: 'var(--color-danger)', marginBottom: '16px', fontSize: '0.88rem' }}>
+          <AlertCircle size={18} style={{ flexShrink: 0 }} />
           <span>{errorMessage}</span>
         </div>
       )}
 
       {/* Formulaire Coordonnées Personnelles */}
-      <div className="glass-card" style={{ padding: '24px', marginBottom: '24px' }}>
-        <h2 style={{ fontSize: '1.2rem', marginBottom: '16px', color: 'var(--color-text-primary)' }}>Informations personnelles</h2>
+      <div className="glass-card" style={{ padding: 'clamp(14px, 4vw, 22px)', marginBottom: 'clamp(14px, 3vh, 20px)' }}>
+        <h2 style={{ fontSize: '1.15rem', marginBottom: '14px', color: 'var(--color-text-primary)' }}>Informations personnelles</h2>
         {profileSuccess && (
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 14px', backgroundColor: 'rgba(16, 185, 129, 0.12)', border: '1px solid var(--color-success)', borderRadius: 'var(--radius-sm)', color: 'var(--color-success)', marginBottom: '16px', fontSize: '0.85rem' }}>
-            <CheckCircle2 size={16} />
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 14px', backgroundColor: 'rgba(16, 185, 129, 0.12)', border: '1px solid var(--color-success)', borderRadius: 'var(--radius-sm)', color: 'var(--color-success)', marginBottom: '14px', fontSize: '0.85rem' }}>
+            <CheckCircle2 size={16} style={{ flexShrink: 0 }} />
             <span>{profileSuccess}</span>
           </div>
         )}
 
         <form onSubmit={handleProfileSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '12px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '12px' }}>
             <div>
               <label style={fieldLabelStyle}>{t('auth.firstNameLabel')}</label>
               <input type="text" value={profileForm.prenom} onChange={(e) => setProfileForm({ ...profileForm, prenom: e.target.value })} style={fieldInputStyle} required />
@@ -174,7 +178,7 @@ export default function Profile() {
             />
           </div>
 
-          <button type="submit" className="btn btn-secondary" disabled={loadingProfile} style={{ alignSelf: 'flex-start', padding: '10px 18px', fontSize: '0.9rem' }}>
+          <button type="submit" className="btn btn-secondary" disabled={loadingProfile} style={{ alignSelf: 'flex-start', padding: '10px 18px', fontSize: '0.88rem' }}>
             <Save size={16} />
             <span>{loadingProfile ? t('common.loading') : 'Enregistrer mes informations'}</span>
           </button>
@@ -182,11 +186,11 @@ export default function Profile() {
       </div>
 
       {/* Formulaire Modification Mot de passe */}
-      <div className="glass-card" style={{ padding: '24px' }}>
-        <h2 style={{ fontSize: '1.2rem', marginBottom: '16px', color: 'var(--color-text-primary)' }}>Sécurité &amp; Mot de passe</h2>
+      <div className="glass-card" style={{ padding: 'clamp(14px, 4vw, 22px)' }}>
+        <h2 style={{ fontSize: '1.15rem', marginBottom: '14px', color: 'var(--color-text-primary)' }}>Sécurité &amp; Mot de passe</h2>
         {passwordSuccess && (
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 14px', backgroundColor: 'rgba(16, 185, 129, 0.12)', border: '1px solid var(--color-success)', borderRadius: 'var(--radius-sm)', color: 'var(--color-success)', marginBottom: '16px', fontSize: '0.85rem' }}>
-            <CheckCircle2 size={16} />
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 14px', backgroundColor: 'rgba(16, 185, 129, 0.12)', border: '1px solid var(--color-success)', borderRadius: 'var(--radius-sm)', color: 'var(--color-success)', marginBottom: '14px', fontSize: '0.85rem' }}>
+            <CheckCircle2 size={16} style={{ flexShrink: 0 }} />
             <span>{passwordSuccess}</span>
           </div>
         )}
@@ -197,7 +201,7 @@ export default function Profile() {
             <input type="password" value={passwordForm.ancienMotDePasse} onChange={(e) => setPasswordForm({ ...passwordForm, ancienMotDePasse: e.target.value })} style={fieldInputStyle} required />
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '12px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '12px' }}>
             <div>
               <label style={fieldLabelStyle}>Nouveau mot de passe (min. 8 car.)</label>
               <input type="password" value={passwordForm.nouveauMotDePasse} onChange={(e) => setPasswordForm({ ...passwordForm, nouveauMotDePasse: e.target.value })} style={fieldInputStyle} required />
@@ -208,7 +212,7 @@ export default function Profile() {
             </div>
           </div>
 
-          <button type="submit" className="btn btn-outline" disabled={loadingPassword} style={{ alignSelf: 'flex-start', padding: '10px 18px', fontSize: '0.9rem' }}>
+          <button type="submit" className="btn btn-outline" disabled={loadingPassword} style={{ alignSelf: 'flex-start', padding: '10px 18px', fontSize: '0.88rem' }}>
             <Lock size={16} />
             <span>{loadingPassword ? t('common.loading') : 'Mettre à jour mon mot de passe'}</span>
           </button>

@@ -174,11 +174,11 @@ export default function CountryPhoneInput({
       </div>
 
       {/* Libellé d'aide contextuel avec format attendu */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '4px', fontSize: '0.75rem' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '4px', marginTop: '4px', fontSize: '0.74rem', overflow: 'hidden' }}>
         <span style={{ color: 'var(--color-text-muted)' }}>
           {selectedCountry.name} ({selectedCountry.minDigits} chiffres)
         </span>
-        <span style={{ color: 'var(--color-secondary-light)', fontFamily: 'monospace' }}>
+        <span style={{ color: 'var(--color-secondary-light)', fontFamily: 'monospace', wordBreak: 'break-all' }}>
           Format : {selectedCountry.dialCode} {selectedCountry.example}
         </span>
       </div>

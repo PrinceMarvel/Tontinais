@@ -1,23 +1,33 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { Routes, Route, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { LogIn, UserPlus, LayoutDashboard } from 'lucide-react';
+import { LogIn, UserPlus, LayoutDashboard, Loader2 } from 'lucide-react';
 import Navbar from './components/Navbar';
 import BottomNav from './components/BottomNav';
 import ProtectedRoute from './components/ProtectedRoute';
 import Logo from './components/Logo';
 import ScrollToTop from './components/common/ScrollToTop';
 import { ToastProvider } from './context/ToastContext';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import Dashboard from './pages/Dashboard';
-import CreateGroup from './pages/CreateGroup';
-import JoinGroup from './pages/JoinGroup';
-import GroupDetails from './pages/GroupDetails';
-import AdminDashboard from './pages/AdminDashboard';
-import Profile from './pages/Profile';
-import Notifications from './pages/Notifications';
 import { useAuth } from './context/AuthContext';
+
+// Code-splitting dynamique avec React.lazy pour un chargement instantané sur smartphone
+const Login = lazy(() => import('./pages/Login'));
+const Register = lazy(() => import('./pages/Register'));
+const Dashboard = lazy(() => import('./pages/Dashboard'));
+const CreateGroup = lazy(() => import('./pages/CreateGroup'));
+const JoinGroup = lazy(() => import('./pages/JoinGroup'));
+const GroupDetails = lazy(() => import('./pages/GroupDetails'));
+const AdminDashboard = lazy(() => import('./pages/AdminDashboard'));
+const Profile = lazy(() => import('./pages/Profile'));
+const Notifications = lazy(() => import('./pages/Notifications'));
+
+function PageFallback() {
+  return (
+    <div style={{ display: 'grid', placeItems: 'center', minHeight: '50vh', color: 'var(--color-secondary-light)' }}>
+      <Loader2 size={36} className="animate-spin" />
+    </div>
+  );
+}
 
 function Home() {
   const { t } = useTranslation();
@@ -73,67 +83,69 @@ export default function App() {
       <div style={{ minHeight: '100dvh', minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
         <Navbar />
         <main className={`app-main ${isAuthenticated ? 'has-bottom-nav' : ''}`}>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route
-              path="/dashboard"
-              element={
-                <ProtectedRoute>
-                  <Dashboard />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/groups/create"
-              element={
-                <ProtectedRoute allowedRoles={['CHEF_DE_TONTINE', 'SUPER_ADMIN']}>
-                  <CreateGroup />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/groups/join"
-              element={
-                <ProtectedRoute>
-                  <JoinGroup />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/groups/:id"
-              element={
-                <ProtectedRoute>
-                  <GroupDetails />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/admin"
-              element={
-                <ProtectedRoute allowedRoles={['SUPER_ADMIN']}>
-                  <AdminDashboard />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/profile"
-              element={
-                <ProtectedRoute>
-                  <Profile />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/notifications"
-              element={
-                <ProtectedRoute>
-                  <Notifications />
-                </ProtectedRoute>
-              }
-            />
-          </Routes>
+          <Suspense fallback={<PageFallback />}>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route
+                path="/dashboard"
+                element={
+                  <ProtectedRoute>
+                    <Dashboard />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/groups/create"
+                element={
+                  <ProtectedRoute allowedRoles={['CHEF_DE_TONTINE', 'SUPER_ADMIN']}>
+                    <CreateGroup />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/groups/join"
+                element={
+                  <ProtectedRoute>
+                    <JoinGroup />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/groups/:id"
+                element={
+                  <ProtectedRoute>
+                    <GroupDetails />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin"
+                element={
+                  <ProtectedRoute allowedRoles={['SUPER_ADMIN']}>
+                    <AdminDashboard />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/profile"
+                element={
+                  <ProtectedRoute>
+                    <Profile />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/notifications"
+                element={
+                  <ProtectedRoute>
+                    <Notifications />
+                  </ProtectedRoute>
+                }
+              />
+            </Routes>
+          </Suspense>
         </main>
         {/* Navigation Inférieure Mobile (Affichée sur smartphone < 768px pour utilisateurs connectés) */}
         <BottomNav />

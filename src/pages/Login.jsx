@@ -127,6 +127,9 @@ export default function Login() {
                 required
               />
             </div>
+            <span style={{ fontSize: '0.74rem', color: 'var(--color-text-muted)', marginTop: '4px', display: 'block' }}>
+              {t('auth.emailHint')}
+            </span>
           </div>
 
           <div>

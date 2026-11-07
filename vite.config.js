@@ -20,4 +20,16 @@ export default defineConfig({
       },
     },
   },
+  build: {
+    target: 'es2020',
+    chunkSizeWarningLimit: 650,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'vendor-core': ['react', 'react-dom', 'react-router-dom'],
+          'vendor-ui': ['lucide-react', 'i18next', 'react-i18next'],
+        },
+      },
+    },
+  },
 });

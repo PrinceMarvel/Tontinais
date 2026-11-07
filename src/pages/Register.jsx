@@ -56,7 +56,7 @@ export default function Register() {
     ];
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (!emailRegex.test(emailTrimmed) || DISPOSABLE_DOMAINS.includes(emailDomain)) {
-      setErrorMessage('Veuillez fournir une adresse e-mail officielle et fonctionnelle (adresses temporaires/jetables interdites).');
+      setErrorMessage(t('auth.invalidEmailError'));
       return;
     }
 
@@ -142,6 +142,9 @@ export default function Register() {
           <div>
             <label htmlFor="email" className="label">{t('auth.emailLabel')}</label>
             <input id="email" name="email" type="email" className="input" value={formData.email} onChange={handleChange} placeholder={t('auth.emailPlaceholder')} required />
+            <span style={{ fontSize: '0.74rem', color: 'var(--color-text-muted)', marginTop: '4px', display: 'block' }}>
+              {t('auth.emailHint')}
+            </span>
           </div>
 
           <div>

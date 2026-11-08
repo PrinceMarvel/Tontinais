@@ -111,7 +111,7 @@ export default function WalletCheckoutModal({ isOpen, onClose, sessionData, onPa
               </div>
 
               {/* Message transaction en cours & raccourcis */}
-              <div style={{ backgroundColor: 'rgba(49, 151, 149, 0.12)', border: '1px solid var(--color-secondary-light)', borderRadius: '10px', padding: '12px', marginBottom: '14px' }}>
+              <div style={{ backgroundColor: 'rgba(13, 148, 136, 0.1)', border: '1px solid rgba(20, 184, 166, 0.25)', borderRadius: '10px', padding: '12px', marginBottom: '14px' }}>
                 <p style={{ margin: 0, fontSize: '0.82rem', color: 'var(--color-text-primary)', lineHeight: 1.4 }}>
                   {t('contributions.checkoutPendingNotice')} <strong>{theme.name}</strong>.
                 </p>

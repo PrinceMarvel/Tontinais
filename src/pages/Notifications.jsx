@@ -126,10 +126,11 @@ export default function Notifications() {
                 width: '42px',
                 height: '42px',
                 borderRadius: 'var(--radius-sm)',
-                background: 'linear-gradient(135deg, var(--color-secondary), var(--color-primary))',
+                background: 'rgba(13, 148, 136, 0.12)',
+                border: '1px solid rgba(20, 184, 166, 0.25)',
                 display: 'grid',
                 placeItems: 'center',
-                color: '#ffffff'
+                color: 'var(--color-secondary-light)'
               }}
             >
               <Bell size={22} />

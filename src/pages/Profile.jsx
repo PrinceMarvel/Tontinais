@@ -123,7 +123,7 @@ export default function Profile() {
       {/* En-tête profil */}
       <div className="glass-card animate-fade-in" style={{ padding: 'clamp(14px, 4vw, 22px)', marginBottom: 'clamp(14px, 3vh, 20px)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '14px', flexWrap: 'wrap' }}>
-          <div style={{ width: '52px', height: '52px', borderRadius: '50%', background: 'linear-gradient(135deg, var(--color-primary-light), var(--color-secondary))', display: 'grid', placeItems: 'center', color: '#ffffff', fontSize: '1.35rem', fontWeight: '700', flexShrink: 0 }}>
+          <div style={{ width: '50px', height: '50px', borderRadius: '50%', background: 'var(--color-primary-light)', border: '1px solid rgba(255, 255, 255, 0.12)', display: 'grid', placeItems: 'center', color: 'var(--color-secondary-light)', fontSize: '1.25rem', fontWeight: '700', flexShrink: 0 }}>
             {user?.prenom?.[0] || 'U'}
           </div>
           <div style={{ minWidth: 0, flex: 1 }}>

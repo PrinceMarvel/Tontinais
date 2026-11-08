@@ -1,7 +1,7 @@
 /**
  * @file Logo.jsx
  * @description Composant officiel du Logo TontiNaïs (Triptyque rotatif solidaire & Typographie Serif).
- * Respecte fidèlement la géométrie de l'ébauche originale avec flèches séparées et aérées.
+ * Teintes FinTech matures et équilibrées, sans néon artificiel.
  * @module components/Logo
  */
 
@@ -22,7 +22,7 @@ export default function Logo({
         flexDirection: stacked ? 'column' : 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        gap: stacked ? '14px' : '10px',
+        gap: stacked ? '12px' : '10px',
         userSelect: 'none',
         ...style
       }}
@@ -36,30 +36,30 @@ export default function Logo({
         xmlns="http://www.w3.org/2000/svg"
         style={{
           flexShrink: 0,
-          filter: 'drop-shadow(0 2px 8px rgba(49, 151, 149, 0.35))',
+          filter: 'drop-shadow(0 2px 6px rgba(0, 0, 0, 0.4))',
           transition: 'transform 0.3s ease'
         }}
       >
         <defs>
-          {/* Dégradé Vert Émeraude / Turquoise FinTech (Branche 1) */}
+          {/* Dégradé Vert Émeraude / Sarcelle FinTech (Branche 1) */}
           <linearGradient id="tontiTeal" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#319795" />
-            <stop offset="50%" stopColor="#38B2AC" />
-            <stop offset="100%" stopColor="#4FD1C5" />
+            <stop offset="0%" stopColor="#0f766e" />
+            <stop offset="50%" stopColor="#0d9488" />
+            <stop offset="100%" stopColor="#14b8a6" />
           </linearGradient>
 
-          {/* Dégradé Or Solaire / Ambre (Branche 2) */}
+          {/* Dégradé Ambre Chaud Subtil (Branche 2) */}
           <linearGradient id="tontiGold" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#DD6B20" />
-            <stop offset="50%" stopColor="#ED8936" />
-            <stop offset="100%" stopColor="#F6AD55" />
+            <stop offset="0%" stopColor="#b45309" />
+            <stop offset="50%" stopColor="#d97706" />
+            <stop offset="100%" stopColor="#f59e0b" />
           </linearGradient>
 
-          {/* Dégradé Cyan Émeraude Lumineux (Branche 3) */}
+          {/* Dégradé Bleu Marine Institutionnel (Branche 3) */}
           <linearGradient id="tontiCyan" x1="0%" y1="100%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#2B6CB0" />
-            <stop offset="50%" stopColor="#319795" />
-            <stop offset="100%" stopColor="#4FD1C5" />
+            <stop offset="0%" stopColor="#1e3a5f" />
+            <stop offset="50%" stopColor="#0f766e" />
+            <stop offset="100%" stopColor="#14b8a6" />
           </linearGradient>
 
           {/* Tracé unitaire d'une flèche rotative séparée avec respiration visuelle */}
@@ -79,25 +79,20 @@ export default function Logo({
 
         {/* Rotation symétrique à 120° des 3 flèches autonomes */}
         <g>
-          {/* Branche 1 (Haut) */}
           <use href="#tontiSegment" fill="url(#tontiTeal)" />
-
-          {/* Branche 2 (Droite / Bas) */}
           <use href="#tontiSegment" fill="url(#tontiGold)" transform="rotate(120 256 256)" />
-
-          {/* Branche 3 (Gauche / Bas) */}
           <use href="#tontiSegment" fill="url(#tontiCyan)" transform="rotate(240 256 256)" />
         </g>
       </svg>
 
-      {/* Typographie Serif Officielle TontiNaïs */}
+      {/* Typographie Officielle TontiNaïs */}
       {showText && (
         <span
           style={{
-            fontFamily: "'Playfair Display', 'Cormorant Garamond', Georgia, serif",
-            fontSize: stacked ? '1.85rem' : '1.35rem',
+            fontFamily: "'Playfair Display', Georgia, serif",
+            fontSize: stacked ? '1.75rem' : '1.3rem',
             fontWeight: 700,
-            letterSpacing: '-0.4px',
+            letterSpacing: '-0.3px',
             color: 'var(--color-text-primary)',
             display: 'inline-flex',
             alignItems: 'baseline',
@@ -105,13 +100,7 @@ export default function Logo({
           }}
         >
           <span>Tonti</span>
-          <span
-            style={{
-              background: 'linear-gradient(135deg, var(--color-secondary-light), #2DD4BF)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent'
-            }}
-          >
+          <span style={{ color: 'var(--color-secondary-light)', marginLeft: '1px' }}>
             Naïs
           </span>
         </span>

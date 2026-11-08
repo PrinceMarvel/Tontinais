@@ -80,17 +80,17 @@ export default function DeclareContributionModal({ isOpen, onClose, groupId, gro
 
   return (
     <div style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(11, 15, 25, 0.88)', backdropFilter: 'blur(14px)', display: 'grid', placeItems: 'center', zIndex: 200, padding: 'clamp(10px, 3vw, 20px)' }}>
-      <div className="animate-fade-in" style={{ width: '100%', maxWidth: '500px', maxHeight: '92vh', overflowY: 'auto', WebkitOverflowScrolling: 'touch', background: 'linear-gradient(180deg, rgba(26, 34, 53, 0.98) 0%, rgba(15, 23, 42, 0.99) 100%)', borderRadius: '20px', border: '1px solid rgba(255, 255, 255, 0.12)', boxShadow: '0 25px 60px -15px rgba(0, 0, 0, 0.8), 0 0 35px rgba(49, 151, 149, 0.12)', padding: 'clamp(18px, 4.5vw, 26px)', position: 'relative' }}>
+      <div className="animate-fade-in" style={{ width: '100%', maxWidth: '500px', maxHeight: '92vh', overflowY: 'auto', WebkitOverflowScrolling: 'touch', background: 'var(--color-bg-card)', borderRadius: '18px', border: '1px solid var(--color-border)', boxShadow: '0 20px 50px -10px rgba(0, 0, 0, 0.7)', padding: 'clamp(18px, 4.5vw, 26px)', position: 'relative' }}>
         
         {/* Bouton fermeture */}
-        <button type="button" onClick={onClose} style={{ position: 'absolute', top: '16px', right: '16px', width: '32px', height: '32px', borderRadius: '50%', background: 'rgba(255, 255, 255, 0.06)', border: '1px solid rgba(255, 255, 255, 0.1)', color: 'var(--color-text-secondary)', display: 'grid', placeItems: 'center', cursor: 'pointer' }} aria-label={t('common.cancel')}>
+        <button type="button" onClick={onClose} style={{ position: 'absolute', top: '16px', right: '16px', width: '32px', height: '32px', borderRadius: '50%', background: 'rgba(255, 255, 255, 0.04)', border: '1px solid var(--color-border)', color: 'var(--color-text-secondary)', display: 'grid', placeItems: 'center', cursor: 'pointer' }} aria-label={t('common.cancel')}>
           <X size={16} />
         </button>
 
         {/* En-tête moderne */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
-          <div style={{ width: '42px', height: '42px', borderRadius: '12px', background: 'linear-gradient(135deg, var(--color-primary-light), var(--color-secondary))', display: 'grid', placeItems: 'center', boxShadow: '0 4px 14px rgba(49, 151, 149, 0.35)', flexShrink: 0 }}>
-            <Smartphone size={22} color="#fff" />
+          <div style={{ width: '42px', height: '42px', borderRadius: '10px', background: 'rgba(13, 148, 136, 0.12)', border: '1px solid rgba(20, 184, 166, 0.25)', display: 'grid', placeItems: 'center', color: 'var(--color-secondary-light)', flexShrink: 0 }}>
+            <Smartphone size={22} />
           </div>
           <div style={{ minWidth: 0, flex: 1, paddingRight: '28px' }}>
             <h2 style={{ fontSize: 'clamp(1.1rem, 2.8vw, 1.3rem)', fontWeight: '800', margin: 0, color: 'var(--color-text-primary)' }}>
@@ -104,7 +104,7 @@ export default function DeclareContributionModal({ isOpen, onClose, groupId, gro
         </div>
 
         {/* Hero Card : Montant & Tour */}
-        <div style={{ background: 'linear-gradient(135deg, rgba(49, 151, 149, 0.16) 0%, rgba(30, 41, 59, 0.7) 100%)', border: '1px solid rgba(49, 151, 149, 0.35)', borderRadius: '14px', padding: '14px 18px', marginBottom: '16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px' }}>
+        <div style={{ background: 'var(--color-bg-surface)', border: '1px solid var(--color-border)', borderRadius: '14px', padding: '14px 18px', marginBottom: '16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px' }}>
           <div>
             <span style={{ fontSize: '0.74rem', fontWeight: '600', color: 'var(--color-text-secondary)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>{t('contributions.modalAmountLabel')}</span>
             <div style={{ fontSize: 'clamp(1.35rem, 3.8vw, 1.7rem)', fontWeight: '800', color: 'var(--color-secondary-light)', marginTop: '2px', letterSpacing: '-0.5px' }}>
@@ -167,7 +167,7 @@ export default function DeclareContributionModal({ isOpen, onClose, groupId, gro
             <button type="button" onClick={onClose} className="btn btn-outline" disabled={loading} style={{ flex: '1 1 auto', minWidth: '100px', borderRadius: '10px', padding: '11px 16px' }}>
               {t('common.cancel')}
             </button>
-            <button type="submit" className="btn btn-primary" disabled={loading} style={{ flex: '2 1 auto', minWidth: '170px', borderRadius: '10px', padding: '11px 18px', background: 'linear-gradient(135deg, var(--color-primary-light), var(--color-secondary))', boxShadow: '0 4px 16px rgba(49, 151, 149, 0.35)', fontWeight: '800', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
+            <button type="submit" className="btn btn-primary" disabled={loading} style={{ flex: '2 1 auto', minWidth: '170px', borderRadius: '10px', padding: '11px 18px', fontWeight: '700', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
               {loading ? (
                 <>
                   <Loader2 size={16} className="animate-spin" />

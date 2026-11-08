@@ -41,7 +41,7 @@ export default function Navbar() {
 
   const roleLabel =
     role === 'SUPER_ADMIN'
-      ? 'Super Admin'
+      ? t('auth.roleSuperAdmin')
       : role === 'CHEF_DE_TONTINE'
       ? t('auth.roleLeader')
       : t('auth.roleMember');

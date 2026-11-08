@@ -1,89 +1,71 @@
 /**
  * @file LanguageSelector.jsx
- * @description Composant sélecteur de langue (Français / Anglais) pour TontiNaïs.
+ * @description Contrôle segmenté de sélection linguistique (FR / EN) au design FinTech épuré.
  * @module components/LanguageSelector
  */
 
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Globe } from 'lucide-react';
 import FlagIcon from './common/FlagIcon';
 
 export default function LanguageSelector() {
   const { i18n, t } = useTranslation();
   const currentLang = i18n.language || 'fr';
+  const isFr = currentLang.startsWith('fr');
 
   const changeLanguage = (lng) => {
     i18n.changeLanguage(lng);
   };
+
+  const getButtonStyle = (active) => ({
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: '4px',
+    background: active ? 'rgba(255, 255, 255, 0.1)' : 'transparent',
+    color: active ? '#ffffff' : 'var(--color-text-secondary)',
+    border: active ? '1px solid rgba(255, 255, 255, 0.12)' : '1px solid transparent',
+    borderRadius: 'var(--radius-full)',
+    padding: '3px 8px',
+    cursor: 'pointer',
+    fontSize: '0.74rem',
+    fontWeight: active ? '600' : '500',
+    transition: 'var(--transition-fast)',
+    boxShadow: active ? '0 1px 3px rgba(0, 0, 0, 0.3)' : 'none'
+  });
 
   return (
     <div
       style={{
         display: 'inline-flex',
         alignItems: 'center',
-        gap: '6px',
-        padding: '4px 8px',
+        gap: '2px',
+        padding: '2px',
         borderRadius: 'var(--radius-full)',
-        backgroundColor: 'var(--color-bg-card)',
+        backgroundColor: 'rgba(255, 255, 255, 0.03)',
         border: '1px solid var(--color-border)'
       }}
       aria-label={t('common.language')}
     >
-      <Globe
-        size={16}
-        style={{ color: 'var(--color-secondary-light)', flexShrink: 0 }}
-      />
       <button
         type="button"
         onClick={() => changeLanguage('fr')}
-        style={{
-          display: 'inline-flex',
-          alignItems: 'center',
-          gap: '4px',
-          background: currentLang.startsWith('fr')
-            ? 'var(--color-primary-light)'
-            : 'transparent',
-          color: currentLang.startsWith('fr')
-            ? 'var(--color-text-primary)'
-            : 'var(--color-text-secondary)',
-          border: 'none',
-          borderRadius: 'var(--radius-sm)',
-          padding: '2px 6px',
-          cursor: 'pointer',
-          transition: 'var(--transition-fast)'
-        }}
+        style={getButtonStyle(isFr)}
         aria-label="Français"
-        aria-pressed={currentLang.startsWith('fr')}
+        aria-pressed={isFr}
       >
         <FlagIcon countryCode="FR" size={13} />
-        <span style={{ fontSize: '0.75rem', fontWeight: currentLang.startsWith('fr') ? '700' : '500' }}>FR</span>
+        <span>FR</span>
       </button>
-      <span style={{ color: 'var(--color-border)', fontSize: '0.8rem' }}>|</span>
+
       <button
         type="button"
         onClick={() => changeLanguage('en')}
-        style={{
-          display: 'inline-flex',
-          alignItems: 'center',
-          gap: '4px',
-          background: currentLang.startsWith('en')
-            ? 'var(--color-primary-light)'
-            : 'transparent',
-          color: currentLang.startsWith('en')
-            ? 'var(--color-text-primary)'
-            : 'var(--color-text-secondary)',
-          border: 'none',
-          borderRadius: 'var(--radius-sm)',
-          padding: '2px 6px',
-          cursor: 'pointer',
-          transition: 'var(--transition-fast)'
-        }}
+        style={getButtonStyle(!isFr)}
         aria-label="English"
-        aria-pressed={currentLang.startsWith('en')}
+        aria-pressed={!isFr}
       >
         <FlagIcon countryCode="GB" size={13} />
-        <span style={{ fontSize: '0.75rem', fontWeight: currentLang.startsWith('en') ? '700' : '500' }}>EN</span>
+        <span>EN</span>
       </button>
     </div>
   );

@@ -148,7 +148,7 @@ export default function AdminDashboard() {
                 width: '44px',
                 height: '44px',
                 borderRadius: 'var(--radius-sm)',
-                background: 'rgba(49, 151, 149, 0.15)',
+                background: 'rgba(13, 148, 136, 0.12)',
                 display: 'grid',
                 placeItems: 'center',
                 color: 'var(--color-secondary-light)'

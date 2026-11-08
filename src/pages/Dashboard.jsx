@@ -90,33 +90,33 @@ export default function Dashboard() {
           </>
         ) : (
           <>
-            <div className="glass-card" style={{ padding: '22px', display: 'flex', alignItems: 'center', gap: '16px' }}>
-              <div style={{ width: '52px', height: '52px', borderRadius: 'var(--radius-sm)', background: 'rgba(49, 151, 149, 0.16)', display: 'grid', placeItems: 'center', color: 'var(--color-secondary-light)', border: '1px solid rgba(79, 209, 197, 0.25)' }}>
-                <Users size={26} />
+            <div className="glass-card" style={{ padding: '20px', display: 'flex', alignItems: 'center', gap: '14px' }}>
+              <div style={{ width: '48px', height: '48px', borderRadius: 'var(--radius-sm)', background: 'rgba(13, 148, 136, 0.12)', display: 'grid', placeItems: 'center', color: 'var(--color-secondary-light)', border: '1px solid rgba(20, 184, 166, 0.2)' }}>
+                <Users size={24} />
               </div>
               <div>
-                <div style={{ fontSize: '0.85rem', color: 'var(--color-text-secondary)', fontWeight: '500' }}>{t('dashboard.kpiActiveGroups')}</div>
-                <div style={{ fontSize: '1.6rem', fontWeight: '800', color: 'var(--color-text-primary)' }}>{activeGroupsCount}</div>
+                <div style={{ fontSize: '0.82rem', color: 'var(--color-text-secondary)', fontWeight: '500' }}>{t('dashboard.kpiActiveGroups')}</div>
+                <div style={{ fontSize: '1.5rem', fontWeight: '800', color: 'var(--color-text-primary)' }}>{activeGroupsCount}</div>
               </div>
             </div>
 
-            <div className="glass-card" style={{ padding: '22px', display: 'flex', alignItems: 'center', gap: '16px' }}>
-              <div style={{ width: '52px', height: '52px', borderRadius: 'var(--radius-sm)', background: 'rgba(237, 137, 54, 0.16)', display: 'grid', placeItems: 'center', color: 'var(--color-accent)', border: '1px solid rgba(237, 137, 54, 0.25)' }}>
-                <Wallet size={26} />
+            <div className="glass-card" style={{ padding: '20px', display: 'flex', alignItems: 'center', gap: '14px' }}>
+              <div style={{ width: '48px', height: '48px', borderRadius: 'var(--radius-sm)', background: 'rgba(217, 119, 6, 0.12)', display: 'grid', placeItems: 'center', color: 'var(--color-accent)', border: '1px solid rgba(217, 119, 6, 0.2)' }}>
+                <Wallet size={24} />
               </div>
               <div>
-                <div style={{ fontSize: '0.85rem', color: 'var(--color-text-secondary)', fontWeight: '500' }}>{t('dashboard.kpiTotalSavings')}</div>
-                <div style={{ fontSize: '1.6rem', fontWeight: '800', color: 'var(--color-secondary-light)' }}>{totalCotisations.toLocaleString()} {primaryCurrency}</div>
+                <div style={{ fontSize: '0.82rem', color: 'var(--color-text-secondary)', fontWeight: '500' }}>{t('dashboard.kpiTotalSavings')}</div>
+                <div style={{ fontSize: '1.5rem', fontWeight: '800', color: 'var(--color-secondary-light)' }}>{totalCotisations.toLocaleString()} {primaryCurrency}</div>
               </div>
             </div>
 
-            <div className="glass-card" style={{ padding: '22px', display: 'flex', alignItems: 'center', gap: '16px' }}>
-              <div style={{ width: '52px', height: '52px', borderRadius: 'var(--radius-sm)', background: 'rgba(59, 130, 246, 0.16)', display: 'grid', placeItems: 'center', color: 'var(--color-info)', border: '1px solid rgba(59, 130, 246, 0.25)' }}>
-                <Calendar size={26} />
+            <div className="glass-card" style={{ padding: '20px', display: 'flex', alignItems: 'center', gap: '14px' }}>
+              <div style={{ width: '48px', height: '48px', borderRadius: 'var(--radius-sm)', background: 'rgba(59, 130, 246, 0.12)', display: 'grid', placeItems: 'center', color: 'var(--color-info)', border: '1px solid rgba(59, 130, 246, 0.2)' }}>
+                <Calendar size={24} />
               </div>
               <div>
-                <div style={{ fontSize: '0.85rem', color: 'var(--color-text-secondary)', fontWeight: '500' }}>{t('dashboard.kpiNextRound')}</div>
-                <div style={{ fontSize: '1.6rem', fontWeight: '800', color: 'var(--color-text-primary)' }}>{activeGroupsCount > 0 ? t('dashboard.statusActive') : '-'}</div>
+                <div style={{ fontSize: '0.82rem', color: 'var(--color-text-secondary)', fontWeight: '500' }}>{t('dashboard.kpiNextRound')}</div>
+                <div style={{ fontSize: '1.5rem', fontWeight: '800', color: 'var(--color-text-primary)' }}>{activeGroupsCount > 0 ? t('dashboard.statusActive') : '-'}</div>
               </div>
             </div>
           </>
@@ -143,7 +143,7 @@ export default function Dashboard() {
         </div>
       ) : groups.length === 0 ? (
         <div className="glass-card" style={{ padding: 'clamp(28px, 5vw, 48px) 20px', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px' }}>
-          <div style={{ width: '60px', height: '60px', borderRadius: '50%', background: 'rgba(49, 151, 149, 0.12)', display: 'grid', placeItems: 'center', color: 'var(--color-secondary-light)', marginBottom: '8px' }}>
+          <div style={{ width: '56px', height: '56px', borderRadius: '50%', background: 'rgba(13, 148, 136, 0.1)', display: 'grid', placeItems: 'center', color: 'var(--color-secondary-light)', marginBottom: '8px' }}>
             <Users size={32} />
           </div>
           <h3 style={{ fontSize: '1.2rem', color: 'var(--color-text-primary)' }}>{t('dashboard.noGroupsTitle')}</h3>

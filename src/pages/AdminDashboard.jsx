@@ -80,10 +80,10 @@ export default function AdminDashboard() {
           </div>
           <div>
             <h1 style={{ fontSize: 'clamp(1.4rem, 4vw, 1.8rem)', color: 'var(--color-text-primary)' }}>
-              Administration Centrale
+              {t('admin.title')}
             </h1>
             <p style={{ color: 'var(--color-text-secondary)', fontSize: '0.9rem' }}>
-              Supervision de la plateforme, gestion des rôles et contrôle des flux financiers.
+              {t('admin.subtitle')}
             </p>
           </div>
         </div>
@@ -133,7 +133,7 @@ export default function AdminDashboard() {
               <Users size={22} />
             </div>
             <div>
-              <div style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)' }}>Utilisateurs</div>
+              <div style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)' }}>{t('admin.statUsers')}</div>
               <div style={{ fontSize: '1.5rem', fontWeight: '700', color: 'var(--color-text-primary)' }}>
                 {stats.totalUtilisateurs}
               </div>
@@ -157,7 +157,7 @@ export default function AdminDashboard() {
               <Building size={22} />
             </div>
             <div>
-              <div style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)' }}>Tontines créées</div>
+              <div style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)' }}>{t('admin.statGroups')}</div>
               <div style={{ fontSize: '1.5rem', fontWeight: '700', color: 'var(--color-text-primary)' }}>
                 {stats.totalGroupes}
               </div>
@@ -181,7 +181,7 @@ export default function AdminDashboard() {
               <CheckCircle size={22} />
             </div>
             <div>
-              <div style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)' }}>Cotisations réglées</div>
+              <div style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)' }}>{t('admin.statContributions')}</div>
               <div style={{ fontSize: '1.5rem', fontWeight: '700', color: 'var(--color-text-primary)' }}>
                 {stats.totalCotisations}
               </div>
@@ -205,7 +205,7 @@ export default function AdminDashboard() {
               <Clock size={22} />
             </div>
             <div>
-              <div style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)' }}>En attente de validation</div>
+              <div style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)' }}>{t('admin.statPending')}</div>
               <div style={{ fontSize: '1.5rem', fontWeight: '700', color: 'var(--color-warning)' }}>
                 {stats.cotisationsEnAttente}
               </div>
@@ -234,7 +234,7 @@ export default function AdminDashboard() {
           }}
         >
           <Users size={18} />
-          <span>Gestion des Utilisateurs ({users.length})</span>
+          <span>{t('admin.tabUsers')} ({users.length})</span>
         </button>
 
         <button
@@ -255,7 +255,7 @@ export default function AdminDashboard() {
           }}
         >
           <Building size={18} />
-          <span>Supervision des Tontines ({groups.length})</span>
+          <span>{t('admin.tabGroups')} ({groups.length})</span>
         </button>
       </div>
 

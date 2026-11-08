@@ -5,6 +5,7 @@
  */
 
 import React, { useState, useEffect, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Search, ChevronDown, Check, X, Smartphone } from 'lucide-react';
 import FlagIcon from './FlagIcon';
 import {
@@ -22,6 +23,7 @@ export default function CountryPhoneInput({
   id = 'telephone',
   placeholder
 }) {
+  const { t } = useTranslation();
   const [selectedCountry, setSelectedCountry] = useState(() => detectCountryFromPhone(value));
   const [localNumber, setLocalNumber] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -167,7 +169,7 @@ export default function CountryPhoneInput({
             {validation.valid ? (
               <Check size={18} style={{ color: 'var(--color-success)' }} />
             ) : (
-              <span style={{ fontSize: '0.72rem', color: 'var(--color-danger)', fontWeight: '600' }}>Incomplet</span>
+              <span style={{ fontSize: '0.72rem', color: 'var(--color-danger)', fontWeight: '600' }}>{t('common.incomplete')}</span>
             )}
           </div>
         )}
@@ -176,7 +178,7 @@ export default function CountryPhoneInput({
       {/* Libellé d'aide contextuel avec format attendu */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '4px', marginTop: '4px', fontSize: '0.74rem', overflow: 'hidden' }}>
         <span style={{ color: 'var(--color-text-muted)' }}>
-          {selectedCountry.name} ({selectedCountry.minDigits} chiffres)
+          {selectedCountry.name} ({selectedCountry.minDigits} {t('common.digits')})
         </span>
         <span style={{ color: 'var(--color-secondary-light)', fontFamily: 'monospace', wordBreak: 'break-all' }}>
           Format : {selectedCountry.dialCode} {selectedCountry.example}
@@ -299,17 +301,11 @@ export default function CountryPhoneInput({
                       <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                         <FlagIcon countryCode={country.code} size={20} />
                         <div>
-                          <div style={{ fontWeight: isSelected ? 700 : 500, fontSize: '0.9rem' }}>
-                            {country.name}
-                          </div>
-                          <div style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>
-                            Ex : {country.example}
-                          </div>
+                          <div style={{ fontWeight: isSelected ? 700 : 500, fontSize: '0.9rem' }}>{country.name}</div>
+                          <div style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>Ex : {country.example}</div>
                         </div>
                       </div>
-                      <span style={{ fontWeight: '700', color: 'var(--color-secondary-light)', fontSize: '0.88rem' }}>
-                        {country.dialCode}
-                      </span>
+                      <span style={{ fontWeight: '700', color: 'var(--color-secondary-light)', fontSize: '0.88rem' }}>{country.dialCode}</span>
                     </button>
                   );
                 })

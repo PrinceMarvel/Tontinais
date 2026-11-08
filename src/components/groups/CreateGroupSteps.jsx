@@ -68,7 +68,7 @@ export function StepIdentity({ formData, handleChange }) {
       <div className="form-group">
         <label className="form-label" htmlFor="nom">
           <span>{t('groups.groupName')} <span style={{ color: 'var(--color-accent)' }}>*</span></span>
-          <span style={{ fontSize: '0.78rem', color: 'var(--color-text-muted)' }}>Max 80 caractères</span>
+          <span style={{ fontSize: '0.78rem', color: 'var(--color-text-muted)' }}>{t('groups.maxChars', { max: 80 })}</span>
         </label>
         <input
           id="nom"

@@ -67,7 +67,7 @@ export default function Profile() {
       const res = await api.put('/users/profile', profileForm);
       if (res.success && res.user) {
         updateUserData(res.user);
-        setProfileSuccess('Vos coordonnées ont été mises à jour avec succès.');
+        setProfileSuccess(t('profile.successInfo'));
         setTimeout(() => setProfileSuccess(''), 3000);
       }
     } catch (err) {
@@ -83,7 +83,7 @@ export default function Profile() {
     setPasswordSuccess('');
 
     if (passwordForm.nouveauMotDePasse.length < 8) {
-      setErrorMessage('Le nouveau mot de passe doit contenir au moins 8 caractères.');
+      setErrorMessage(t('profile.passwordMinLength'));
       return;
     }
 
@@ -100,7 +100,7 @@ export default function Profile() {
       });
 
       if (res.success) {
-        setPasswordSuccess('Votre mot de passe a été modifié avec succès.');
+        setPasswordSuccess(t('profile.successPassword'));
         setPasswordForm({ ancienMotDePasse: '', nouveauMotDePasse: '', confirmNouveauMotDePasse: '' });
         setTimeout(() => setPasswordSuccess(''), 3000);
       }
@@ -113,7 +113,7 @@ export default function Profile() {
 
   const roleLabel =
     role === 'SUPER_ADMIN'
-      ? 'Super Admin'
+      ? t('auth.roleSuperAdmin')
       : role === 'CHEF_DE_TONTINE'
       ? t('auth.roleLeader')
       : t('auth.roleMember');
@@ -134,7 +134,7 @@ export default function Profile() {
               <span className="badge badge-info" style={{ fontSize: '0.72rem' }}>{roleLabel}</span>
             </div>
             <p style={{ color: 'var(--color-text-secondary)', fontSize: '0.82rem', marginTop: '4px', marginBotton: 0, wordBreak: 'break-word', overflowWrap: 'anywhere' }}>
-              {user?.email} &bull; Compte actif
+              {user?.email} &bull; {t('profile.activeAccount')}
             </p>
           </div>
         </div>
@@ -149,7 +149,7 @@ export default function Profile() {
 
       {/* Formulaire Coordonnées Personnelles */}
       <div className="glass-card" style={{ padding: 'clamp(14px, 4vw, 22px)', marginBottom: 'clamp(14px, 3vh, 20px)' }}>
-        <h2 style={{ fontSize: '1.15rem', marginBottom: '14px', color: 'var(--color-text-primary)' }}>Informations personnelles</h2>
+        <h2 style={{ fontSize: '1.15rem', marginBottom: '14px', color: 'var(--color-text-primary)' }}>{t('profile.personalInfoTitle')}</h2>
         {profileSuccess && (
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 14px', backgroundColor: 'rgba(16, 185, 129, 0.12)', border: '1px solid var(--color-success)', borderRadius: 'var(--radius-sm)', color: 'var(--color-success)', marginBottom: '14px', fontSize: '0.85rem' }}>
             <CheckCircle2 size={16} style={{ flexShrink: 0 }} />
@@ -180,14 +180,14 @@ export default function Profile() {
 
           <button type="submit" className="btn btn-secondary" disabled={loadingProfile} style={{ alignSelf: 'flex-start', padding: '10px 18px', fontSize: '0.88rem' }}>
             <Save size={16} />
-            <span>{loadingProfile ? t('common.loading') : 'Enregistrer mes informations'}</span>
+            <span>{loadingProfile ? t('common.loading') : t('profile.saveInfo')}</span>
           </button>
         </form>
       </div>
 
       {/* Formulaire Modification Mot de passe */}
       <div className="glass-card" style={{ padding: 'clamp(14px, 4vw, 22px)' }}>
-        <h2 style={{ fontSize: '1.15rem', marginBottom: '14px', color: 'var(--color-text-primary)' }}>Sécurité &amp; Mot de passe</h2>
+        <h2 style={{ fontSize: '1.15rem', marginBottom: '14px', color: 'var(--color-text-primary)' }}>{t('profile.securityTitle')}</h2>
         {passwordSuccess && (
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 14px', backgroundColor: 'rgba(16, 185, 129, 0.12)', border: '1px solid var(--color-success)', borderRadius: 'var(--radius-sm)', color: 'var(--color-success)', marginBottom: '14px', fontSize: '0.85rem' }}>
             <CheckCircle2 size={16} style={{ flexShrink: 0 }} />
@@ -197,24 +197,24 @@ export default function Profile() {
 
         <form onSubmit={handlePasswordSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
           <div>
-            <label style={fieldLabelStyle}>Ancien mot de passe</label>
+            <label style={fieldLabelStyle}>{t('profile.currentPassword')}</label>
             <input type="password" value={passwordForm.ancienMotDePasse} onChange={(e) => setPasswordForm({ ...passwordForm, ancienMotDePasse: e.target.value })} style={fieldInputStyle} required />
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '12px' }}>
             <div>
-              <label style={fieldLabelStyle}>Nouveau mot de passe (min. 8 car.)</label>
+              <label style={fieldLabelStyle}>{t('profile.newPassword')}</label>
               <input type="password" value={passwordForm.nouveauMotDePasse} onChange={(e) => setPasswordForm({ ...passwordForm, nouveauMotDePasse: e.target.value })} style={fieldInputStyle} required />
             </div>
             <div>
-              <label style={fieldLabelStyle}>Confirmer le mot de passe</label>
+              <label style={fieldLabelStyle}>{t('profile.confirmPassword')}</label>
               <input type="password" value={passwordForm.confirmNouveauMotDePasse} onChange={(e) => setPasswordForm({ ...passwordForm, confirmNouveauMotDePasse: e.target.value })} style={fieldInputStyle} required />
             </div>
           </div>
 
           <button type="submit" className="btn btn-outline" disabled={loadingPassword} style={{ alignSelf: 'flex-start', padding: '10px 18px', fontSize: '0.88rem' }}>
             <Lock size={16} />
-            <span>{loadingPassword ? t('common.loading') : 'Mettre à jour mon mot de passe'}</span>
+            <span>{loadingPassword ? t('common.loading') : t('profile.updatePassword')}</span>
           </button>
         </form>
       </div>

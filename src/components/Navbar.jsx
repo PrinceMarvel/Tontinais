@@ -116,7 +116,7 @@ export default function Navbar() {
               {role === 'SUPER_ADMIN' && (
                 <Link to="/admin" style={navLinkStyle('/admin')}>
                   <ShieldAlert size={16} color="var(--color-accent)" />
-                  <span style={{ color: 'var(--color-accent)' }}>Back-Office</span>
+                  <span style={{ color: 'var(--color-accent)' }}>{t('nav.admin')}</span>
                 </Link>
               )}
             </>
@@ -255,7 +255,7 @@ export default function Navbar() {
               {role === 'SUPER_ADMIN' && (
                 <Link to="/admin" onClick={() => setMobileMenuOpen(false)} style={navLinkStyle('/admin')}>
                   <ShieldAlert size={18} color="var(--color-accent)" />
-                  <span style={{ color: 'var(--color-accent)' }}>Back-Office</span>
+                  <span style={{ color: 'var(--color-accent)' }}>{t('nav.admin')}</span>
                 </Link>
               )}
 

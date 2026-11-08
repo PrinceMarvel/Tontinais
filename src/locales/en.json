@@ -23,7 +23,10 @@
     "days": "days",
     "language": "Language",
     "french": "French",
-    "english": "English"
+    "english": "English",
+    "details": "Details",
+    "incomplete": "Incomplete",
+    "digits": "digits"
   },
   "nav": {
     "home": "Home",
@@ -90,6 +93,7 @@
     "roleLabel": "Desired profile",
     "roleMember": "Savings Member",
     "roleLeader": "Tontine Leader",
+    "roleSuperAdmin": "Super Admin",
     "submitLogin": "Sign In",
     "submitRegister": "Create my account",
     "noAccount": "Don't have an account yet?",
@@ -172,7 +176,13 @@
     "statusCompleted": "Completed",
     "statusSuspended": "Suspended",
     "codeLabel": "Code:",
-    "errorTitle": "Error"
+    "errorTitle": "Error",
+    "deleteGroup": "Delete Tontine",
+    "deleteConfirmTitle": "Delete this tontine?",
+    "deleteConfirmMessage": "This action is irreversible. The group \"{{name}}\" and its data will be permanently erased.",
+    "deleteInProgress": "Deleting...",
+    "deleteSuccess": "Tontine deleted successfully.",
+    "maxChars": "Max {{max}} characters"
   },
   "contributions": {
     "title": "Direct Contributions Tracking",
@@ -233,6 +243,40 @@
     "ongoing": "In progress",
     "blocked": "Blocked",
     "confirmDistribute": "Confirm direct disbursement of the payout ({{amount}} {{currency}}) to {{name}}'s Mobile Money wallet ({{phone}})?"
+  },
+  "profile": {
+    "title": "My Profile",
+    "personalInfoTitle": "Personal Information",
+    "activeAccount": "Active account",
+    "saveInfo": "Save my information",
+    "successInfo": "Your personal details have been updated successfully.",
+    "securityTitle": "Security & Password",
+    "currentPassword": "Current password",
+    "newPassword": "New password (min. 8 chars)",
+    "confirmPassword": "Confirm password",
+    "updatePassword": "Update my password",
+    "successPassword": "Your password has been changed successfully.",
+    "passwordMinLength": "The new password must be at least 8 characters long."
+  },
+  "admin": {
+    "title": "Platform Administration",
+    "subtitle": "Global supervision of users, contributions and tontine groups",
+    "statUsers": "Users",
+    "statGroups": "Created tontines",
+    "statContributions": "Completed contributions",
+    "statPending": "Pending validation",
+    "tabUsers": "User Management",
+    "tabGroups": "Group Management",
+    "tableTontine": "Tontine",
+    "tableLeader": "Tontine Leader",
+    "tableSettings": "Settings",
+    "tableStatus": "Status",
+    "tableAction": "Action",
+    "noGroupsFound": "No tontine registered.",
+    "totalRegistered": "Total Registered",
+    "new48h": "New (48h)",
+    "refresh": "Refresh",
+    "noUsersFound": "No user found."
   },
   "notifications": {
     "centerTitle": "Notifications Center",

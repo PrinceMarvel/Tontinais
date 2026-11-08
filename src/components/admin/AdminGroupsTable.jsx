@@ -59,18 +59,18 @@ export default function AdminGroupsTable({ groups = [] }) {
         <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', minWidth: '650px' }}>
           <thead>
             <tr style={{ borderBottom: '1px solid var(--color-border)', color: 'var(--color-text-muted)', fontSize: '0.8rem' }}>
-              <th style={{ padding: '10px 12px' }}>Tontine</th>
-              <th style={{ padding: '10px 12px' }}>Chef de Tontine</th>
-              <th style={{ padding: '10px 12px' }}>Paramètres</th>
-              <th style={{ padding: '10px 12px' }}>Statut</th>
-              <th style={{ padding: '10px 12px', textAlign: 'right' }}>Action</th>
+              <th style={{ padding: '10px 12px' }}>{t('admin.tableTontine')}</th>
+              <th style={{ padding: '10px 12px' }}>{t('admin.tableLeader')}</th>
+              <th style={{ padding: '10px 12px' }}>{t('admin.tableSettings')}</th>
+              <th style={{ padding: '10px 12px' }}>{t('admin.tableStatus')}</th>
+              <th style={{ padding: '10px 12px', textAlign: 'right' }}>{t('admin.tableAction')}</th>
             </tr>
           </thead>
           <tbody>
             {filteredGroups.length === 0 ? (
               <tr>
                 <td colSpan="5" style={{ textAlign: 'center', padding: '30px', color: 'var(--color-text-secondary)' }}>
-                  Aucune tontine enregistrée.
+                  {t('admin.noGroupsFound')}
                 </td>
               </tr>
             ) : (
@@ -122,7 +122,7 @@ export default function AdminGroupsTable({ groups = [] }) {
                         className="btn btn-outline"
                         style={{ padding: '6px 12px', fontSize: '0.8rem' }}
                       >
-                        <span>Détails</span>
+                        <span>{t('common.details')}</span>
                         <ArrowRight size={14} />
                       </Link>
                     </td>

@@ -23,7 +23,10 @@
     "days": "jours",
     "language": "Langue",
     "french": "Français",
-    "english": "Anglais"
+    "english": "Anglais",
+    "details": "Détails",
+    "incomplete": "Incomplet",
+    "digits": "chiffres"
   },
   "nav": {
     "home": "Accueil",
@@ -90,6 +93,7 @@
     "roleLabel": "Profil souhaité",
     "roleMember": "Membre épargnant",
     "roleLeader": "Chef de tontine",
+    "roleSuperAdmin": "Super Administrateur",
     "submitLogin": "Se connecter",
     "submitRegister": "Créer mon compte",
     "noAccount": "Pas encore de compte ?",
@@ -172,7 +176,13 @@
     "statusCompleted": "Terminé",
     "statusSuspended": "Suspendu",
     "codeLabel": "Code :",
-    "errorTitle": "Erreur"
+    "errorTitle": "Erreur",
+    "deleteGroup": "Supprimer la tontine",
+    "deleteConfirmTitle": "Supprimer cette tontine ?",
+    "deleteConfirmMessage": "Cette action est irréversible. Le groupe \"{{name}}\" et ses données seront définitivement effacés.",
+    "deleteInProgress": "Suppression en cours...",
+    "deleteSuccess": "Tontine supprimée avec succès.",
+    "maxChars": "Max {{max}} caractères"
   },
   "contributions": {
     "title": "Suivi des Cotisations Directes",
@@ -233,6 +243,40 @@
     "ongoing": "En cours",
     "blocked": "Bloqué",
     "confirmDistribute": "Confirmez-vous le versement direct de la cagnotte ({{amount}} {{currency}}) vers le portefeuille Mobile Money de {{name}} ({{phone}}) ?"
+  },
+  "profile": {
+    "title": "Mon Profil",
+    "personalInfoTitle": "Informations personnelles",
+    "activeAccount": "Compte actif",
+    "saveInfo": "Enregistrer mes informations",
+    "successInfo": "Vos coordonnées ont été mises à jour avec succès.",
+    "securityTitle": "Sécurité & Mot de passe",
+    "currentPassword": "Ancien mot de passe",
+    "newPassword": "Nouveau mot de passe (min. 8 car.)",
+    "confirmPassword": "Confirmer le mot de passe",
+    "updatePassword": "Mettre à jour mon mot de passe",
+    "successPassword": "Votre mot de passe a été modifié avec succès.",
+    "passwordMinLength": "Le nouveau mot de passe doit contenir au moins 8 caractères."
+  },
+  "admin": {
+    "title": "Administration Plateforme",
+    "subtitle": "Supervision globale des utilisateurs, cotisations et groupes de tontine",
+    "statUsers": "Utilisateurs",
+    "statGroups": "Tontines créées",
+    "statContributions": "Cotisations réglées",
+    "statPending": "En attente de validation",
+    "tabUsers": "Gestion des Utilisateurs",
+    "tabGroups": "Gestion des Groupes",
+    "tableTontine": "Tontine",
+    "tableLeader": "Chef de Tontine",
+    "tableSettings": "Paramètres",
+    "tableStatus": "Statut",
+    "tableAction": "Action",
+    "noGroupsFound": "Aucune tontine enregistrée.",
+    "totalRegistered": "Total Inscrits",
+    "new48h": "Nouveaux (48h)",
+    "refresh": "Actualiser",
+    "noUsersFound": "Aucun utilisateur trouvé."
   },
   "notifications": {
     "centerTitle": "Centre de Notifications",

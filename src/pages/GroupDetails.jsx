@@ -94,7 +94,7 @@ export default function GroupDetails() {
         navigate('/dashboard', { replace: true });
       }
     } catch (err) {
-      setErrorMessage(err.message || 'Erreur lors de la suppression de la tontine.');
+      setErrorMessage(err.message || t('errors.generic'));
       setShowDeleteModal(false);
     } finally {
       setDeleting(false);
@@ -176,7 +176,7 @@ export default function GroupDetails() {
             }}
           >
             <Trash2 size={14} />
-            <span>Supprimer la tontine</span>
+            <span>{t('groups.deleteGroup')}</span>
           </button>
         )}
       </div>
@@ -303,16 +303,16 @@ export default function GroupDetails() {
         <div style={{ position: 'fixed', inset: 0, zIndex: 999, backgroundColor: 'rgba(15, 23, 42, 0.8)', backdropFilter: 'var(--backdrop-blur)', display: 'grid', placeItems: 'center', padding: '16px' }}>
           <div className="glass-card animate-fade-in" style={{ maxWidth: '420px', width: '100%', padding: '24px', textAlign: 'center' }}>
             <Trash2 size={36} color="var(--color-danger)" style={{ margin: '0 auto 10px' }} />
-            <h3 style={{ fontSize: '1.2rem', marginBottom: '6px', color: 'var(--color-text-primary)' }}>Supprimer cette tontine ?</h3>
+            <h3 style={{ fontSize: '1.2rem', marginBottom: '6px', color: 'var(--color-text-primary)' }}>{t('groups.deleteConfirmTitle')}</h3>
             <p style={{ fontSize: '0.86rem', color: 'var(--color-text-secondary)', marginBottom: '18px' }}>
-              Cette action est irréversible. Le groupe &quot;{group.nom}&quot; et ses données seront définitivement effacés.
+              {t('groups.deleteConfirmMessage', { name: group?.nom })}
             </p>
             <div style={{ display: 'flex', gap: '10px', justifyContent: 'center' }}>
               <button type="button" className="btn btn-outline" onClick={() => setShowDeleteModal(false)} disabled={deleting}>
-                Annuler
+                {t('common.cancel')}
               </button>
               <button type="button" className="btn btn-primary" onClick={handleDeleteGroup} disabled={deleting} style={{ background: 'var(--color-danger)', borderColor: 'var(--color-danger)' }}>
-                {deleting ? 'Suppression...' : 'Confirmer'}
+                {deleting ? t('groups.deleteInProgress') : t('common.confirm')}
               </button>
             </div>
           </div>

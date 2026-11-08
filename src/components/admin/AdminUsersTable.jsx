@@ -104,7 +104,7 @@ export default function AdminUsersTable({ users = [], onUserUpdated }) {
             <Users size={22} />
           </div>
           <div>
-            <div style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)' }}>Total Inscrits</div>
+            <div style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)' }}>{t('admin.totalRegistered')}</div>
             <div style={{ fontSize: '1.4rem', fontWeight: '700', color: 'var(--color-text-primary)' }}>{users.length}</div>
           </div>
         </div>
@@ -115,7 +115,7 @@ export default function AdminUsersTable({ users = [], onUserUpdated }) {
               <Sparkles size={22} />
             </div>
             <div>
-              <div style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)' }}>Nouveaux (48h)</div>
+              <div style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)' }}>{t('admin.new48h')}</div>
               <div style={{ fontSize: '1.4rem', fontWeight: '700', color: 'var(--color-success)' }}>+{recentCount}</div>
             </div>
           </div>
@@ -123,11 +123,11 @@ export default function AdminUsersTable({ users = [], onUserUpdated }) {
             type="button"
             className="btn btn-outline"
             onClick={handleRefresh}
-            title="Rafraîchir la liste"
+            title={t('admin.refresh')}
             style={{ padding: '8px 12px', fontSize: '0.8rem' }}
           >
             <RefreshCw size={14} className={isRefreshing ? 'animate-spin' : ''} />
-            <span>Actualiser</span>
+            <span>{t('admin.refresh')}</span>
           </button>
         </div>
       </div>
@@ -192,7 +192,7 @@ export default function AdminUsersTable({ users = [], onUserUpdated }) {
         {filteredUsers.length === 0 ? (
           <div style={{ textAlign: 'center', padding: '40px 20px', color: 'var(--color-text-secondary)' }}>
             <Users size={36} color="var(--color-text-muted)" style={{ margin: '0 auto 12px' }} />
-            <p style={{ fontSize: '0.95rem' }}>Aucun utilisateur trouvé.</p>
+            <p style={{ fontSize: '0.95rem' }}>{t('admin.noUsersFound')}</p>
           </div>
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>

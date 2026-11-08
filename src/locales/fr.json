@@ -44,7 +44,16 @@
     "notifications": "Notifications",
     "login": "Connexion",
     "register": "Inscription",
-    "logout": "Déconnexion"
+    "logout": "Déconnexion",
+    "installApp": "Télécharger l'application",
+    "installSubtitle": "Installer sur mon téléphone",
+    "appInstalled": "Application déjà installée",
+    "iosInstallTitle": "Installer sur iPhone / iPad",
+    "iosInstallDesc": "Installez TontiNaïs directement sur votre écran d'accueil :",
+    "iosInstallStep1": "Appuyez sur le bouton Partager au bas de Safari",
+    "iosInstallStep2": "Faites défiler et sélectionnez 'Sur l'écran d'accueil'",
+    "iosInstallStep3": "Confirmez en appuyant sur 'Ajouter' en haut à droite",
+    "installSuccess": "Application installée avec succès !"
   },
   "home": {
     "heroTitle": "L'épargne solidaire moderne et sécurisée",

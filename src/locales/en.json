@@ -44,7 +44,16 @@
     "notifications": "Notifications",
     "login": "Sign In",
     "register": "Sign Up",
-    "logout": "Sign Out"
+    "logout": "Sign Out",
+    "installApp": "Download the App",
+    "installSubtitle": "Install on my phone",
+    "appInstalled": "App already installed",
+    "iosInstallTitle": "Install on iPhone / iPad",
+    "iosInstallDesc": "Install TontiNaïs directly onto your home screen:",
+    "iosInstallStep1": "Tap the Share button at the bottom of Safari",
+    "iosInstallStep2": "Scroll down and select 'Add to Home Screen'",
+    "iosInstallStep3": "Confirm by tapping 'Add' in the top right",
+    "installSuccess": "App successfully installed!"
   },
   "home": {
     "heroTitle": "Modern and secure solidarity savings",

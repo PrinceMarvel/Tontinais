@@ -23,6 +23,7 @@ import { useAuth } from '../context/AuthContext';
 import LanguageSelector from './LanguageSelector';
 import NotificationBell from './NotificationBell';
 import Logo from './Logo';
+import InstallAppButton from './common/InstallAppButton';
 
 export default function Navbar() {
   const { t } = useTranslation();
@@ -259,11 +260,13 @@ export default function Navbar() {
                 </Link>
               )}
 
+              <InstallAppButton onInstalled={() => setMobileMenuOpen(false)} style={{ marginTop: '4px' }} />
+
               <button
                 type="button"
                 onClick={handleLogout}
                 className="btn btn-outline"
-                style={{ width: '100%', marginTop: '8px' }}
+                style={{ width: '100%', marginTop: '4px' }}
               >
                 <LogOut size={16} />
                 <span>{t('nav.logout')}</span>
@@ -279,6 +282,7 @@ export default function Navbar() {
                 <UserPlus size={16} />
                 <span>{t('nav.register')}</span>
               </Link>
+              <InstallAppButton onInstalled={() => setMobileMenuOpen(false)} style={{ marginTop: '4px' }} />
             </div>
           )}
         </div>

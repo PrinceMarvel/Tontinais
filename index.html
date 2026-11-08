@@ -9,15 +9,144 @@
     <link rel="apple-touch-icon" href="/logo.svg" />
     <meta name="description" content="TontiNaïs - L'épargne solidaire, intelligente et sécurisée à portée de main. Application PWA de tontine collaborative moderne." />
     
-    <!-- Google Fonts: Outfit, Inter & Playfair Display (Typographie Officielle TontiNaïs) -->
+    <!-- Polices optimisées non-bloquantes (chargement asynchrone haute performance) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,700&display=swap" rel="stylesheet" />
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap" media="print" onload="this.media='all'" />
+    <noscript>
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap" />
+    </noscript>
 
     <title>TontiNaïs | Épargne Solidaire & Tontine Collaborative</title>
+
+    <style>
+      /* Styles du préchargeur instantané (0ms de latence, zéro ressource externe) */
+      #app-preloader {
+        position: fixed;
+        inset: 0;
+        background-color: #0f172a;
+        color: #f8fafc;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        z-index: 99999;
+      }
+      .preloader-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        max-width: 340px;
+        width: 100%;
+      }
+      .preloader-logo-ring {
+        position: relative;
+        width: 80px;
+        height: 80px;
+        margin-bottom: 18px;
+        display: grid;
+        place-items: center;
+      }
+      .preloader-spinner {
+        position: absolute;
+        inset: 0;
+        border: 3px solid rgba(79, 209, 197, 0.15);
+        border-top-color: #4fd1c5;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+      .preloader-title {
+        font-size: 1.6rem;
+        font-weight: 800;
+        margin: 0 0 6px;
+        background: linear-gradient(135deg, #ffffff 40%, #4fd1c5 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        letter-spacing: -0.5px;
+      }
+      .preloader-desc {
+        font-size: 0.85rem;
+        color: #94a3b8;
+        margin: 0 0 20px;
+        line-height: 1.4;
+      }
+      .preloader-progress-track {
+        width: 100%;
+        height: 4px;
+        background: rgba(255, 255, 255, 0.08);
+        border-radius: 999px;
+        overflow: hidden;
+        position: relative;
+        margin-bottom: 14px;
+      }
+      .preloader-progress-bar {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 45%;
+        background: linear-gradient(90deg, #319795, #4fd1c5);
+        border-radius: 999px;
+        animation: progress 1.6s ease-in-out infinite;
+      }
+      .preloader-hint {
+        font-size: 0.76rem;
+        color: #64748b;
+        letter-spacing: 0.2px;
+      }
+      .preloader-retry {
+        display: none;
+        margin-top: 14px;
+        padding: 8px 16px;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        color: #f8fafc;
+        border-radius: 8px;
+        font-size: 0.8rem;
+        cursor: pointer;
+      }
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+      @keyframes progress {
+        0% { left: -45%; }
+        50% { left: 40%; width: 55%; }
+        100% { left: 100%; width: 45%; }
+      }
+    </style>
   </head>
   <body>
-    <div id="root"></div>
+    <!-- Le contenu de #root s'affiche immédiatement en moins de 50ms puis React prend le relais -->
+    <div id="root">
+      <div id="app-preloader" aria-live="polite">
+        <div class="preloader-card">
+          <div class="preloader-logo-ring">
+            <div class="preloader-spinner"></div>
+            <img src="/logo.svg" width="48" height="48" alt="TontiNaïs" style="display:block;" />
+          </div>
+          <h1 class="preloader-title">TontiNaïs</h1>
+          <p class="preloader-desc">L'épargne solidaire &amp; tontine sécurisée</p>
+          <div class="preloader-progress-track">
+            <div class="preloader-progress-bar"></div>
+          </div>
+          <span class="preloader-hint">Chargement optimisé pour mobile...</span>
+          <button id="preloader-retry-btn" class="preloader-retry" onclick="window.location.reload()">
+            Connexion lente : Actualiser la page
+          </button>
+        </div>
+      </div>
+      <script>
+        // Si le réseau mobile est très lent (> 6 secondes), proposer un bouton de rafraîchissement
+        setTimeout(function() {
+          var btn = document.getElementById('preloader-retry-btn');
+          if (btn) btn.style.display = 'inline-block';
+        }, 6000);
+      </script>
+    </div>
+
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

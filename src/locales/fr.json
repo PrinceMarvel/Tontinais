@@ -296,6 +296,8 @@
     "network": "Impossible de joindre le serveur. Vérifiez votre connexion.",
     "unauthorized": "Session expirée ou non autorisée. Veuillez vous reconnecter.",
     "requiredFields": "Veuillez remplir tous les champs obligatoires.",
-    "passwordMismatch": "Les mots de passe ne correspondent pas."
+    "passwordMismatch": "Les mots de passe ne correspondent pas.",
+    "timeout": "Délai d'attente dépassé (connexion mobile lente). Veuillez vérifier votre réseau.",
+    "offline": "Aucune connexion Internet détectée. Veuillez activer vos données mobiles ou le Wi-Fi."
   }
 }

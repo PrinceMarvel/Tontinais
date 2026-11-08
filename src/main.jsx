@@ -16,12 +16,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   </React.StrictMode>
 );
 
-// Enregistrement du Service Worker PWA en production
+// Enregistrement immédiat du Service Worker PWA pour mise en cache précoce sur smartphone
 if ('serviceWorker' in navigator && import.meta.env.PROD) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js').catch((err) => {
-      console.warn('Erreur d\'enregistrement du Service Worker :', err);
-    });
+  navigator.serviceWorker.register('/sw.js').catch((err) => {
+    console.warn('Erreur Service Worker :', err.message);
   });
 }
-

@@ -1,10 +1,27 @@
 /**
  * @file api.js
- * @description Client HTTP sécurisé pour communiquer avec l'API RESTful TontiNaïs.
+ * @description Client HTTP sécurisé et résilient pour communiquer avec l'API RESTful TontiNaïs.
+ * Gère les timeouts sur réseau mobile lent, l'état hors-ligne et la résolution dynamique d'adresse IP.
  * @module services/api
  */
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001/api';
+/**
+ * Résout dynamiquement l'URL de l'API pour les tests sur smartphone via Wi-Fi/point d'accès.
+ * @returns {string} URL de base de l'API.
+ */
+const getBaseApiUrl = () => {
+  if (import.meta.env.VITE_API_URL) return import.meta.env.VITE_API_URL;
+  if (typeof window !== 'undefined' && window.location && window.location.hostname) {
+    const host = window.location.hostname;
+    if (host !== 'localhost' && host !== '127.0.0.1') {
+      return `http://${host}:5001/api`;
+    }
+  }
+  return 'http://localhost:5001/api';
+};
+
+const API_BASE_URL = getBaseApiUrl();
+const DEFAULT_TIMEOUT_MS = 12000; // 12 secondes adaptées aux réseaux 3G/4G
 
 /**
  * Récupère les jetons d'authentification stockés.
@@ -43,11 +60,15 @@ const refreshAccessToken = async () => {
   if (!refreshToken) return null;
 
   try {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 8000);
     const response = await fetch(`${API_BASE_URL}/auth/refresh`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ refreshToken })
+      body: JSON.stringify({ refreshToken }),
+      signal: controller.signal
     });
+    clearTimeout(timer);
 
     if (!response.ok) {
       clearStoredTokens();
@@ -60,7 +81,7 @@ const refreshAccessToken = async () => {
       return data.token;
     }
   } catch (err) {
-    console.error('Erreur lors du rafraîchissement du jeton :', err);
+    console.warn('Erreur rafraîchissement jeton :', err.message);
   }
 
   clearStoredTokens();
@@ -68,13 +89,18 @@ const refreshAccessToken = async () => {
 };
 
 /**
- * Exécute une requête HTTP avec gestion automatique des en-têtes et des jetons.
+ * Exécute une requête HTTP avec gestion automatique des en-têtes, jetons et timeout réseau.
  * @param {string} endpoint Chemin relatif de l'API (ex: '/auth/login').
- * @param {RequestInit} [options={}] Options fetch standard.
+ * @param {RequestInit & { timeoutMs?: number }} [options={}] Options fetch standard.
  * @param {boolean} [isRetry=false] Indique s'il s'agit d'une nouvelle tentative.
  * @returns {Promise<any>} Données JSON retournées par l'API.
  */
 export const request = async (endpoint, options = {}, isRetry = false) => {
+  // Détection proactive de l'état hors-ligne sur smartphone
+  if (typeof navigator !== 'undefined' && navigator.onLine === false) {
+    throw new Error('Aucune connexion Internet détectée. Activez vos données mobiles ou le Wi-Fi.');
+  }
+
   const url = `${API_BASE_URL}${endpoint}`;
   const { token } = getStoredTokens();
 
@@ -82,20 +108,33 @@ export const request = async (endpoint, options = {}, isRetry = false) => {
     ...options.headers
   };
 
-  // Ajout de Content-Type sauf si envoi d'un FormData
   if (!(options.body instanceof FormData)) {
     headers['Content-Type'] = headers['Content-Type'] || 'application/json';
   }
 
-  // Injection du jeton Bearer si présent
   if (token && !headers['Authorization']) {
     headers['Authorization'] = `Bearer ${token}`;
   }
 
-  const response = await fetch(url, {
-    ...options,
-    headers
-  });
+  const controller = new AbortController();
+  const timeoutMs = options.timeoutMs || DEFAULT_TIMEOUT_MS;
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+
+  let response;
+  try {
+    response = await fetch(url, {
+      ...options,
+      headers,
+      signal: controller.signal
+    });
+  } catch (err) {
+    if (err.name === 'AbortError') {
+      throw new Error("Délai d'attente dépassé (connexion mobile lente). Vérifiez votre réseau.");
+    }
+    throw err;
+  } finally {
+    clearTimeout(timer);
+  }
 
   // Gestion de l'expiration du jeton (401)
   if (response.status === 401 && !isRetry && !endpoint.includes('/auth/')) {

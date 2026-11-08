@@ -1,9 +1,9 @@
 /**
  * @file sw.js
- * @description Service Worker haute performance pour TontiNaïs : Stale-While-Revalidate & Timeout réseau 3s.
+ * @description Service Worker résilient pour TontiNaïs (v5) : Stale-While-Revalidate, Cache First assets & Timeout mobile 2.5s.
  */
 
-const CACHE_NAME = 'tontinais-cache-v4';
+const CACHE_NAME = 'tontinais-cache-v5';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
@@ -11,7 +11,7 @@ const STATIC_ASSETS = [
   '/logo.svg'
 ];
 
-// Installation rapide et activation immédiate
+// Installation rapide et pré-mise en cache du shell applicatif
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
@@ -23,7 +23,7 @@ self.addEventListener('install', (event) => {
   self.skipWaiting();
 });
 
-// Purge instantanée de toutes les versions de cache obsolètes
+// Purge instantanée de toutes les anciennes versions de cache
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((keys) => {
@@ -39,8 +39,8 @@ self.addEventListener('activate', (event) => {
   self.clients.claim();
 });
 
-// Helper pour timeout réseau (évite les blocages sur 3G/4G lente)
-const timeoutFetch = (request, ms = 3000) => {
+// Helper avec timeout réseau pour éviter les blocages sur 3G/4G lente
+const timeoutFetch = (request, ms = 2500) => {
   return new Promise((resolve, reject) => {
     const timer = setTimeout(() => reject(new Error('Network timeout')), ms);
     fetch(request)
@@ -49,11 +49,11 @@ const timeoutFetch = (request, ms = 3000) => {
   });
 };
 
-// Stratégie de mise en cache intelligente
+// Stratégie de mise en cache adaptée aux forfaits mobiles réduits
 self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url);
 
-  // Exclure les appels API, non-GET et schémas non HTTP
+  // Exclure les requêtes d'API, non-GET et schémas non HTTP
   if (
     url.pathname.startsWith('/api') ||
     event.request.method !== 'GET' ||
@@ -62,10 +62,10 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // 1. Navigation HTML : Network First avec timeout de 3s et secours immédiat sur le cache
+  // 1. Navigation HTML : Network First rapide (2.5s) avec repli immédiat sur le cache hors-ligne
   if (event.request.mode === 'navigate' || event.request.headers.get('accept')?.includes('text/html')) {
     event.respondWith(
-      timeoutFetch(event.request, 3000)
+      timeoutFetch(event.request, 2500)
         .then((response) => {
           if (response && response.status === 200) {
             const copy = response.clone();
@@ -83,10 +83,10 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // 2. Fichiers statiques (JS, CSS, polices, SVG, images) : Stale-While-Revalidate
+  // 2. Fichiers statiques (JS, CSS, SVG, polices) : Cache First & mise à jour en arrière-plan
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
-      const fetchPromise = fetch(event.request)
+      const fetchPromise = timeoutFetch(event.request, 5000)
         .then((networkResponse) => {
           if (networkResponse && networkResponse.status === 200) {
             const copy = networkResponse.clone();
@@ -96,7 +96,7 @@ self.addEventListener('fetch', (event) => {
         })
         .catch(() => null);
 
-      // Si présent dans le cache, retour immédiat (0ms de latence sur smartphone)
+      // Si déjà en cache, restitution immédiate à 0ms pour préserver le forfait data (100 Mo)
       return cachedResponse || fetchPromise.then((res) => res || new Response('', { status: 408 }));
     })
   );

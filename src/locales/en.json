@@ -296,6 +296,8 @@
     "network": "Cannot reach the server. Please check your connection.",
     "unauthorized": "Session expired or unauthorized. Please sign in again.",
     "requiredFields": "Please fill in all required fields.",
-    "passwordMismatch": "Passwords do not match."
+    "passwordMismatch": "Passwords do not match.",
+    "timeout": "Request timed out (slow mobile connection). Please check your network.",
+    "offline": "No internet connection detected. Please enable your mobile data or Wi-Fi."
   }
 }
